@@ -1,0 +1,87 @@
+<MudDrawer
+    Open="true"
+    Anchor="Anchor.Start"
+    Variant="DrawerVariant.Persistent"
+    Elevation="0"
+    Class="w-96 bg-gray-50 border-r border-gray-200">
+
+    <!-- Header -->
+    <MudDrawerHeader class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+            <div class="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
+                D
+            </div>
+            <div class="leading-tight">
+                <div class="text-base font-semibold text-gray-800">
+                    Dreams
+                </div>
+                <div class="text-xs font-medium text-orange-500">
+                    POS
+                </div>
+            </div>
+        </div>
+    </MudDrawerHeader>
+
+    <!-- Menu -->
+    <div class="px-2 py-5">
+        <MudList Dense T="string" class="space-y-1">
+            @foreach (var item in _items)
+            {
+                <MudListItem T="string" Dense="true" Href="@item.Href"
+                             Class="group flex items-center gap-3 px-4 py-0.5 rounded-xl transition">
+                    <MudIcon Icon="@item.Icon" Size="Size.Small" />
+                    <span class="text-base text-gray-700 ms-1">
+                        @item.Title
+                    </span>
+                </MudListItem>
+
+            }
+        </MudList>
+    </div>
+
+</MudDrawer>
+
+@code {
+
+    private readonly List<SidebarItem> _items =
+    [
+        new()
+        {
+            Title = "",
+            Icon = Icons.Material.Filled.Dashboard,
+            Href = "/"
+        },
+        new()
+        {
+            Title = "Món ăn",
+            Icon = Icons.Material.Filled.AdminPanelSettings,
+            Href = "/products"
+        },
+        new()
+        {
+            Title = "Menu",
+            Icon = Icons.Material.Filled.Dashboard,
+            Href = "/menus"
+        },
+        new()
+        {
+            Title = "Bàn ăn",
+            Icon = Icons.Material.Filled.Dashboard,
+            Href = "/tables"
+        },
+        new()
+        {
+            Title = "Nhân viên",
+            Icon = Icons.Material.Filled.Dashboard,
+            Href = "/staffs"
+        }
+    ];
+    
+    class SidebarItem
+    {
+        public string Title { get; init; } = string.Empty;
+        public string? Icon { get; init; }
+        public string? Href { get; init; }
+    }
+
+}

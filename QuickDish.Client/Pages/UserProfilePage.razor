@@ -1,0 +1,114 @@
+@* @page "/profile" *@
+@* *@
+@* <div class="bg-default-50 flex justify-center px-4 py-6"> *@
+@*     <LumexCard Radius="Radius.Large" Class="w-full max-w-4xl" Shadow="Shadow.None"> *@
+@*         <CardBody Class="px-12 py-12 space-y-8"> *@
+@*             <div class="space-y-2"> *@
+@*                 <h1 class="text-3xl font-semibold text-default-900 tracking-tight"> *@
+@*                     Thông tin tài khoản *@
+@*                 </h1> *@
+@*                 <p class="text-sm text-default-500"> *@
+@*                     Quản lý thông tin cá nhân của bạn *@
+@*                 </p> *@
+@*             </div> *@
+@* *@
+@*             <!-- Account information --> *@
+@*             <section class="space-y-6"> *@
+@* *@
+@*                 <!-- Email --> *@
+@*                 <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-8 items-center"> *@
+@*                     <label class="text-sm text-default-500 whitespace-nowrap"> *@
+@*                         Email *@
+@*                     </label> *@
+@* *@
+@*                     <LumexTextbox *@
+@*                         ReadOnly *@
+@*                         Type="@InputType.Email" *@
+@*                         Variant="InputVariant.Flat" *@
+@*                         FullWidth> *@
+@*                         <StartContent> *@
+@*                             <MailIcon Size="16" class="text-default-400"/> *@
+@*                         </StartContent> *@
+@*                     </LumexTextbox> *@
+@*                 </div> *@
+@* *@
+@*                 <!-- Phone --> *@
+@*                 <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-8 items-center"> *@
+@*                     <label class="text-sm text-default-500 whitespace-nowrap"> *@
+@*                         Số điện thoại *@
+@*                     </label> *@
+@* *@
+@*                     <LumexTextbox *@
+@*                         ReadOnly *@
+@*                         Type="@InputType.Telephone" *@
+@*                         Variant="InputVariant.Flat" *@
+@*                         FullWidth> *@
+@*                         <StartContent> *@
+@*                             <PhoneIcon Size="16" class="text-default-400"/> *@
+@*                         </StartContent> *@
+@*                     </LumexTextbox> *@
+@*                 </div> *@
+@* *@
+@*                 <!-- Meta info --> *@
+@*                 <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-8 text-sm"> *@
+@*                     <div class="text-default-500">Tham gia vào</div> *@
+@*                     <div class="text-default-900 font-medium">January 1, 2024</div> *@
+@* *@
+@*                     <div class="text-default-500">Vai trò</div> *@
+@*                     <div class="text-default-900 font-medium">Member</div> *@
+@*                 </div> *@
+@* *@
+@*             </section> *@
+@* *@
+@*             <!-- Divider --> *@
+@*             <div class="h-px bg-default-200"></div> *@
+@* *@
+@*             <!-- Security --> *@
+@*             <section class="space-y-6"> *@
+@* *@
+@*                 <!-- Current password --> *@
+@*                 <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-8 items-center"> *@
+@*                     <label class="text-sm text-default-500 whitespace-nowrap"> *@
+@*                         Mật khẩu hiện tại *@
+@*                     </label> *@
+@* *@
+@*                     <LumexTextbox *@
+@*                         Type="@InputType.Password" *@
+@*                         Variant="InputVariant.Flat" *@
+@*                         FullWidth> *@
+@*                         <StartContent> *@
+@*                             <LockIcon Size="16" class="text-default-400"/> *@
+@*                         </StartContent> *@
+@*                     </LumexTextbox> *@
+@*                 </div> *@
+@* *@
+@*                 <!-- New password --> *@
+@*                 <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-8 items-center"> *@
+@*                     <label class="text-sm text-default-500 whitespace-nowrap"> *@
+@*                         Mật khẩu mới *@
+@*                     </label> *@
+@* *@
+@*                     <LumexTextbox *@
+@*                         Type="@InputType.Password" *@
+@*                         Variant="InputVariant.Flat" *@
+@*                         FullWidth> *@
+@*                         <StartContent> *@
+@*                             <KeyIcon Size="16" class="text-default-400"/> *@
+@*                         </StartContent> *@
+@*                     </LumexTextbox> *@
+@*                 </div> *@
+@* *@
+@*             </section> *@
+@* *@
+@*             <!-- Actions --> *@
+@*             <div class="flex justify-end pt-4"> *@
+@*                 <LumexButton FullWidth *@
+@*                              Color="@ThemeColor.Primary" *@
+@*                              Class="px-14 h-12 rounded-xl text-sm font-medium"> *@
+@*                     Lưu thay đổi *@
+@*                 </LumexButton> *@
+@*             </div> *@
+@* *@
+@*         </CardBody> *@
+@*     </LumexCard> *@
+@* </div> *@

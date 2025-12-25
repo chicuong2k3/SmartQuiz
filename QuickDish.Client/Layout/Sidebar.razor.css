@@ -1,0 +1,10 @@
+::deep .mud-list-item:hover,
+::deep .mud-list-item:focus {
+    background-color: #b91c1c;
+    color: white;
+}
+    
+::deep .mud-list-item:hover span,
+::deep .mud-list-item:focus span {
+    color: white;
+}

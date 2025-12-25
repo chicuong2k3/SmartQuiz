@@ -1,0 +1,55 @@
+# =====================
+# .NET build artifacts
+# =====================
+**/bin/
+**/obj/
+
+# =====================
+# Rider / IntelliJ
+# =====================
+.idea/
+**/.idea/
+*.iml
+
+# =====================
+# User Secrets
+# =====================
+**/secrets.json
+**/usersecrets/
+
+# =====================
+# ASP.NET Core
+# =====================
+appsettings.Development.json
+appsettings.Local.json
+
+# =====================
+# Logs
+# =====================
+*.log
+logs/
+
+# =====================
+# OS files
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# VS / Rider temp
+# =====================
+.vs/
+.vscode/
+
+# =====================
+# Test / coverage
+# =====================
+coverage/
+TestResults/
+
+# =====================
+# Node / frontend (nếu có)
+# =====================
+node_modules/
+dist/
+

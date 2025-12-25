@@ -1,0 +1,66 @@
+@* @inject NavigationManager NavigationManager *@
+@* *@
+@* *@
+@* <LumexDropdown> *@
+@*     <LumexDropdownTrigger> *@
+@*         <AuthorizeView> *@
+@*             <Authorized Context="context"> *@
+@*                 <LumexUser Name="@context.User.FindFirst("email")?.Value" Description="Product Designer"> *@
+@*                     <AvatarContent> *@
+@*                         <LumexAvatar *@
+@*                             Src="@(context.User.FindFirst("picture")?.Value ?? "https://i.pravatar.cc/150?img=2")"/> *@
+@*                     </AvatarContent> *@
+@*                 </LumexUser> *@
+@*             </Authorized> *@
+@*         </AuthorizeView> *@
+@*     </LumexDropdownTrigger> *@
+@*     <LumexDropdownMenu> *@
+@*         <LumexDropdownItem> *@
+@*             <StartContent> *@
+@*                 <ShareIcon Size="18" class="text-default-500 shrink-0"/> *@
+@*             </StartContent> *@
+@*             <ChildContent> *@
+@*                 <LumexLink Href="/profile" Color="@ThemeColor.None">Thông tin tài khoản</LumexLink> *@
+@*             </ChildContent> *@
+@*         </LumexDropdownItem> *@
+@* *@
+@*         <LumexDropdownItem> *@
+@*             <StartContent> *@
+@*                 <SquarePenIcon Size="18" class="text-default-500 shrink-0"/> *@
+@*             </StartContent> *@
+@*             <ChildContent> *@
+@*                 <LumexLink Href="/profile" Color="@ThemeColor.None">Lịch sử đơn hàng</LumexLink> *@
+@*             </ChildContent> *@
+@*         </LumexDropdownItem> *@
+@* *@
+@*         <LumexDropdownItem> *@
+@*             <StartContent> *@
+@*                 <SquarePenIcon Size="18" class="text-default-500 shrink-0"/> *@
+@*             </StartContent> *@
+@*             <ChildContent> *@
+@*                 <LumexLink Href="/profile" Color="@ThemeColor.None">Lịch sử giao dịch</LumexLink> *@
+@*             </ChildContent> *@
+@*         </LumexDropdownItem> *@
+@* *@
+@*         <LumexDropdownItem> *@
+@*             <StartContent> *@
+@*                 <SquarePlusIcon Size="18" class="text-default-500 shrink-0"/> *@
+@*             </StartContent> *@
+@*             <ChildContent> *@
+@*                 <LumexLink Color="@ThemeColor.None"> *@
+@*                     <span @onclick="HandleLogout">Đăng xuất</span> *@
+@*                 </LumexLink> *@
+@*             </ChildContent> *@
+@*         </LumexDropdownItem> *@
+@*     </LumexDropdownMenu> *@
+@* </LumexDropdown> *@
+@* *@
+@* *@
+@* @code { *@
+@* *@
+@*     private void HandleLogout() *@
+@*     { *@
+@*         var returnUrl = NavigationManager.Uri; *@
+@*         NavigationManager.NavigateTo($"/authentication/logout?returnUrl={returnUrl}", true); *@
+@*     } *@
+@* } *@

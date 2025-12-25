@@ -1,0 +1,29 @@
+﻿@inherits LayoutComponentBase   
+
+<MudThemeProvider Theme="_theme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <Sidebar></Sidebar>
+    <MudMainContent class="flex-1 px-8 py-6 overflow-auto">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private readonly MudTheme _theme = new()
+    {
+        Shadows = new Shadow
+        {
+            Elevation = [
+                "none", "none", "none", "none", "none", "none",
+                "none", "none", "none", "none", "none", "none",
+                "none", "none", "none", "none", "none", "none",
+                "none", "none", "none", "none", "none", "none",
+                "none", "none"
+            ]
+        }
+    };
+}
