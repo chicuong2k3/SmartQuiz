@@ -1,0 +1,157 @@
+@page "/login"
+@inject NavigationManager NavigationManager
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <MudPaper Elevation="3" Class="pa-8" Style="border-radius: 16px; max-width: 440px; width: 100%; background: white;">
+
+        <!-- Logo and Title -->
+        <div class="text-center mb-6">
+            <MudIcon Icon="@Icons.Material.Filled.Quiz" Color="Color.Primary" Size="Size.Large" Class="mb-3"/>
+            <MudText Typo="Typo.h5" Class="fw-bold mb-1">Welcome back to QuizMaster</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary">Log in to continue your streak</MudText>
+        </div>
+
+        <!-- Social Login Buttons -->
+        <div class="d-flex gap-2 mb-4">
+            <MudButton
+                Variant="Variant.Outlined"
+                FullWidth
+                Style="border-radius: 8px; text-transform: none; border-color: #e0e0e0;"
+                OnClick="@(() => HandleExternalLogin("Google"))">
+                <div class="d-flex align-center gap-2">
+                    <MudIcon Icon="@Icons.Custom.Brands.Google" Size="Size.Small"/>
+                </div>
+            </MudButton>
+
+            <MudButton
+                Variant="Variant.Outlined"
+                FullWidth
+                Style="border-radius: 8px; text-transform: none; border-color: #e0e0e0;"
+                OnClick="@(() => HandleExternalLogin("Facebook"))">
+                <div class="d-flex align-center gap-2">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Small" Color="Color.Primary"/>
+                </div>
+            </MudButton>
+
+            <MudButton
+                Variant="Variant.Outlined"
+                FullWidth
+                Style="border-radius: 8px; text-transform: none; border-color: #e0e0e0;"
+                OnClick="@(() => HandleExternalLogin("TikTok"))">
+                <div class="d-flex align-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                    </svg>
+                </div>
+            </MudButton>
+        </div>
+
+        <!-- Divider -->
+        <div class="d-flex align-center gap-3 mb-4">
+            <MudDivider Class="flex-grow-1"/>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Style="font-size: 12px;">OR LOGIN WITH EMAIL</MudText>
+            <MudDivider Class="flex-grow-1"/>
+        </div>
+
+        <!-- Email/Username Field -->
+        <MudTextField
+            @bind-Value="_email"
+            Label="Email or Username"
+            Variant="Variant.Outlined"
+            Margin="Margin.Dense"
+            FullWidth
+            Class="mb-3"
+            Style="border-radius: 8px;"
+            Placeholder="name@example.com"
+            Adornment="Adornment.End"
+            AdornmentIcon="@Icons.Material.Filled.Email"/>
+
+        <!-- Password Field -->
+        <MudTextField
+            @bind-Value="_password"
+            Label="Password"
+            Variant="Variant.Outlined"
+            Margin="Margin.Dense"
+            FullWidth
+            InputType="@_passwordInputType"
+            Class="mb-3"
+            Style="border-radius: 8px;"
+            Placeholder="Enter your password"
+            Adornment="Adornment.End"
+            AdornmentIcon="@_passwordIcon"
+            OnAdornmentClick="TogglePasswordVisibility"/>
+
+        <!-- Forgot Password Link -->
+        <div class="text-right mb-4">
+            <MudLink Href="/forgot-password" Typo="Typo.body2" Color="Color.Primary">
+                Forgot Password?
+            </MudLink>
+        </div>
+
+        <!-- Login Button -->
+        <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            FullWidth
+            Size="Size.Large"
+            Style="border-radius: 8px; text-transform: none; font-weight: 600;"
+            OnClick="HandleLogin"
+            Disabled="@_isLoading">
+            @if (_isLoading)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true"/>
+            }
+            else
+            {
+                <text>Log In</text>
+            }
+        </MudButton>
+
+        <!-- Sign Up Link -->
+        <div class="text-center mt-4">
+            <MudText Typo="Typo.body2">
+                Don't have an account?
+                <MudLink Href="/signup" Color="Color.Primary" Class="fw-bold">Sign up</MudLink>
+            </MudText>
+        </div>
+
+    </MudPaper>
+</div>
+
+@code {
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private bool _isLoading;
+    private bool _passwordVisible;
+    private InputType _passwordInputType = InputType.Password;
+    private string _passwordIcon = Icons.Material.Filled.VisibilityOff;
+
+    private void TogglePasswordVisibility()
+    {
+        _passwordVisible = !_passwordVisible;
+        _passwordInputType = _passwordVisible ? InputType.Text : InputType.Password;
+        _passwordIcon = _passwordVisible ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+    }
+
+    private async Task HandleLogin()
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        // Simulate API call
+        await Task.Delay(1500);
+
+        // TODO: Implement actual authentication logic
+        NavigationManager.NavigateTo("/");
+
+        _isLoading = false;
+    }
+
+    private void HandleExternalLogin(string provider)
+    {
+        NavigationManager.NavigateTo(
+            $"/authentication/signin-{provider.ToLower()}",
+            forceLoad: true);
+    }
+}

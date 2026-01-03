@@ -1,0 +1,289 @@
+﻿@page "/"
+@inherits ComputedStateComponent<HomeState>
+
+@inject IFlashcardSetService FlashcardSetService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Home</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
+    @if (State.HasValue)
+    {
+        var state = State.Value;
+
+        <!-- Welcome Section -->
+        <div class="mb-6">
+            <MudText Typo="Typo.h4" Class="fw-bold mb-2">Welcome back, Alex! 👋</MudText>
+            <MudText Typo="Typo.body1" Color="Color.Secondary">You're on a 5-day streak. Keep it up!</MudText>
+
+            <div class="d-flex gap-4 mt-4">
+                <MudPaper Elevation="0" Class="pa-3 d-flex align-center gap-3"
+                          Style="background-color: #e8f5e9; border-radius: 12px;">
+                    <MudIcon Icon="@Icons.Material.Filled.LocalFireDepartment" Color="Color.Success" Size="Size.Large"/>
+                    <div>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">STREAK</MudText>
+                        <MudText Typo="Typo.h6" Class="fw-bold">5 Days</MudText>
+                    </div>
+                </MudPaper>
+
+                <MudPaper Elevation="0" Class="pa-3 d-flex align-center gap-3"
+                          Style="background-color: #e3f2fd; border-radius: 12px;">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Info" Size="Size.Large"/>
+                    <div>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">MASTERED</MudText>
+                        <MudText Typo="Typo.h6" Class="fw-bold">124 Terms</MudText>
+                    </div>
+                </MudPaper>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="mb-6">
+            <div class="d-flex justify-space-between align-center mb-4">
+                <MudText Typo="Typo.h5" Class="fw-bold">Recent Activity</MudText>
+                <MudLink Typo="Typo.body2" Color="Color.Primary">View all</MudLink>
+            </div>
+
+            @if (state.RecentSets.Any())
+            {
+                <MudGrid>
+                    @foreach (var set in state.RecentSets.Take(3))
+                    {
+                        <MudItem xs="12" md="4">
+                            <MudCard Elevation="2" Class="cursor-pointer hover-card" Style="border-radius: 12px;"
+                                     @onclick="@(() => ViewSet(set.Id))">
+                                <MudCardContent>
+                                    <div class="d-flex align-center gap-2 mb-2">
+                                        <MudIcon Icon="@GetIconForSet(set)" Color="@GetColorForSet(set)"
+                                                 Size="Size.Medium"/>
+                                    </div>
+                                    <MudText Typo="Typo.h6" Class="fw-bold mb-1">@set.Title</MudText>
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                                        @set.FlashcardCount Terms • Last studied @GetRelativeTime(set.CreatedAt)
+                                    </MudText>
+                                    <MudProgressLinear Color="@GetProgressColor(set)" Value="@GetProgress(set)"
+                                                       Size="Size.Small" Class="mb-2"/>
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary">@GetProgress(set)% mastered
+                                    </MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+            else
+            {
+                <MudPaper Class="pa-6" Elevation="1" Style="border-radius: 12px;">
+                    <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary">
+                        No recent activity yet. Create your first flashcard set to get started!
+                    </MudText>
+                </MudPaper>
+            }
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mb-6">
+            <MudText Typo="Typo.h5" Class="fw-bold mb-4">Quick Actions</MudText>
+
+            <MudGrid>
+                <MudItem xs="6" md="3">
+                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
+                             Style="border-radius: 12px;" @onclick="CreateNewSet">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Size="Size.Large"
+                                 Class="mb-2"/>
+                        <MudText Typo="Typo.body1" Class="fw-bold">Create New Set</MudText>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="6" md="3">
+                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
+                             Style="border-radius: 12px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Folder" Color="Color.Secondary" Size="Size.Large"
+                                 Class="mb-2"/>
+                        <MudText Typo="Typo.body1" Class="fw-bold">New Folder</MudText>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="6" md="3">
+                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
+                             Style="border-radius: 12px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Groups" Color="Color.Success" Size="Size.Large"
+                                 Class="mb-2"/>
+                        <MudText Typo="Typo.body1" Class="fw-bold">Join Class</MudText>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="6" md="3">
+                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
+                             Style="border-radius: 12px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Upload" Color="Color.Warning" Size="Size.Large"
+                                 Class="mb-2"/>
+                        <MudText Typo="Typo.body1" Class="fw-bold">Import Data</MudText>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </div>
+
+        <!-- Recommended for you -->
+        <div>
+            <MudText Typo="Typo.h5" Class="fw-bold mb-4">Recommended for you</MudText>
+
+            @if (state.RecommendedSets != null && state.RecommendedSets.Any())
+            {
+                <MudGrid>
+                    @foreach (var set in state.RecommendedSets)
+                    {
+                        <MudItem xs="12" md="4">
+                            <MudCard Elevation="2" Class="cursor-pointer hover-card"
+                                     Style="border-radius: 12px; overflow: hidden;" @onclick="@(() => ViewSet(set.Id))">
+                                <div Style="height: 150px; background: linear-gradient(135deg, @GetGradientColors(set)); position: relative;">
+                                    <div Style="position: absolute; bottom: 12px; left: 12px;">
+                                        <MudChip T="string" Size="Size.Small" Color="@GetChipColor(set)"
+                                                 Style="text-transform: capitalize;">@GetCategory(set)</MudChip>
+                                    </div>
+                                </div>
+                                <MudCardContent>
+                                    <MudText Typo="Typo.h6" Class="fw-bold mb-1">@set.Title</MudText>
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary"
+                                             Class="mb-3">@set.Description</MudText>
+                                    <div class="d-flex align-center gap-2">
+                                        <MudAvatar Size="Size.Small" Color="Color.Primary">A</MudAvatar>
+                                        <MudText Typo="Typo.body2" Color="Color.Secondary">By Admin</MudText>
+                                    </div>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+            else
+            {
+                <MudPaper Class="pa-6" Elevation="1" Style="border-radius: 12px;">
+                    <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary">
+                        No recommended sets available yet.
+                    </MudText>
+                </MudPaper>
+            }
+        </div>
+    }
+    else if (State.HasError)
+    {
+        <MudAlert Severity="Severity.Error">@(State.Error?.Message ?? "An error occurred")</MudAlert>
+    }
+    else
+    {
+        <MudProgressCircular Indeterminate="true"/>
+    }
+</MudContainer>
+
+<style>
+    .hover-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hover-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+
+@code {
+
+    protected override async Task<HomeState> ComputeState(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var setsResult = await FlashcardSetService.GetFlashcardSetsAsync(cancellationToken);
+            var sets = setsResult?.ToImmutableList() ?? ImmutableList<FlashcardSetDto>.Empty;
+
+            return new HomeState
+            {
+                    RecentSets = sets.Count > 0 ? sets.Take(3).ToImmutableList() : ImmutableList<FlashcardSetDto>.Empty,
+                    RecommendedSets = sets.Count > 3 ? sets.Skip(3).Take(3).ToImmutableList() : ImmutableList<FlashcardSetDto>.Empty
+            };
+        }
+        catch (Exception)
+        {
+            // Return empty state on error
+            return new HomeState
+            {
+                    RecentSets = ImmutableList<FlashcardSetDto>.Empty,
+                    RecommendedSets = ImmutableList<FlashcardSetDto>.Empty
+            };
+        }
+    }
+
+    private void CreateNewSet()
+    {
+        NavigationManager.NavigateTo("/flashcard-sets/create");
+    }
+
+    private void ViewSet(Guid setId)
+    {
+        NavigationManager.NavigateTo($"/flashcard-sets/{setId}");
+    }
+
+    private string GetIconForSet(FlashcardSetDto set)
+    {
+        var icons = new[] { Icons.Material.Filled.Science, Icons.Material.Filled.Language, Icons.Material.Filled.History };
+        return icons[Math.Abs(set.Id.GetHashCode()) % icons.Length];
+    }
+
+    private Color GetColorForSet(FlashcardSetDto set)
+    {
+        var colors = new[] { Color.Primary, Color.Warning, Color.Success };
+        return colors[Math.Abs(set.Id.GetHashCode()) % colors.Length];
+    }
+
+    private Color GetProgressColor(FlashcardSetDto set)
+    {
+        var progress = GetProgress(set);
+        if (progress >= 80) return Color.Success;
+        if (progress >= 50) return Color.Info;
+        return Color.Warning;
+    }
+
+    private int GetProgress(FlashcardSetDto set)
+    {
+        // Mock progress based on set ID
+        return (Math.Abs(set.Id.GetHashCode()) % 40) + 30;
+    }
+
+    private string GetRelativeTime(DateTime date)
+    {
+        var diff = DateTime.UtcNow - date;
+        if (diff.TotalHours < 1) return "just now";
+        if (diff.TotalHours < 24) return $"{(int)diff.TotalHours}h ago";
+        if (diff.TotalDays < 7) return $"{(int)diff.TotalDays} days ago";
+        return date.ToString("MMM dd");
+    }
+
+    private string GetGradientColors(FlashcardSetDto set)
+    {
+        var gradients = new[]
+        {
+                "#9ca3af 0%, #d1d5db 100%",
+                "#065f46 0%, #047857 100%",
+                "#bfdbfe 0%, #dbeafe 100%"
+        };
+        return gradients[Math.Abs(set.Id.GetHashCode()) % gradients.Length];
+    }
+
+    private Color GetChipColor(FlashcardSetDto set)
+    {
+        var colors = new[] { Color.Default, Color.Success, Color.Info };
+        return colors[Math.Abs(set.Id.GetHashCode()) % colors.Length];
+    }
+
+    private string GetCategory(FlashcardSetDto set)
+    {
+        var categories = new[] { "Trending", "Science", "Geography" };
+        return categories[Math.Abs(set.Id.GetHashCode()) % categories.Length];
+    }
+
+}
+

@@ -1,0 +1,56 @@
+@page "/login-dialog-example"
+
+@inject IDialogService DialogService
+
+<PageTitle>Login Dialog Example</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-6">
+    <MudText Typo="Typo.h4" Class="mb-4">Login Dialog Example</MudText>
+
+    <MudText Typo="Typo.body1" Class="mb-4">
+        Click the button below to open the login dialog:
+    </MudText>
+
+    <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            OnClick="OpenLoginDialog"
+            StartIcon="@Icons.Material.Filled.Login">
+        Open Login Dialog
+    </MudButton>
+
+    @if (_loginResult != null)
+    {
+        <MudAlert Severity="Severity.Success" Class="mt-4">
+            Login dialog was @(_loginResult.Value ? "confirmed" : "cancelled")
+        </MudAlert>
+    }
+</MudContainer>
+
+@code {
+    private bool? _loginResult;
+
+    private async Task OpenLoginDialog()
+    {
+        var options = new DialogOptions
+        {
+                CloseOnEscapeKey = true,
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
+        };
+
+        var dialog = await DialogService.ShowAsync<LoginDialog>("", options);
+        var result = await dialog.Result;
+
+        if (result != null && !result.Canceled)
+        {
+            _loginResult = true;
+        }
+        else
+        {
+            _loginResult = false;
+        }
+    }
+
+}
+

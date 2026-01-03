@@ -1,0 +1,60 @@
+﻿@using ActualLab.Fusion.Server.Authentication
+<!DOCTYPE html>
+<html lang="en" bit-theme-system>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="/"/>
+
+    <title>SmartQuiz</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="@Assets["app.css"]"/>
+    <link rel="stylesheet" href="@Assets["SmartQuiz.styles.css"]"/>
+    <ImportMap/>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <HeadOutlet @rendermode="InteractiveWebAssembly"/>
+    <link href="@Assets["tailwind.output.css"]" rel="stylesheet"/>
+
+
+    <script src="@Assets["_content/ActualLab.Fusion.Blazor.Authentication/scripts/fusionAuth.js"]"></script>
+    <script>
+        window.FusionAuth.schemas = "@_authSchemas";
+    </script>
+</head>
+
+<body>
+<Routes @rendermode="InteractiveWebAssembly" SessionId="@_sessionId"/>
+<script src="@Assets["_framework/blazor.web.js"]"></script>
+<script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]"></script>
+</body>
+
+</html>
+
+
+@code {
+    private bool _isInitialized;
+    private string _authSchemas = string.Empty;
+    private string _sessionId = string.Empty;
+
+    [Inject] private ServerAuthHelper ServerAuthHelper { get; init; } = null!;
+
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = null!;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        if (!_isInitialized)
+        {
+            _isInitialized = true;
+            parameters.SetParameterProperties(this); // This call must be executed ASAP
+            await ServerAuthHelper.UpdateAuthState(HttpContext);
+            _authSchemas = await ServerAuthHelper.GetSchemas(HttpContext);
+            _sessionId = ServerAuthHelper.Session.Id;
+        }
+
+        await base.SetParametersAsync(parameters);
+    }
+
+}

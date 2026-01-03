@@ -1,0 +1,294 @@
+@page "/profile"
+@inherits ComputedStateComponent<UserProfileState>
+
+@inject IFlashcardSetService FlashcardSetService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Alex Student - Profile</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6" Style="background-color: #f5f5f5;">
+    @if (State.HasValue)
+    {
+        var state = State.Value;
+
+        <MudGrid>
+            <!-- Left Sidebar - Profile Card -->
+            <MudItem xs="12" md="3">
+                <MudPaper Elevation="2" Class="pa-4" Style="border-radius: 16px;">
+                    <!-- Profile Avatar -->
+                    <div class="d-flex flex-column align-center mb-4">
+                        <MudAvatar Size="Size.Large"
+                                   Style="width: 140px; height: 140px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
+                            <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large" Style="font-size: 80px;"/>
+                        </MudAvatar>
+                    </div>
+
+                    <!-- Profile Info -->
+                    <div class="text-center mb-4">
+                        <MudText Typo="Typo.h5" Class="fw-bold">Alex Student</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">@("@")alex_quizzer</MudText>
+                    </div>
+
+                    <!-- Bio -->
+                    <MudText Typo="Typo.body2" Align="Align.Center" Class="mb-4">
+                        Pre-med student loving biology and chemistry. Exploring the world of molecular science one quiz
+                        at a time. 🧬🧪
+                    </MudText>
+
+                    <!-- Meta Info -->
+                    <MudDivider Class="my-4"/>
+
+                    <div class="d-flex align-center gap-2 mb-3">
+                        <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Size="Size.Small" Color="Color.Secondary"/>
+                        <MudText Typo="Typo.body2">Joined March 2023</MudText>
+                    </div>
+
+                    <div class="d-flex align-center gap-2 mb-3">
+                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Color="Color.Secondary"/>
+                        <MudText Typo="Typo.body2">San Francisco, CA</MudText>
+                    </div>
+
+                    <div class="d-flex align-center gap-2 mb-4">
+                        <MudIcon Icon="@Icons.Material.Filled.School" Size="Size.Small" Color="Color.Secondary"/>
+                        <MudText Typo="Typo.body2">University of Science</MudText>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                                   StartIcon="@Icons.Material.Filled.Edit">
+                            Edit Profile
+                        </MudButton>
+                        <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default"
+                                       Variant="Variant.Outlined"/>
+                    </div>
+                </MudPaper>
+            </MudItem>
+
+            <!-- Right Content Area -->
+            <MudItem xs="12" md="9">
+                <!-- Stats Cards -->
+                <MudGrid Class="mb-4">
+                    <!-- Study Streak -->
+                    <MudItem xs="12" sm="4">
+                        <MudPaper Elevation="2" Class="pa-4" Style="border-radius: 16px;">
+                            <div class="d-flex justify-space-between align-center mb-2">
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">Study Streak</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.LocalFireDepartment" Color="Color.Warning"/>
+                            </div>
+                            <MudText Typo="Typo.h4" Class="fw-bold mb-1">12 Days</MudText>
+                            <div class="d-flex align-center gap-1">
+                                <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Small"
+                                         Color="Color.Success"/>
+                                <MudText Typo="Typo.body2" Color="Color.Success">Top 10%</MudText>
+                            </div>
+                        </MudPaper>
+                    </MudItem>
+
+                    <!-- Sets Created -->
+                    <MudItem xs="12" sm="4">
+                        <MudPaper Elevation="2" Class="pa-4" Style="border-radius: 16px;">
+                            <div class="d-flex justify-space-between align-center mb-2">
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">Sets Created</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.CollectionsBookmark" Color="Color.Info"/>
+                            </div>
+                            <MudText Typo="Typo.h4" Class="fw-bold mb-1">15</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">+2 this week</MudText>
+                        </MudPaper>
+                    </MudItem>
+
+                    <!-- Total XP -->
+                    <MudItem xs="12" sm="4">
+                        <MudPaper Elevation="2" Class="pa-4" Style="border-radius: 16px;">
+                            <div class="d-flex justify-space-between align-center mb-2">
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">Total XP</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.EmojiEvents" Color="Color.Warning"/>
+                            </div>
+                            <MudText Typo="Typo.h4" Class="fw-bold mb-1">8,500</MudText>
+                            <MudProgressLinear Color="Color.Primary" Value="85" Size="Size.Small" Class="mt-2"/>
+                        </MudPaper>
+                    </MudItem>
+                </MudGrid>
+
+                <!-- Tabs Section -->
+                <MudPaper Elevation="2" Style="border-radius: 16px;">
+                    <MudTabs Elevation="0" Rounded="true" Color="Color.Primary" Class="pa-2">
+                        <MudTabPanel Text="Created Sets" Icon="@Icons.Material.Filled.Add">
+                            <div class="pa-4">
+                                <div class="d-flex justify-space-between align-center mb-4">
+                                    <MudText Typo="Typo.h6" Class="fw-bold">Recent Sets</MudText>
+                                    <div class="d-flex gap-2 align-center">
+                                        <MudSelect T="string" Value="@_sortOrder" ValueChanged="OnSortChanged"
+                                                   Variant="Variant.Outlined" Margin="Margin.Dense"
+                                                   Style="width: 180px;">
+                                            <MudSelectItem Value="@("recent")">Most Recent</MudSelectItem>
+                                            <MudSelectItem Value="@("alphabetical")">Alphabetical</MudSelectItem>
+                                        </MudSelect>
+                                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                                   StartIcon="@Icons.Material.Filled.Add">
+                                            Create Set
+                                        </MudButton>
+                                    </div>
+                                </div>
+
+                                <!-- Sets Grid -->
+                                <MudGrid>
+                                    @foreach (var set in GetSortedSets(state.UserSets))
+                                    {
+                                        <MudItem xs="12" sm="6" md="4">
+                                            <MudCard Elevation="2" Class="cursor-pointer hover-card"
+                                                     Style="border-radius: 12px;" @onclick="@(() => ViewSet(set.Id))">
+                                                <!-- Set Image -->
+                                                <div
+                                                    Style="height: 140px; background: @GetSetBackground(set); position: relative; display: flex; align-items: flex-end; padding: 12px;">
+                                                    <MudChip T="string" Size="Size.Small" Color="Color.Surface"
+                                                             Style="font-weight: 600;">
+                                                        @set.FlashcardCount Terms
+                                                    </MudChip>
+                                                </div>
+
+                                                <MudCardContent>
+                                                    <div class="d-flex justify-space-between align-center mb-2">
+                                                        <MudText Typo="Typo.h6" Class="fw-bold"
+                                                                 Style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                            @set.Title
+                                                        </MudText>
+                                                        <MudIconButton Icon="@Icons.Material.Filled.Star"
+                                                                       Color="Color.Default" Size="Size.Small"/>
+                                                    </div>
+
+                                                    <div class="d-flex align-center gap-2">
+                                                        <MudAvatar Size="Size.Small" Style="width: 24px; height: 24px;">
+                                                            <MudIcon Icon="@Icons.Material.Filled.Person"
+                                                                     Size="Size.Small"/>
+                                                        </MudAvatar>
+                                                        <MudText Typo="Typo.body2" Color="Color.Secondary">Created by
+                                                            You
+                                                        </MudText>
+                                                    </div>
+                                                </MudCardContent>
+                                            </MudCard>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+
+                                <!-- View All Link -->
+                                <div class="text-center mt-4">
+                                    <MudLink Typo="Typo.body1" Color="Color.Primary" Class="fw-bold">
+                                        View all sets →
+                                    </MudLink>
+                                </div>
+                            </div>
+                        </MudTabPanel>
+
+                        <MudTabPanel Text="Favorites" Icon="@Icons.Material.Filled.Star">
+                            <div class="pa-4">
+                                <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary" Class="py-8">
+                                    No favorite sets yet. Start adding your favorite study sets!
+                                </MudText>
+                            </div>
+                        </MudTabPanel>
+
+                        <MudTabPanel Text="Activity & Progress" Icon="@Icons.Material.Filled.Timeline">
+                            <div class="pa-4">
+                                <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary" Class="py-8">
+                                    Your activity and progress will be displayed here.
+                                </MudText>
+                            </div>
+                        </MudTabPanel>
+                    </MudTabs>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
+    else if (State.HasError)
+    {
+        <MudAlert Severity="Severity.Error">@(State.Error?.Message ?? "An error occurred")</MudAlert>
+    }
+    else
+    {
+        <div class="d-flex justify-center align-center" style="min-height: 400px;">
+            <MudProgressCircular Indeterminate="true" Size="Size.Large"/>
+        </div>
+    }
+</MudContainer>
+
+<style>
+    .hover-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .hover-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+
+@code {
+    private string _sortOrder = "recent";
+
+    protected override async Task<UserProfileState> ComputeState(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var setsResult = await FlashcardSetService.GetFlashcardSetsAsync(cancellationToken);
+            var sets = setsResult?.ToImmutableList() ?? ImmutableList<FlashcardSetDto>.Empty;
+
+            return new UserProfileState
+            {
+                UserSets = sets
+            };
+        }
+        catch (Exception)
+        {
+            return new UserProfileState
+            {
+                UserSets = ImmutableList<FlashcardSetDto>.Empty
+            };
+        }
+    }
+
+    private void OnSortChanged(string newSort)
+    {
+        _sortOrder = newSort;
+        StateHasChanged();
+    }
+
+    private IEnumerable<FlashcardSetDto> GetSortedSets(ImmutableList<FlashcardSetDto> sets)
+    {
+        if (sets == null || !sets.Any())
+            return Enumerable.Empty<FlashcardSetDto>();
+
+        var sorted = _sortOrder == "alphabetical"
+            ? sets.OrderBy(s => s.Title)
+            : sets.OrderByDescending(s => s.CreatedAt);
+
+        return sorted.Take(6);
+    }
+
+    private string GetSetBackground(FlashcardSetDto set)
+    {
+        var backgrounds = new[]
+        {
+            "linear-gradient(135deg, #134e5e 0%, #71b280 100%)",
+            "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+            "linear-gradient(135deg, #f2994a 0%, #f2c94c 100%)",
+            "linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%)",
+            "linear-gradient(135deg, #2c3e50 0%, #3498db 100%)",
+            "linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%)"
+        };
+
+        return backgrounds[Math.Abs(set.Id.GetHashCode()) % backgrounds.Length];
+    }
+
+    private void ViewSet(Guid setId)
+    {
+        NavigationManager.NavigateTo($"/flashcard-sets/{setId}");
+    }
+
+}
+

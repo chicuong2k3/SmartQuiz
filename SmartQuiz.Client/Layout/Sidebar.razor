@@ -1,0 +1,86 @@
+<MudDrawer Open="true"
+           Variant="DrawerVariant.Persistent"
+           Elevation="1"
+           ClipMode="DrawerClipMode.Never"
+           Width="260px">
+
+    <div class="d-flex flex-column" style="height: 100vh;">
+
+        <!-- Top Section -->
+        <MudStack Spacing="2" Class="pa-4 grow-0">
+
+            <!-- Logo -->
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mb-2">
+                <MudAvatar Color="Color.Primary" Variant="Variant.Filled" Square="true" Size="Size.Medium">
+                    <MudIcon Icon="@Icons.Material.Filled.Quiz" Size="Size.Medium"/>
+                </MudAvatar>
+                <MudText Typo="Typo.h6" Class="fw-bold">
+                    QuizMaster
+                </MudText>
+            </MudStack>
+
+            <!-- Create Quiz Button -->
+            <MudButton Color="Color.Primary"
+                       Variant="Variant.Filled"
+                       StartIcon="@Icons.Material.Filled.Add"
+                       FullWidth
+                       Class="mb-2">
+                Create Quiz
+            </MudButton>
+
+            <!-- Main Menu -->
+            <MudNavMenu Dense="true">
+
+                <MudNavLink Href="/" Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All">
+                    Home
+                </MudNavLink>
+
+                <MudNavLink Href="/library" Icon="@Icons.Material.Filled.LibraryBooks">
+                    My Library
+                </MudNavLink>
+
+                <MudNavLink Href="/browse" Icon="@Icons.Material.Filled.Search">
+                    Browse
+                </MudNavLink>
+
+                <MudNavLink Href="/favorites" Icon="@Icons.Material.Filled.Favorite">
+                    Favorites
+                </MudNavLink>
+
+            </MudNavMenu>
+
+            <!-- Classes -->
+            <MudText Typo="Typo.caption"
+                     Color="Color.Secondary"
+                     Class="mt-4 mb-1 px-3">
+                CLASSES
+            </MudText>
+
+            <MudNavMenu Dense="true">
+
+                <MudNavLink Href="/class/biology-101" Icon="@Icons.Material.Filled.Group">
+                    Biology 101
+                </MudNavLink>
+
+                <MudNavLink Href="/class/ap-history" Icon="@Icons.Material.Filled.Group">
+                    AP History
+                </MudNavLink>
+
+            </MudNavMenu>
+
+        </MudStack>
+
+        <!-- Spacer to push settings to bottom -->
+        <div class="grow"></div>
+
+        <!-- Bottom Settings -->
+        <MudStack Class="pa-4 grow-0">
+            <MudDivider/>
+            <MudNavLink Href="/settings" Icon="@Icons.Material.Filled.Settings">
+                Settings
+            </MudNavLink>
+        </MudStack>
+
+    </div>
+
+</MudDrawer>

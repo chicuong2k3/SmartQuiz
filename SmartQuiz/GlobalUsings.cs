@@ -1,0 +1,10 @@
+global using SmartQuiz.Data.Models;
+global using ActualLab.Fusion;
+global using ActualLab.CommandR;
+global using ActualLab.CommandR.Configuration;
+global using ActualLab.Fusion.EntityFramework;
+global using ActualLab.Fusion.EntityFramework.Npgsql;
+global using Microsoft.EntityFrameworkCore;
+global using SmartQuiz.Data;
+global using Mapster;
+global using SmartQuiz.Client.Data.Dtos;

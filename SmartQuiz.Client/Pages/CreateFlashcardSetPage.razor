@@ -1,0 +1,116 @@
+@page "/flashcard-sets/create"
+
+@inject ICommander Commander
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8">
+    <MudPaper Elevation="0" Class="pa-6">
+        <MudText Typo="Typo.h4" Class="mb-4">Create New Flashcard Set</MudText>
+        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-6">
+            Create a new flashcard set to organize your study materials
+        </MudText>
+
+        <MudForm @ref="_form" ValidationDelay="0">
+            <MudTextField
+                    @bind-Value="_command.Title"
+                    Label="Title"
+                    Variant="Variant.Outlined"
+                    Margin="Margin.Dense"
+                    ShrinkLabel
+                    Required="true"
+                    RequiredError="Title is required"
+                    MaxLength="200"
+                    Immediate="true"
+                    Validation="@((string value) => ValidateTitle(value))"
+                    Class="mb-4"/>
+
+            <MudTextField
+                    @bind-Value="_command.Description"
+                    Label="Description"
+                    Variant="Variant.Outlined"
+                    Margin="Margin.Dense"
+                    ShrinkLabel
+                    Lines="4"
+                    MaxLength="1000"
+                    Immediate="true"
+                    Class="mb-6"/>
+
+            <MudStack Row="true" Spacing="3" Class="mt-4">
+                <MudButton
+                        OnClick="@HandleSubmit"
+                        Variant="Variant.Filled"
+                        DropShadow="false"
+                        Color="Color.Primary"
+                        Disabled="@(_isSubmitting || !(_form?.IsValid ?? false))"
+                        StartIcon="@(_isSubmitting ? null : Icons.Material.Filled.Add)">
+                    @(_isSubmitting ? "Creating..." : "Create Flashcard Set")
+                </MudButton>
+
+                <MudButton
+                        Variant="Variant.Outlined"
+                        Color="Color.Secondary"
+                        OnClick="@(() => Navigation.NavigateTo("/flashcard-sets"))"
+                        Disabled="@_isSubmitting">
+                    Cancel
+                </MudButton>
+            </MudStack>
+        </MudForm>
+
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private bool _isSubmitting;
+    private MudForm? _form;
+    private readonly CreateFlashcardSetCommand _command = new();
+
+    private string? ValidateTitle(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "Title is required";
+
+        if (value.Length < 3)
+            return "Title must be at least 3 characters long";
+
+        if (value.Length > 200)
+            return "Title cannot exceed 200 characters";
+
+        return null;
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (_form == null)
+            return;
+
+        await _form.Validate();
+
+        if (!_form.IsValid)
+        {
+            Snackbar.Add("Please fix validation errors", Severity.Warning);
+            return;
+        }
+
+        try
+        {
+            _isSubmitting = true;
+
+            var result = await Commander.Call(_command);
+
+            Snackbar.Add($"Flashcard set '{result.Title}' created successfully!", Severity.Success);
+            Navigation.NavigateTo($"/flashcard-sets/{result.Id}");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error creating flashcard set: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+
+}
