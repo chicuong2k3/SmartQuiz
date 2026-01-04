@@ -1,6 +1,7 @@
 using ActualLab.Fusion.Authentication;
 using ActualLab.Fusion.Blazor;
 using ActualLab.Fusion.Blazor.Authentication;
+using ActualLab.Fusion.Client.Caching;
 using ActualLab.Fusion.Extensions;
 using ActualLab.Rpc;
 using Blazored.LocalStorage;
@@ -35,10 +36,11 @@ builder.Services.AddFusion(fusion =>
 // });
 
 builder.Services.AddBlazoredLocalStorageAsSingleton();
-// builder.Services.AddSingleton(_ => LocalStorageRemoteComputedCache.Options.Default);
-// builder.Services.AddSingleton<IRemoteComputedCache>(c => {
-//     var options = c.GetRequiredService<LocalStorageRemoteComputedCache.Options>();
-//     return new LocalStorageRemoteComputedCache(options, c);
-// });
+builder.Services.AddSingleton(_ => LocalStorageRemoteComputedCache.Options.Default);
+builder.Services.AddSingleton<IRemoteComputedCache>(c =>
+{
+    var options = c.GetRequiredService<LocalStorageRemoteComputedCache.Options>();
+    return new LocalStorageRemoteComputedCache(options, c);
+});
 
 await builder.Build().RunAsync();

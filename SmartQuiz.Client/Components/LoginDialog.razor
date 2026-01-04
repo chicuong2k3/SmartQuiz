@@ -1,123 +1,119 @@
 @inject NavigationManager NavigationManager
 
-<MudDialog Style="border-radius: 16px;">
+<MudDialog Style="border-radius: 16px; max-width: 480px;">
     <DialogContent>
-        <div class="pa-4" Style="min-width: 400px;">
+        <div class="pa-6" style="min-width: 400px;">
 
             <!-- Logo and Title -->
             <div class="text-center mb-6">
-                <MudIcon Icon="@Icons.Material.Filled.Quiz" Color="Color.Primary" Size="Size.Large" Class="mb-3"/>
+                <div class="d-flex justify-center mb-3">
+                    <MudAvatar Size="Size.Large" Style="background-color: #2196F3; width: 56px; height: 56px;">
+                        <MudIcon Icon="@Icons.Material.Filled.School" Color="Color.Surface" Size="Size.Large"/>
+                    </MudAvatar>
+                </div>
                 <MudText Typo="Typo.h5" Class="fw-bold mb-1">Welcome back to QuizMaster</MudText>
                 <MudText Typo="Typo.body2" Color="Color.Secondary">Log in to continue your streak</MudText>
             </div>
 
             <!-- Social Login Buttons -->
-            <div class="d-flex gap-2 mb-4">
+            <div class="d-flex gap-2 mb-5">
                 <MudButton
-                        Variant="Variant.Outlined"
-                        FullWidth
-                        Style="border-radius: 8px; text-transform: none; border-color: #e0e0e0;"
-                        OnClick="@(() => HandleExternalLogin("Google"))">
-                    <div class="d-flex align-center gap-2">
-                        <MudIcon Icon="@Icons.Custom.Brands.Google" Size="Size.Small"/>
-                    </div>
+                    Variant="Variant.Outlined"
+                    FullWidth
+                    Style="border-radius: 8px; text-transform: none; height: 48px;"
+                    OnClick="@(() => HandleExternalLogin("Google"))">
+                    <MudIcon Icon="@Icons.Custom.Brands.Google" Size="Size.Medium"/>
                 </MudButton>
 
                 <MudButton
-                        Variant="Variant.Outlined"
-                        FullWidth
-                        Style="border-radius: 8px; text-transform: none; border-color: #e0e0e0;"
-                        OnClick="@(() => HandleExternalLogin("Facebook"))">
-                    <div class="d-flex align-center gap-2">
-                        <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Small" Color="Color.Primary"/>
-                    </div>
+                    Variant="Variant.Outlined"
+                    FullWidth
+                    Style="border-radius: 8px; text-transform: none; height: 48px;"
+                    OnClick="@(() => HandleExternalLogin("Facebook"))">
+                    <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Medium" Style="color: #1877F2;"/>
                 </MudButton>
 
                 <MudButton
-                        Variant="Variant.Outlined"
-                        FullWidth
-                        Style="border-radius: 8px; text-transform: none; border-color: #e0e0e0;"
-                        OnClick="@(() => HandleExternalLogin("TikTok"))">
-                    <div class="d-flex align-center gap-2">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
-                        </svg>
-                    </div>
+                    Variant="Variant.Outlined"
+                    FullWidth
+                    Style="border-radius: 8px; text-transform: none; height: 48px;"
+                    OnClick="@(() => HandleExternalLogin("TikTok"))">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                    </svg>
                 </MudButton>
             </div>
 
             <!-- Divider -->
-            <div class="d-flex align-center gap-3 mb-4">
-                <MudDivider Class="grow"/>
-                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="font-size: 12px;">OR LOGIN WITH EMAIL
+            <div class="d-flex align-center gap-3 mb-5">
+                <MudDivider/>
+                <MudText Typo="Typo.body2" Color="Color.Secondary"
+                         Style="white-space: nowrap; font-size: 12px; font-weight: 600;">
+                    OR LOGIN WITH EMAIL
                 </MudText>
-                <MudDivider Class="grow"/>
+                <MudDivider/>
             </div>
 
             <!-- Email/Username Field -->
+            <MudText Typo="Typo.body2" Class="fw-semibold mb-2">Email or Username</MudText>
             <MudTextField
-                    @bind-Value="_email"
-                    Label="Email or Username"
-                    Variant="Variant.Outlined"
-                    Margin="Margin.Dense"
-                    FullWidth
-                    Class="mb-3"
-                    Style="border-radius: 8px;"
-                    Placeholder="name@example.com"
-                    Adornment="Adornment.End"
-                    AdornmentIcon="@Icons.Material.Filled.Email"/>
+                @bind-Value="_email"
+                Variant="Variant.Outlined"
+                FullWidth
+                Placeholder="name@example.com"
+                Adornment="Adornment.End"
+                AdornmentIcon="@Icons.Material.Filled.Email"
+                Style="margin-bottom: 16px;"
+                InputStyle="border-radius: 8px;"/>
 
             <!-- Password Field -->
+            <MudText Typo="Typo.body2" Class="fw-semibold mb-2">Password</MudText>
             <MudTextField
-                    @bind-Value="_password"
-                    Label="Password"
-                    Variant="Variant.Outlined"
-                    Margin="Margin.Dense"
-                    FullWidth
-                    InputType="@_passwordInputType"
-                    Class="mb-3"
-                    Style="border-radius: 8px;"
-                    Placeholder="Enter your password"
-                    Adornment="Adornment.End"
-                    AdornmentIcon="@_passwordIcon"
-                    OnAdornmentClick="TogglePasswordVisibility"/>
+                @bind-Value="_password"
+                Variant="Variant.Outlined"
+                FullWidth
+                InputType="@_passwordInputType"
+                Placeholder="Enter your password"
+                Adornment="Adornment.End"
+                AdornmentIcon="@_passwordIcon"
+                OnAdornmentClick="TogglePasswordVisibility"
+                Style="margin-bottom: 8px;"
+                InputStyle="border-radius: 8px;"/>
 
             <!-- Forgot Password Link -->
-            <div class="text-right mb-4">
-                <MudLink Href="/forgot-password" Typo="Typo.body2" Color="Color.Primary">
+            <div class="text-right mb-5">
+                <MudLink Href="/forgot-password" Typo="Typo.body2" Style="color: #FF9800; font-weight: 600;">
                     Forgot Password?
                 </MudLink>
             </div>
 
             <!-- Login Button -->
             <MudButton
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    FullWidth
-                    Size="Size.Large"
-                    Style="border-radius: 8px; text-transform: none; font-weight: 600;"
-                    OnClick="@HandleLogin"
-                    Disabled="@_isLoading">
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                FullWidth
+                Size="Size.Large"
+                Style="text-transform: none; font-weight: 600; height: 48px; border-radius: 8px;"
+                OnClick="@HandleLogin"
+                Disabled="@_isLoading">
                 @if (_isLoading)
                 {
-                    <MudProgressCircular Size="Size.Small" Indeterminate="true"/>
+                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Surface"/>
                 }
                 else
                 {
-                    <text>Log In</text>
+                    <span>Log In</span>
                 }
             </MudButton>
 
             <!-- Sign Up Link -->
             <div class="text-center mt-4">
-                <MudText Typo="Typo.body2">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
                     Don't have an account?
-                    <MudLink Href="/signup" Color="Color.Primary" Class="fw-bold" OnClick="@CloseAndNavigateToSignup">
-                        Sign up
-                    </MudLink>
+                    <MudLink Href="/register" Style="color: #FF9800; font-weight: 600;">Sign up</MudLink>
                 </MudText>
             </div>
-
         </div>
     </DialogContent>
 </MudDialog>

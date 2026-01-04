@@ -8,7 +8,7 @@
 <PageTitle>@(_setTitle ?? "Flashcard Set")</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
-    @if (State.HasValue)
+    @if (State.HasValue && State.Value != null)
     {
         var state = State.Value;
 
@@ -17,150 +17,169 @@
             <!-- Breadcrumb Navigation -->
             <MudBreadcrumbs Items="_breadcrumbs" Class="px-0 mb-4"></MudBreadcrumbs>
 
-            <!-- Header Section -->
+            <!-- Header Section with Title and Metadata -->
             <div class="mb-6">
-                <div class="d-flex justify-space-between align-center mb-3">
-                    <div>
-                        <MudText Typo="Typo.h4" Class="fw-bold mb-2">@state.FlashcardSet.Title</MudText>
-                        <div class="d-flex align-center gap-3">
-                            <MudAvatar Color="Color.Primary" Size="Size.Small">A</MudAvatar>
-                            <MudText Typo="Typo.body1">AstroFan</MudText>
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">
-                                • @state.FlashcardSet.FlashcardCount Terms
-                            </MudText>
-                            <MudRating ReadOnly="true" SelectedValue="4" Size="Size.Small"/>
-                        </div>
-                    </div>
+                <MudText Typo="Typo.h4" Class="fw-bold mb-2">@state.FlashcardSet.Title</MudText>
+                <div class="d-flex align-center gap-3 mb-4">
+                    <MudAvatar Color="Color.Dark" Size="Size.Small">
+                        <MudText Typo="Typo.body2" Class="text-white fw-bold">AF</MudText>
+                    </MudAvatar>
+                    <MudText Typo="Typo.body1">AstroFan</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">• @state.FlashcardSet.FlashcardCount Terms
+                    </MudText>
+                    <MudRating ReadOnly="true" SelectedValue="4" Size="Size.Small" Color="Color.Warning"/>
+                </div>
 
-                    <div class="d-flex gap-2">
-                        <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Share">
-                            Share
-                        </MudButton>
-                        <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Edit"
-                                   OnClick="@EditSet">
-                            Edit
-                        </MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.PlayArrow" Size="Size.Large">
-                            Study Mode
-                        </MudButton>
-                    </div>
+                <div class="d-flex gap-2">
+                    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Share" Size="Size.Small">
+                        Share
+                    </MudButton>
+                    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small"
+                               OnClick="@EditSet">
+                        Edit
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary"
+                               StartIcon="@Icons.Material.Filled.PlayArrow">
+                        Study Mode
+                    </MudButton>
                 </div>
             </div>
 
-            <!-- Study Options Tabs -->
-            <MudPaper Elevation="1" Class="mb-6" Style="border-radius: 12px; overflow: hidden;">
-                <MudTabs Elevation="0" Rounded="true" Color="Color.Primary" Class="pa-2">
-                    <MudTabPanel Text="TERM" Icon="@Icons.Material.Filled.ViewList">
-                        <div class="pa-4">
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">View and study all terms in this set
-                            </MudText>
+            <!-- Study Mode Tabs -->
+            <MudPaper Elevation="1" Class="mb-6" Style="border-radius: 12px;">
+                <MudTabs Elevation="0" Color="Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
+                    <MudTabPanel Text="TERM">
+                        <!-- Large Flashcard Display -->
+                        <div class="d-flex justify-center align-center" Style="min-height: 400px;">
+                            @if (_currentFlashcard != null)
+                            {
+                                <MudPaper Elevation="2" Class="pa-8 text-center cursor-pointer"
+                                          Style="width: 600px; min-height: 350px; border-radius: 16px; display: flex; align-items: center; justify-content: center;"
+                                          @onclick="FlipCard">
+                                    <div>
+                                        <MudText Typo="Typo.h3" Class="fw-bold mb-4">
+                                            @(_isFlipped ? _currentFlashcard.BackText : _currentFlashcard.FrontText)
+                                        </MudText>
+                                        <MudText Typo="Typo.body1" Color="Color.Secondary">
+                                            Click to flip
+                                        </MudText>
+                                    </div>
+                                </MudPaper>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.h6" Color="Color.Secondary">
+                                    No flashcards in this set yet
+                                </MudText>
+                            }
                         </div>
+
+                        <!-- Navigation Controls -->
+                        @if (_currentFlashcard != null)
+                        {
+                            <div class="d-flex justify-center align-center gap-4 mt-6">
+                                <MudIconButton Icon="@Icons.Material.Filled.ArrowBack"
+                                               Color="Color.Primary"
+                                               Size="Size.Large"
+                                               Disabled="@(_currentCardIndex == 0)"
+                                               OnClick="PreviousCard"/>
+
+                                <MudText Typo="Typo.body1" Class="fw-semibold">
+                                    @(_currentCardIndex + 1) / @state.Flashcards.Count
+                                </MudText>
+
+                                <MudIconButton Icon="@Icons.Material.Filled.ArrowForward"
+                                               Color="Color.Primary"
+                                               Size="Size.Large"
+                                               Disabled="@(_currentCardIndex >= state.Flashcards.Count - 1)"
+                                               OnClick="NextCard"/>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    <MudIcon Icon="@Icons.Material.Filled.FlipToFront" Size="Size.Small"/>
+                                    Don't Recognize
+                                </MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="mx-8">|</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small"/>
+                                    Recognize
+                                </MudText>
+                            </div>
+                        }
                     </MudTabPanel>
+
                     <MudTabPanel Text="Flip" Icon="@Icons.Material.Filled.Flip">
-                        <div class="pa-4">
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">Flip through flashcards</MudText>
-                        </div>
+                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
+                            Flip mode content
+                        </MudText>
                     </MudTabPanel>
-                    <MudTabPanel Text="Hangouts" Icon="@Icons.Material.Filled.Groups">
-                        <div class="pa-4">
-                            <MudText Typo="Typo.body2" Color="Color.Secondary">Study with friends</MudText>
-                        </div>
+
+                    <MudTabPanel Text="Learn" Icon="@Icons.Material.Filled.Psychology">
+                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
+                            Learn mode content
+                        </MudText>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Test" Icon="@Icons.Material.Filled.Quiz">
+                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
+                            Test mode content
+                        </MudText>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Match" Icon="@Icons.Material.Filled.Extension">
+                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
+                            Match mode content
+                        </MudText>
                     </MudTabPanel>
                 </MudTabs>
-
-                <!-- Flashcard Display Area -->
-                <div class="d-flex justify-center align-center pa-8"
-                     Style="min-height: 300px; background-color: #f5f5f5;">
-                    @if (_currentFlashcard != null)
-                    {
-                        <MudCard Style="width: 500px; height: 300px; cursor: pointer; border-radius: 16px;"
-                                 Elevation="3" @onclick="FlipCard">
-                            <MudCardContent Class="d-flex flex-column justify-center align-center"
-                                            Style="height: 100%;">
-                                <MudText Typo="Typo.h4" Align="Align.Center">
-                                    @(_isFlipped ? _currentFlashcard.BackText : _currentFlashcard.FrontText)
-                                </MudText>
-                                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-4">
-                                    Click to flip
-                                </MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    }
-                    else if (state.Flashcards.Count == 0)
-                    {
-                        <MudText Typo="Typo.h6" Color="Color.Secondary">
-                            No flashcards in this set yet
-                        </MudText>
-                    }
-                </div>
-
-                <!-- Navigation Controls -->
-                @if (state.Flashcards.Count > 0)
-                {
-                    <div class="d-flex justify-center align-center gap-4 pa-4">
-                        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" OnClick="@PreviousCard"
-                                       Disabled="@(_currentCardIndex == 0)"/>
-                        <MudText Typo="Typo.body1">@(_currentCardIndex + 1) / @state.Flashcards.Count</MudText>
-                        <MudIconButton Icon="@Icons.Material.Filled.ArrowForward" OnClick="@NextCard"
-                                       Disabled="@(_currentCardIndex >= state.Flashcards.Count - 1)"/>
-                    </div>
-                }
             </MudPaper>
 
             <!-- Terms List Section -->
-            <div class="mb-4">
+            <div class="mb-6">
                 <div class="d-flex justify-space-between align-center mb-3">
                     <MudText Typo="Typo.h6" Class="fw-bold">Terms in this set (@state.Flashcards.Count)</MudText>
-                    <MudSelect T="string" Value="@_sortOrder" ValueChanged="OnSortOrderChanged"
-                               Variant="Variant.Outlined" Margin="Margin.Dense" Style="width: 200px;">
+                    <MudSelect T="string" Value="@("original")" Variant="Variant.Outlined" Dense="true"
+                               Style="min-width: 150px;">
                         <MudSelectItem Value="@("original")">Original Order</MudSelectItem>
                         <MudSelectItem Value="@("alphabetical")">Alphabetical</MudSelectItem>
                     </MudSelect>
                 </div>
 
-                <MudPaper Elevation="1" Class="pa-4" Style="border-radius: 12px;">
-                    @if (state.Flashcards.Any())
+                @if (state?.Flashcards?.Any() == true)
+                {
+                    @foreach (var flashcard in state.Flashcards)
                     {
-                        @foreach (var flashcard in GetSortedFlashcards(state.Flashcards))
-                        {
-                            <MudCard Elevation="0" Class="mb-3 hover-card"
-                                     Style="border: 1px solid #e0e0e0; border-radius: 8px;">
-                                <MudCardContent>
-                                    <MudGrid>
-                                        <MudItem xs="5">
-                                            <MudText Typo="Typo.body1" Class="fw-bold">@flashcard.FrontText</MudText>
-                                        </MudItem>
-                                        <MudItem xs="7">
-                                            <MudText Typo="Typo.body1"
-                                                     Color="Color.Secondary">@flashcard.BackText</MudText>
-                                        </MudItem>
-                                    </MudGrid>
-                                </MudCardContent>
-                            </MudCard>
-                        }
-
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" FullWidth="true" Class="mt-2">
-                            See all @state.Flashcards.Count terms
-                        </MudButton>
+                        <MudPaper Elevation="1" Class="pa-4 mb-3" Style="border-radius: 12px;">
+                            <MudGrid>
+                                <MudItem xs="12" md="5">
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-1">TERM</MudText>
+                                    <MudText Typo="Typo.body1" Class="fw-semibold">@flashcard.FrontText</MudText>
+                                </MudItem>
+                                <MudItem xs="12" md="7">
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-1">DEFINITION</MudText>
+                                    <MudText Typo="Typo.body1">@flashcard.BackText</MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudPaper>
                     }
-                    else
-                    {
-                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-6">
-                            No flashcards available. Click "Edit" to add some!
-                        </MudText>
-                    }
-                </MudPaper>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary" Class="pa-8">
+                        No terms in this set yet
+                    </MudText>
+                }
             </div>
 
-            <!-- Study Mode Options -->
-            <MudPaper Elevation="1" Class="pa-6 mt-6"
-                      Style="border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <MudText Typo="Typo.h6" Class="fw-bold mb-2" Style="color: white;">Ready to master this set?</MudText>
-                <MudText Typo="Typo.body2" Class="mb-4" Style="color: rgba(255,255,255,0.9);">
-                    Try the different study modes to test your knowledge.
+            <!-- Study Mode Recommendation -->
+            <MudPaper Elevation="1" Class="pa-6 text-center"
+                      Style="border-radius: 12px; background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);">
+                <MudText Typo="Typo.h6" Class="fw-bold mb-2 text-white">Ready to master this set?</MudText>
+                <MudText Typo="Typo.body2" Class="mb-4 text-white" Style="opacity: 0.9;">
+                    Try our different study modes to test your knowledge
                 </MudText>
-                <div class="d-flex gap-3">
+                <div class="d-flex justify-center gap-3">
                     <MudButton Variant="Variant.Filled" Color="Color.Surface" Size="Size.Large">
                         Test
                     </MudButton>
@@ -170,10 +189,6 @@
                 </div>
             </MudPaper>
         }
-        else
-        {
-            <MudAlert Severity="Severity.Warning">Flashcard set not found.</MudAlert>
-        }
     }
     else if (State.HasError)
     {
@@ -181,22 +196,11 @@
     }
     else
     {
-        <div class="d-flex justify-center align-center" style="min-height: 400px;">
+        <div class="d-flex justify-center align-center min-h-400">
             <MudProgressCircular Indeterminate="true" Size="Size.Large"/>
         </div>
     }
 </MudContainer>
-
-<style>
-    .hover-card {
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .hover-card:hover {
-        transform: translateX(4px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
-    }
-</style>
 
 @code {
     [Parameter] public Guid Id { get; set; }
@@ -206,7 +210,6 @@
     private int _currentCardIndex;
     private bool _isFlipped;
     private FlashcardDto? _currentFlashcard;
-    private string _sortOrder = "original";
 
     protected override async Task<FlashcardSetViewState> ComputeState(CancellationToken cancellationToken)
     {
@@ -275,19 +278,6 @@
             _currentFlashcard = State.Value.Flashcards[_currentCardIndex];
             _isFlipped = false;
         }
-    }
-
-    private void OnSortOrderChanged(string newOrder)
-    {
-        _sortOrder = newOrder;
-        StateHasChanged();
-    }
-
-    private IEnumerable<FlashcardDto> GetSortedFlashcards(ImmutableList<FlashcardDto> flashcards)
-    {
-        return _sortOrder == "alphabetical"
-                ? flashcards.OrderBy(f => f.FrontText)
-                : flashcards;
     }
 
     private void EditSet()

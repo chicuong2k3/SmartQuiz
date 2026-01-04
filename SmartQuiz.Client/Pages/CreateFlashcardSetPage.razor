@@ -4,67 +4,160 @@
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
 
+<PageTitle>Create a new study set</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-8">
-    <MudPaper Elevation="0" Class="pa-6">
-        <MudText Typo="Typo.h4" Class="mb-4">Create New Flashcard Set</MudText>
-        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-6">
-            Create a new flashcard set to organize your study materials
-        </MudText>
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
+    <MudText Typo="Typo.h5" Class="fw-bold mb-1">Create a new study set</MudText>
+    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-6">
+        Add a title and description to get started
+    </MudText>
 
-        <MudForm @ref="_form" ValidationDelay="0">
-            <MudTextField
+    <MudForm @ref="_form" ValidationDelay="0">
+        <!-- Title and Description -->
+        <MudGrid Spacing="3" Class="mb-4">
+            <MudItem xs="12" md="6">
+                <MudTextField
                     @bind-Value="_command.Title"
                     Label="Title"
                     Variant="Variant.Outlined"
-                    Margin="Margin.Dense"
-                    ShrinkLabel
+                    Placeholder="Enter title"
                     Required="true"
                     RequiredError="Title is required"
                     MaxLength="200"
                     Immediate="true"
                     Validation="@((string value) => ValidateTitle(value))"
-                    Class="mb-4"/>
-
-            <MudTextField
+                    Style="background-color: white;"/>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudTextField
                     @bind-Value="_command.Description"
                     Label="Description"
                     Variant="Variant.Outlined"
-                    Margin="Margin.Dense"
-                    ShrinkLabel
-                    Lines="4"
+                    Placeholder="Enter description"
                     MaxLength="1000"
                     Immediate="true"
-                    Class="mb-6"/>
+                    Style="background-color: white;"/>
+            </MudItem>
+        </MudGrid>
 
-            <MudStack Row="true" Spacing="3" Class="mt-4">
-                <MudButton
-                        OnClick="@HandleSubmit"
-                        Variant="Variant.Filled"
-                        DropShadow="false"
-                        Color="Color.Primary"
-                        Disabled="@(_isSubmitting || !(_form?.IsValid ?? false))"
-                        StartIcon="@(_isSubmitting ? null : Icons.Material.Filled.Add)">
-                    @(_isSubmitting ? "Creating..." : "Create Flashcard Set")
-                </MudButton>
+        <!-- Visibility Options -->
+        <div class="mb-6">
+            <MudText Typo="Typo.body2" Class="fw-semibold mb-2">WHO CAN VIEW THIS SET?</MudText>
+            <MudRadioGroup @bind-Value="_visibility" Class="d-flex gap-4">
+                <MudRadio Value="@("everyone")" Color="Color.Primary">
+                    <div class="d-flex align-center gap-2">
+                        <MudIcon Icon="@Icons.Material.Filled.Public" Size="Size.Small"/>
+                        <MudText Typo="Typo.body2">Visible to everyone</MudText>
+                    </div>
+                </MudRadio>
+                <MudRadio Value="@("justme")" Color="Color.Primary">
+                    <div class="d-flex align-center gap-2">
+                        <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small"/>
+                        <MudText Typo="Typo.body2">Visible to just me</MudText>
+                    </div>
+                </MudRadio>
+            </MudRadioGroup>
+        </div>
 
-                <MudButton
-                        Variant="Variant.Outlined"
-                        Color="Color.Secondary"
-                        OnClick="@(() => Navigation.NavigateTo("/flashcard-sets"))"
-                        Disabled="@_isSubmitting">
-                    Cancel
-                </MudButton>
-            </MudStack>
-        </MudForm>
+        <!-- Flashcards Section -->
+        <div class="mb-4">
+            <div class="d-flex justify-space-between align-center mb-3">
+                <MudText Typo="Typo.h6" Class="fw-bold">Flashcards</MudText>
+                <MudLink Typo="Typo.body2" Color="Color.Primary" Class="fw-semibold">
+                    <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Size="Size.Small" Class="mr-1"/>
+                    FLIP TERMS AND DEFINITIONS
+                </MudLink>
+            </div>
 
-    </MudPaper>
+            @for (int i = 0; i < _flashcards.Count; i++)
+            {
+                var index = i;
+                <MudPaper Elevation="1" Class="pa-4 mb-3" Style="border-radius: 8px; background-color: white;">
+                    <div class="d-flex justify-space-between align-center mb-3">
+                        <MudText Typo="Typo.body1" Class="fw-semibold">@(index + 1)</MudText>
+                        @if (_flashcards.Count > 1)
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small"
+                                           OnClick="@(() => RemoveFlashcard(index))"/>
+                        }
+                    </div>
+
+                    <MudGrid Spacing="3">
+                        <MudItem xs="12" md="6">
+                            <MudTextField
+                                    @bind-Value="_flashcards[index].Term"
+                                    Label="TERM"
+                                    Variant="Variant.Filled"
+                                    Placeholder="Enter term"
+                                    Lines="3"
+                                    Style="background-color: #F8F9FA;"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField
+                                    @bind-Value="_flashcards[index].Definition"
+                                    Label="DEFINITION"
+                                    Variant="Variant.Filled"
+                                    Placeholder="Enter definition"
+                                    Lines="3"
+                                    Style="background-color: #F8F9FA;"/>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            }
+
+            <MudButton Variant="Variant.Text" Color="Color.Primary"
+                       OnClick="AddFlashcard" FullWidth="true" Class="mt-2">
+                + ADD CARD
+            </MudButton>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-end mt-6">
+            <MudButton
+                    OnClick="@HandleSubmit"
+                    Variant="Variant.Filled"
+                    Color="Color.Secondary"
+                    Size="Size.Large"
+                    Disabled="@(_isSubmitting || !(_form?.IsValid ?? false))"
+                    Class="px-8"
+                    Style="text-transform: uppercase; font-weight: 600;">
+                @(_isSubmitting ? "Creating..." : "Create Set")
+            </MudButton>
+        </div>
+    </MudForm>
 </MudContainer>
 
 @code {
     private bool _isSubmitting;
     private MudForm? _form;
     private readonly CreateFlashcardSetCommand _command = new();
+    private string _visibility = "everyone";
+
+    private List<FlashcardInput> _flashcards = new()
+    {
+            new FlashcardInput(),
+            new FlashcardInput(),
+            new FlashcardInput()
+    };
+
+    private class FlashcardInput
+    {
+        public string Term { get; set; } = string.Empty;
+        public string Definition { get; set; } = string.Empty;
+    }
+
+    private void AddFlashcard()
+    {
+        _flashcards.Add(new FlashcardInput());
+    }
+
+    private void RemoveFlashcard(int index)
+    {
+        if (_flashcards.Count > 1)
+        {
+            _flashcards.RemoveAt(index);
+        }
+    }
 
     private string? ValidateTitle(string value)
     {
@@ -90,6 +183,17 @@
         if (!_form.IsValid)
         {
             Snackbar.Add("Please fix validation errors", Severity.Warning);
+            return;
+        }
+
+        // Validate that at least one flashcard has content
+        var validFlashcards = _flashcards
+                .Where(f => !string.IsNullOrWhiteSpace(f.Term) || !string.IsNullOrWhiteSpace(f.Definition))
+                .ToList();
+
+        if (validFlashcards.Count == 0)
+        {
+            Snackbar.Add("Please add at least one flashcard", Severity.Warning);
             return;
         }
 

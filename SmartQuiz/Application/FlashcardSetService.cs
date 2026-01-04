@@ -19,7 +19,8 @@ public class FlashcardSetService(IServiceProvider services)
             .OrderByDescending(x => x.CreatedAt)
             .ToListAsync(cancellationToken);
 
-        return items.Adapt<IEnumerable<FlashcardSetDto>>();
+        // Materialize the collection to avoid LINQ iterator serialization issues
+        return items.Adapt<List<FlashcardSetDto>>();
     }
 
     public virtual async Task<FlashcardSetDto?> GetFlashcardSetByIdAsync(

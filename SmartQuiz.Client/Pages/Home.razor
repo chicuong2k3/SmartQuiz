@@ -7,30 +7,36 @@
 <PageTitle>Home</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
-    @if (State.HasValue)
+    @if (State.HasValue && State.Value != null)
     {
         var state = State.Value;
 
         <!-- Welcome Section -->
         <div class="mb-6">
-            <MudText Typo="Typo.h4" Class="fw-bold mb-2">Welcome back, Alex! 👋</MudText>
-            <MudText Typo="Typo.body1" Color="Color.Secondary">You're on a 5-day streak. Keep it up!</MudText>
+            <MudText Typo="Typo.h4" Class="fw-bold mb-1">Welcome back, Alex! 👋</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">You're on a 5-day streak. Keep it up!
+            </MudText>
 
-            <div class="d-flex gap-4 mt-4">
-                <MudPaper Elevation="0" Class="pa-3 d-flex align-center gap-3"
-                          Style="background-color: #e8f5e9; border-radius: 12px;">
-                    <MudIcon Icon="@Icons.Material.Filled.LocalFireDepartment" Color="Color.Success" Size="Size.Large"/>
+            <div class="d-flex gap-3">
+                <MudPaper Elevation="0" Class="pa-3 d-flex align-center gap-3 flex-grow-1"
+                          Style="background-color: #E8F5E9; border-radius: 12px;">
+                    <MudIcon Icon="@Icons.Material.Filled.LocalFireDepartment" Color="Color.Success"
+                             Size="Size.Medium"/>
                     <div>
-                        <MudText Typo="Typo.body2" Color="Color.Secondary">STREAK</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary" Class="text-uppercase"
+                                 Style="font-size: 10px; font-weight: 600;">STREAK
+                        </MudText>
                         <MudText Typo="Typo.h6" Class="fw-bold">5 Days</MudText>
                     </div>
                 </MudPaper>
 
-                <MudPaper Elevation="0" Class="pa-3 d-flex align-center gap-3"
-                          Style="background-color: #e3f2fd; border-radius: 12px;">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Info" Size="Size.Large"/>
+                <MudPaper Elevation="0" Class="pa-3 d-flex align-center gap-3 flex-grow-1"
+                          Style="background-color: #E3F2FD; border-radius: 12px;">
+                    <MudIcon Icon="@Icons.Material.Filled.EmojiEvents" Color="Color.Info" Size="Size.Medium"/>
                     <div>
-                        <MudText Typo="Typo.body2" Color="Color.Secondary">MASTERED</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary" Class="text-uppercase"
+                                 Style="font-size: 10px; font-weight: 600;">MASTERED
+                        </MudText>
                         <MudText Typo="Typo.h6" Class="fw-bold">124 Terms</MudText>
                     </div>
                 </MudPaper>
@@ -39,31 +45,35 @@
 
         <!-- Recent Activity -->
         <div class="mb-6">
-            <div class="d-flex justify-space-between align-center mb-4">
-                <MudText Typo="Typo.h5" Class="fw-bold">Recent Activity</MudText>
-                <MudLink Typo="Typo.body2" Color="Color.Primary">View all</MudLink>
+            <div class="d-flex justify-space-between align-center mb-3">
+                <MudText Typo="Typo.h6" Class="fw-bold">Recent Activity</MudText>
+                <MudLink Typo="Typo.body2" Color="Color.Primary" Class="fw-semibold">View all</MudLink>
             </div>
 
-            @if (state.RecentSets.Any())
+            @if (state?.RecentSets?.Any() == true)
             {
-                <MudGrid>
+                <MudGrid Spacing="3">
                     @foreach (var set in state.RecentSets.Take(3))
                     {
                         <MudItem xs="12" md="4">
-                            <MudCard Elevation="2" Class="cursor-pointer hover-card" Style="border-radius: 12px;"
+                            <MudCard Elevation="1" Class="cursor-pointer" Style="border-radius: 12px;"
                                      @onclick="@(() => ViewSet(set.Id))">
-                                <MudCardContent>
-                                    <div class="d-flex align-center gap-2 mb-2">
+                                <MudCardContent Class="pa-4">
+                                    <div class="d-flex justify-space-between align-center mb-3">
                                         <MudIcon Icon="@GetIconForSet(set)" Color="@GetColorForSet(set)"
-                                                 Size="Size.Medium"/>
+                                                 Size="Size.Large"/>
+                                        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small"/>
                                     </div>
+
                                     <MudText Typo="Typo.h6" Class="fw-bold mb-1">@set.Title</MudText>
                                     <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
                                         @set.FlashcardCount Terms • Last studied @GetRelativeTime(set.CreatedAt)
                                     </MudText>
+
                                     <MudProgressLinear Color="@GetProgressColor(set)" Value="@GetProgress(set)"
-                                                       Size="Size.Small" Class="mb-2"/>
-                                    <MudText Typo="Typo.body2" Color="Color.Secondary">@GetProgress(set)% mastered
+                                                       Size="Size.Small" Class="mb-1" Style="border-radius: 4px;"/>
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary" Style="font-size: 12px;">
+                                        @GetProgress(set)% mastered
                                     </MudText>
                                 </MudCardContent>
                             </MudCard>
@@ -83,42 +93,43 @@
 
         <!-- Quick Actions -->
         <div class="mb-6">
-            <MudText Typo="Typo.h5" Class="fw-bold mb-4">Quick Actions</MudText>
+            <MudText Typo="Typo.h6" Class="fw-bold mb-3">Quick Actions</MudText>
 
-            <MudGrid>
+            <MudGrid Spacing="3">
                 <MudItem xs="6" md="3">
-                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
-                             Style="border-radius: 12px;" @onclick="CreateNewSet">
+                    <MudCard Elevation="1" Class="cursor-pointer text-center"
+                             Style="border-radius: 12px; padding: 24px 16px;"
+                             @onclick="CreateNewSet">
                         <MudIcon Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Size="Size.Large"
                                  Class="mb-2"/>
-                        <MudText Typo="Typo.body1" Class="fw-bold">Create New Set</MudText>
+                        <MudText Typo="Typo.body1" Class="fw-semibold">Create New Set</MudText>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="6" md="3">
-                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
-                             Style="border-radius: 12px;">
+                    <MudCard Elevation="1" Class="cursor-pointer text-center"
+                             Style="border-radius: 12px; padding: 24px 16px;">
                         <MudIcon Icon="@Icons.Material.Filled.Folder" Color="Color.Secondary" Size="Size.Large"
                                  Class="mb-2"/>
-                        <MudText Typo="Typo.body1" Class="fw-bold">New Folder</MudText>
+                        <MudText Typo="Typo.body1" Class="fw-semibold">New Folder</MudText>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="6" md="3">
-                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
-                             Style="border-radius: 12px;">
+                    <MudCard Elevation="1" Class="cursor-pointer text-center"
+                             Style="border-radius: 12px; padding: 24px 16px;">
                         <MudIcon Icon="@Icons.Material.Filled.Groups" Color="Color.Success" Size="Size.Large"
                                  Class="mb-2"/>
-                        <MudText Typo="Typo.body1" Class="fw-bold">Join Class</MudText>
+                        <MudText Typo="Typo.body1" Class="fw-semibold">Join Class</MudText>
                     </MudCard>
                 </MudItem>
 
                 <MudItem xs="6" md="3">
-                    <MudCard Elevation="1" Class="cursor-pointer hover-card text-center pa-4"
-                             Style="border-radius: 12px;">
+                    <MudCard Elevation="1" Class="cursor-pointer text-center"
+                             Style="border-radius: 12px; padding: 24px 16px;">
                         <MudIcon Icon="@Icons.Material.Filled.Upload" Color="Color.Warning" Size="Size.Large"
                                  Class="mb-2"/>
-                        <MudText Typo="Typo.body1" Class="fw-bold">Import Data</MudText>
+                        <MudText Typo="Typo.body1" Class="fw-semibold">Import Data</MudText>
                     </MudCard>
                 </MudItem>
             </MudGrid>
@@ -126,29 +137,32 @@
 
         <!-- Recommended for you -->
         <div>
-            <MudText Typo="Typo.h5" Class="fw-bold mb-4">Recommended for you</MudText>
+            <MudText Typo="Typo.h6" Class="fw-bold mb-3">Recommended for you</MudText>
 
-            @if (state.RecommendedSets != null && state.RecommendedSets.Any())
+            @if (state?.RecommendedSets?.Any() == true)
             {
-                <MudGrid>
+                <MudGrid Spacing="3">
                     @foreach (var set in state.RecommendedSets)
                     {
                         <MudItem xs="12" md="4">
-                            <MudCard Elevation="2" Class="cursor-pointer hover-card"
-                                     Style="border-radius: 12px; overflow: hidden;" @onclick="@(() => ViewSet(set.Id))">
-                                <div Style="height: 150px; background: linear-gradient(135deg, @GetGradientColors(set)); position: relative;">
-                                    <div Style="position: absolute; bottom: 12px; left: 12px;">
+                            <MudCard Elevation="1" Class="cursor-pointer overflow-hidden"
+                                     Style="border-radius: 12px;"
+                                     @onclick="@(() => ViewSet(set.Id))">
+                                <div class="h-150 position-relative"
+                                     style="background: linear-gradient(135deg, @GetGradientColors(set));">
+                                    <div class="position-absolute bottom-3 left-3">
                                         <MudChip T="string" Size="Size.Small" Color="@GetChipColor(set)"
-                                                 Style="text-transform: capitalize;">@GetCategory(set)</MudChip>
+                                                 Class="text-capitalize">@GetCategory(set)</MudChip>
                                     </div>
                                 </div>
-                                <MudCardContent>
+                                <MudCardContent Class="pa-3">
                                     <MudText Typo="Typo.h6" Class="fw-bold mb-1">@set.Title</MudText>
                                     <MudText Typo="Typo.body2" Color="Color.Secondary"
-                                             Class="mb-3">@set.Description</MudText>
+                                             Class="mb-2">@set.Description</MudText>
                                     <div class="d-flex align-center gap-2">
                                         <MudAvatar Size="Size.Small" Color="Color.Primary">A</MudAvatar>
-                                        <MudText Typo="Typo.body2" Color="Color.Secondary">By Admin</MudText>
+                                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                                            By @GetAuthorName(set)</MudText>
                                     </div>
                                 </MudCardContent>
                             </MudCard>
@@ -176,20 +190,6 @@
     }
 </MudContainer>
 
-<style>
-    .hover-card {
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .hover-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .cursor-pointer {
-        cursor: pointer;
-    }
-</style>
 
 @code {
 
@@ -266,9 +266,9 @@
     {
         var gradients = new[]
         {
-                "#9ca3af 0%, #d1d5db 100%",
-                "#065f46 0%, #047857 100%",
-                "#bfdbfe 0%, #dbeafe 100%"
+            "#9ca3af 0%, #d1d5db 100%",
+            "#065f46 0%, #047857 100%",
+            "#bfdbfe 0%, #dbeafe 100%"
         };
         return gradients[Math.Abs(set.Id.GetHashCode()) % gradients.Length];
     }
@@ -283,6 +283,12 @@
     {
         var categories = new[] { "Trending", "Science", "Geography" };
         return categories[Math.Abs(set.Id.GetHashCode()) % categories.Length];
+    }
+
+    private string GetAuthorName(FlashcardSetDto set)
+    {
+        var authors = new[] { "Sarah C.", "Dr. Jones", "GlobalTraveller" };
+        return authors[Math.Abs(set.Id.GetHashCode()) % authors.Length];
     }
 
 }

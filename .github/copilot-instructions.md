@@ -9,6 +9,126 @@
 - **Object Mapping**: Mapster
 - **Commands**: ActualLab.CommandR
 
+## Color Scheme (Material Design)
+
+### Primary Color - Vibrant Blue
+- **Primary 500 (Main)**: `#2196F3` - Main interactive elements, app bar
+- **Primary 700 (Dark)**: `#1976D2` - Status bars, darker elements, text on dark backgrounds
+- **Primary 100 (Light)**: `#BBDEFB` - Subtle backgrounds, highlights
+
+### Secondary/Accent Color - Orange
+- **Accent 500 (Main)**: `#FF9800` - Important calls to action, floating action buttons, highlights
+- **Accent 700 (Dark)**: `#F57C00` - Pressed states, darker accents
+- **Accent 100 (Light)**: `#FFE0B2` - Subtle accents, inactive states
+
+### Neutral Colors (Grays & White)
+- **Background**: `#F8F9FA` - Main screen backgrounds (use `bg-app-background` class)
+- **Surface**: `#FFFFFF` - Card backgrounds, content containers (use `bg-app-surface` class)
+- **Text Primary**: `#3C4043` - Primary text, headings (use `text-primary-color` class)
+- **Text Secondary**: `#757575` - Secondary text, hints (use `text-secondary-color` class)
+- **Text Disabled**: `#BDBDBD` - Disabled text, subtle elements (use `text-disabled-color` class)
+
+### Feedback/Utility Colors
+- **Success**: `#4CAF50` - Use `Color.Success` in MudBlazor
+- **Warning**: `#FFEB3B` - Use `Color.Warning` in MudBlazor
+- **Error**: `#F44336` - Use `Color.Error` in MudBlazor
+- **Info**: `#2196F3` - Use `Color.Info` in MudBlazor
+
+### Usage in Components
+```razor
+<!-- Primary colors -->
+<MudButton Color="Color.Primary">Primary Action</MudButton>
+<MudButton Color="Color.Secondary">Secondary Action</MudButton>
+
+<!-- Custom background colors -->
+<MudPaper Class="bg-app-background pa-4">
+    <MudText Class="text-primary-color">Primary text</MudText>
+    <MudText Class="text-secondary-color">Secondary text</MudText>
+</MudPaper>
+
+<!-- Feedback colors -->
+<MudAlert Severity="Severity.Success">Success message</MudAlert>
+<MudAlert Severity="Severity.Error">Error message</MudAlert>
+```
+
+## Styling Priority Rules
+
+When styling components, follow this priority order:
+
+1. **MudBlazor Built-in Classes (Highest Priority)**
+   - Use MudBlazor's built-in utilities first: `Class="pa-4 mb-4 d-flex align-center"`
+   - MudBlazor spacing: `pa-{0-16}`, `ma-{0-16}`, `px-{0-16}`, etc.
+   - MudBlazor flexbox: `d-flex`, `align-center`, `justify-space-between`, etc.
+   - MudBlazor typography: `fw-bold`, `fw-normal`
+   - Component props: `Elevation`, `Color`, `Variant`, `Typo`
+
+2. **TailwindCSS Utilities (Second Priority)**
+   - Use when MudBlazor doesn't provide the utility
+   - Grid layouts: `grid grid-cols-12`, `col-span-6`
+   - Advanced responsive: `hidden md:block`, `text-xl md:text-2xl`
+   - Transforms: `scale-105`, `rotate-45`, `translate-x-4`
+   - Gradients: `bg-gradient-to-r from-blue-500 to-purple-600`
+   - Complex effects: `backdrop-blur-xl`, `shadow-2xl`
+
+3. **Blazor Scoped CSS (Third Priority)**
+   - Use `.razor.css` files for component-specific styles
+   - Keeps styles scoped to a single component
+   - Better maintainability and prevents style conflicts
+   - Use `::deep` for styling child MudBlazor components
+
+4. **Inline Styles (Last Resort)**
+   - Only use `Style` attribute when absolutely necessary
+   - Valid use cases: dynamic values, custom colors from data, unique one-off styles
+   - Avoid for anything that can be achieved with classes
+
+**Examples:**
+
+```razor
+<!-- ✅ GOOD: Use MudBlazor classes -->
+<MudPaper Class="pa-6 mb-4">
+    <div class="d-flex align-center gap-3">
+        <MudText Typo="Typo.h6" Class="fw-bold">Title</MudText>
+    </div>
+</MudPaper>
+
+<!-- ✅ GOOD: Use TailwindCSS when MudBlazor doesn't have it -->
+<div class="grid grid-cols-12 gap-4">
+    <div class="col-span-6 md:col-span-4 transform hover:scale-105">
+        <MudCard>Content</MudCard>
+    </div>
+</div>
+
+<!-- ✅ GOOD: Use scoped CSS for component-specific styles -->
+<!-- MyComponent.razor -->
+<div class="custom-card">
+    <MudCard>Content</MudCard>
+</div>
+
+<!-- MyComponent.razor.css -->
+.custom-card {
+    position: relative;
+}
+
+.custom-card:hover {
+    transform: translateY(-4px);
+}
+
+<!-- ✅ ACCEPTABLE: Inline style for dynamic values -->
+<MudPaper Style="@($"background-color: {dynamicColor};")">
+    Dynamic content
+</MudPaper>
+
+<!-- ❌ BAD: Inline styles for static values -->
+<MudPaper Style="padding: 24px; margin-bottom: 16px;">
+    Content
+</MudPaper>
+
+<!-- ❌ BAD: Inline styles for standard utilities -->
+<div style="display: flex; align-items: center;">
+    Should use: class="d-flex align-center"
+</div>
+```
+
 ## Core ActualLab.Fusion Principles
 - Fusion is a reactive state management framework for .NET
 - All compute methods are automatically cached and invalidated
@@ -883,9 +1003,16 @@ Use `MudGrid` and `MudItem` for responsive layouts:
 
 ### MudBlazor Component Styling Rules
 
-1. **Prefer MudBlazor Classes over Inline Styles**
-   - Use `Class` attribute with MudBlazor utilities
-   - Only use `Style` for custom values not available in MudBlazor (colors, border-radius, transforms)
+**Remember: Follow the Styling Priority Rules (see top of document)**
+1. MudBlazor built-in classes
+2. TailwindCSS utilities
+3. Blazor scoped CSS (`.razor.css`)
+4. Inline styles (last resort)
+
+1. **Use Built-in MudBlazor Classes First**
+   - Always check if MudBlazor provides a utility before using TailwindCSS or inline styles
+   - Use `Class` attribute with MudBlazor utilities: `Class="pa-6 mb-4 d-flex"`
+   - Only use `Style` for dynamic values or truly custom styling
 
 2. **Consistent Spacing**
    - Cards/Papers: `Class="pa-6"` (24px padding)
@@ -902,13 +1029,19 @@ Use `MudGrid` and `MudItem` for responsive layouts:
 4. **Card Design**
    - Use `Elevation="2"` for standard cards
    - Use `Elevation="0"` or `Elevation="1"` for subtle surfaces
-   - Add custom border-radius: `Style="border-radius: 12px;"`
-   - Add hover effect: `Class="cursor-pointer hover-card"`
+   - Use TailwindCSS for border-radius: `Class="rounded-xl"` (instead of `Style="border-radius: 12px;"`)
+   - Add hover effect with custom class: `Class="hover-card"` (defined in app.css)
 
 5. **Navigation Components**
    - Use `MudNavMenu` for sidebar navigation
    - Use `MudBreadcrumbs` for page hierarchy
    - Use `MudTabs` for content organization within a page
+
+6. **Avoid Inline Styles**
+   - ❌ Bad: `Style="border-radius: 12px; padding: 24px;"`
+   - ✅ Good: `Class="rounded-xl pa-6"`
+   - ❌ Bad: `Style="display: flex; align-items: center;"`
+   - ✅ Good: `Class="d-flex align-center"`
 
 ## TailwindCSS Integration
 

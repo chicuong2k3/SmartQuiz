@@ -1,95 +1,98 @@
 @inject NavigationManager NavigationManager
 
-<MudAppBar Elevation="1" Color="Color.Surface" Class="px-4"
-           Style="background-color: white; border-bottom: 1px solid #e0e0e0;">
+<MudAppBar Elevation="0" Class="px-4" Style="background-color: #2196F3; height: 60px;">
     <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex align-center justify-space-between pa-0">
         <div class="d-flex align-center gap-4">
-            <MudText Typo="Typo.h5" Color="Color.Primary" Class="fw-bold" Style="cursor: pointer;"
-                     @onclick="@(() => NavigationManager.NavigateTo("/"))">
-                🎓 SmartQuiz
-            </MudText>
+            <!-- Logo -->
+            <div class="d-flex align-center gap-2 cursor-pointer" @onclick="@(() => NavigationManager.NavigateTo("/"))">
+                <MudIcon Icon="@Icons.Material.Filled.School" Color="Color.Surface" Size="Size.Large"/>
+                <MudText Typo="Typo.h6" Class="fw-bold text-white">QuizMaster</MudText>
+            </div>
 
+            <!-- Search Bar -->
             <MudTextField
                 @bind-Value="_searchQuery"
-                Placeholder="Search for quizzes, sets, or topics..."
+                Placeholder="Search..."
                 Variant="Variant.Outlined"
                 Adornment="Adornment.Start"
                 AdornmentIcon="@Icons.Material.Filled.Search"
                 Margin="Margin.Dense"
                 Class="search-field"
-                Style="width: 400px;"/>
+                Style="min-width: 300px; background-color: rgba(255,255,255,0.15); border-radius: 8px;"
+                InputClass="text-white"/>
         </div>
 
         <div class="d-flex align-center gap-3">
             <AuthorizeView>
                 <Authorized>
-                    <MudIconButton Icon="@Icons.Material.Filled.Notifications" Color="Color.Default"
+                    <!-- Notification Bell -->
+                    <MudIconButton Icon="@Icons.Material.Filled.Notifications" Color="Color.Surface"
                                    Size="Size.Medium"/>
 
-                    <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" Class="user-menu">
+                    <!-- Help Icon -->
+                    <MudIconButton Icon="@Icons.Material.Filled.Help" Color="Color.Surface" Size="Size.Medium"/>
+
+                    <!-- User Dropdown Menu -->
+                    <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight"
+                             ActivationEvent="@MouseEvent.LeftClick">
                         <ActivatorContent>
-                            <MudButton Variant="Variant.Text" Class="pa-2" Style="text-transform: none;">
-                                <div class="d-flex align-center gap-2">
-                                    <MudText Typo="Typo.body1" Color="Color.Default">Alex Johnson</MudText>
-                                    <MudAvatar Size="Size.Medium"
-                                               Style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                                        <MudIcon Icon="@Icons.Material.Filled.Person"/>
-                                    </MudAvatar>
-                                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small"/>
-                                </div>
-                            </MudButton>
+                            <div class="d-flex align-center gap-2 cursor-pointer pa-2" style="border-radius: 8px;">
+                                <MudText Typo="Typo.body1" Class="text-white fw-semibold">Alex Johnson</MudText>
+                                <MudAvatar Size="Size.Medium" Style="background-color: #FF9800;">
+                                    <MudText Typo="Typo.body1" Class="text-white fw-bold">AJ</MudText>
+                                </MudAvatar>
+                                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Color="Color.Surface"
+                                         Size="Size.Small"/>
+                            </div>
                         </ActivatorContent>
                         <ChildContent>
                             <!-- User Info Header -->
-                            <div class="pa-4" style="border-bottom: 1px solid #e0e0e0;">
-                                <div class="d-flex align-center gap-3">
-                                    <MudAvatar Size="Size.Large"
-                                               Style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                                        <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Large"/>
+                            <div class="pa-4" style="min-width: 280px;">
+                                <div class="d-flex align-center gap-3 mb-3">
+                                    <MudAvatar Size="Size.Large" Style="background-color: #FF9800;">
+                                        <MudText Typo="Typo.h6" Class="text-white fw-bold">AJ</MudText>
                                     </MudAvatar>
                                     <div>
                                         <MudText Typo="Typo.body1" Class="fw-bold">Alex Johnson</MudText>
                                         <MudText Typo="Typo.body2" Color="Color.Secondary">alex.j@quizmaster.com
                                         </MudText>
-                                        <MudChip T="string" Size="Size.Small" Color="Color.Info"
-                                                 Style="text-transform: uppercase; font-size: 10px; height: 20px; margin-top: 4px;">
+                                        <MudChip T="string" Size="Size.Small" Color="Color.Primary"
+                                                 Style="margin-top: 4px; height: 20px; font-size: 10px;">
                                             LEVEL 5 QUIZZER
                                         </MudChip>
                                     </div>
                                 </div>
                             </div>
 
+                            <MudDivider/>
+
                             <!-- Menu Items -->
                             <MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/profile"))">
                                 <div class="d-flex align-center gap-3">
-                                    <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small"
-                                             Color="Color.Default"/>
+                                    <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small"/>
                                     <MudText Typo="Typo.body2">My Profile</MudText>
                                 </div>
                             </MudMenuItem>
 
                             <MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/quiz-history"))">
                                 <div class="d-flex align-center gap-3 position-relative">
-                                    <MudIcon Icon="@Icons.Material.Filled.History" Size="Size.Small"
-                                             Color="Color.Default"/>
+                                    <MudIcon Icon="@Icons.Material.Filled.History" Size="Size.Small"/>
                                     <MudText Typo="Typo.body2">Quiz History</MudText>
                                     <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Info"
-                                             Style="font-size: 8px; position: absolute; right: 0;"/>
+                                             Style="position: absolute; right: 8px; font-size: 8px;"/>
                                 </div>
                             </MudMenuItem>
 
                             <MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/settings"))">
                                 <div class="d-flex align-center gap-3">
-                                    <MudIcon Icon="@Icons.Material.Filled.Settings" Size="Size.Small"
-                                             Color="Color.Default"/>
+                                    <MudIcon Icon="@Icons.Material.Filled.Settings" Size="Size.Small"/>
                                     <MudText Typo="Typo.body2">Settings</MudText>
                                 </div>
                             </MudMenuItem>
 
                             <MudMenuItem OnClick="@(() => NavigationManager.NavigateTo("/help"))">
                                 <div class="d-flex align-center gap-3">
-                                    <MudIcon Icon="@Icons.Material.Filled.Help" Size="Size.Small"
-                                             Color="Color.Default"/>
+                                    <MudIcon Icon="@Icons.Material.Filled.Help" Size="Size.Small"/>
                                     <MudText Typo="Typo.body2">Help & Support</MudText>
                                 </div>
                             </MudMenuItem>
@@ -105,16 +108,22 @@
                             </MudMenuItem>
 
                             <!-- Version Footer -->
-                            <div class="pa-3 text-center" style="border-top: 1px solid #e0e0e0;">
+                            <MudDivider/>
+                            <div class="pa-3 text-center">
                                 <MudText Typo="Typo.caption" Color="Color.Secondary">v2.4.0</MudText>
+                                <div class="d-flex justify-center gap-2 mt-2">
+                                    <MudLink Typo="Typo.caption" Color="Color.Secondary">Terms</MudLink>
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">•</MudText>
+                                    <MudLink Typo="Typo.caption" Color="Color.Secondary">Privacy</MudLink>
+                                </div>
                             </div>
                         </ChildContent>
                     </MudMenu>
                 </Authorized>
                 <NotAuthorized>
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled"
-                               OnClick="@(() => NavigationManager.NavigateTo("/dang-nhap"))">
-                        Đăng nhập
+                    <MudButton Color="Color.Surface" Variant="Variant.Filled"
+                               OnClick="@(() => NavigationManager.NavigateTo("/login"))">
+                        Log In
                     </MudButton>
                 </NotAuthorized>
             </AuthorizeView>
@@ -123,14 +132,24 @@
 </MudAppBar>
 
 <style>
-    .user-menu .mud-popover-paper {
-        min-width: 280px;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    .search-field ::deep .mud-input-root {
+        color: white !important;
     }
 
-    .search-field .mud-input-root {
-        border-radius: 24px;
+    .search-field ::deep .mud-input-root::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .search-field ::deep .mud-input-adornment-start {
+        color: white !important;
+    }
+
+    .search-field ::deep fieldset {
+        border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .search-field ::deep .mud-input-root:hover fieldset {
+        border-color: rgba(255, 255, 255, 0.5) !important;
     }
 </style>
 
@@ -139,7 +158,6 @@
 
     private void Logout()
     {
-        // Implement logout logic
         NavigationManager.NavigateTo("/logout", true);
     }
 

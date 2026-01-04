@@ -1,9 +1,14 @@
 using System.Collections.Immutable;
+using System.Runtime.Serialization;
+using MemoryPack;
 
 namespace SmartQuiz.Client.Pages;
 
-public record FlashcardSetViewState
+[DataContract, MemoryPackable(GenerateType.VersionTolerant)]
+public partial record FlashcardSetViewState
 {
-    public FlashcardSetDto? FlashcardSet { get; init; }
+    [DataMember, MemoryPackOrder(0)] public FlashcardSetDto? FlashcardSet { get; init; }
+
+    [DataMember, MemoryPackOrder(1)]
     public ImmutableList<FlashcardDto> Flashcards { get; init; } = ImmutableList<FlashcardDto>.Empty;
 }

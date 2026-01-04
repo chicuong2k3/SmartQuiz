@@ -66,7 +66,8 @@ public class FlashcardService(
         await using var dbContext = await DbHub.CreateDbContext(cancellationToken);
         var items = await dbContext.Flashcards
             .ToListAsync(cancellationToken);
-        return items.Adapt<IEnumerable<FlashcardDto>>();
+        // Materialize the collection to avoid LINQ iterator serialization issues
+        return items.Adapt<List<FlashcardDto>>();
     }
 
     public virtual async Task<FlashcardDto?> GetFlashcardByIdAsync(Guid id,

@@ -1,0 +1,256 @@
+@page "/signup"
+@inject NavigationManager NavigationManager
+
+<div class="min-h-screen flex items-center justify-center p-4" style="background: #D3D3D3;">
+    <MudPaper Elevation="3"
+              Style="max-width: 900px; width: 100%; border-radius: 20px; overflow: hidden; background: #F5F5F5;">
+
+        <div class="d-flex" style="min-height: 600px;">
+            <!-- Left Panel - Hero Section -->
+            <div style="width: 380px; background: linear-gradient(180deg, #0D47A1 0%, #1565C0 100%); padding: 48px 32px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+                <!-- Trophy Icon -->
+                <div style="background: rgba(255, 255, 255, 0.15); border-radius: 16px; padding: 20px; margin-bottom: 32px;">
+                    <MudIcon Icon="@Icons.Material.Filled.EmojiEvents" Style="color: white; font-size: 64px;"/>
+                </div>
+
+                <!-- Heading -->
+                <MudText Typo="Typo.h4"
+                         Style="color: white; font-weight: 700; text-align: center; margin-bottom: 16px;">
+                    Join the Quiz Challenge
+                </MudText>
+
+                <!-- Subheading -->
+                <MudText Typo="Typo.body1"
+                         Style="color: rgba(255, 255, 255, 0.95); text-align: center; margin-bottom: 48px; line-height: 1.5; font-size: 15px;">
+                    Start testing your knowledge today and compete with friends.
+                </MudText>
+
+                <!-- User Avatars -->
+                <div class="d-flex align-center gap-2">
+                    <div class="d-flex" style="margin-right: 8px;">
+                        <MudAvatar Size="Size.Small" Style="background: #FF6B6B; border: 2px solid white;">A</MudAvatar>
+                        <MudAvatar Size="Size.Small"
+                                   Style="background: #4ECDC4; border: 2px solid white; margin-left: -8px;">B
+                        </MudAvatar>
+                        <MudAvatar Size="Size.Small"
+                                   Style="background: #FFD93D; border: 2px solid white; margin-left: -8px;">C
+                        </MudAvatar>
+                    </div>
+                    <MudText Typo="Typo.body2" Style="color: rgba(255, 255, 255, 0.95); font-size: 14px;">
+                        10k+ active quizzers
+                    </MudText>
+                </div>
+            </div>
+
+            <!-- Right Panel - Sign Up Form -->
+            <div style="flex: 1; background: white; padding: 32px 40px;">
+
+                <!-- Header -->
+                <div class="d-flex justify-space-between align-center mb-4">
+                    <div class="d-flex align-center gap-2">
+                        <div style="background: #2196F3; border-radius: 8px; padding: 6px; display: inline-flex;">
+                            <MudIcon Icon="@Icons.Material.Filled.School" Style="color: white; font-size: 20px;"/>
+                        </div>
+                        <MudText Typo="Typo.h6" Style="font-weight: 700; color: #212121; font-size: 18px;">QuizMaster
+                        </MudText>
+                    </div>
+                    <MudButton Variant="Variant.Outlined" Href="/login"
+                               Style="border-radius: 8px; text-transform: none; border-color: #E0E0E0; padding: 6px 20px; font-size: 14px;">
+                        Log In
+                    </MudButton>
+                </div>
+
+                <!-- Title -->
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5"
+                             Style="font-weight: 700; color: #212121; margin-bottom: 8px; font-size: 24px;">
+                        Create Account
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: #757575; font-size: 14px;">
+                        Sign up to get started with your journey.
+                    </MudText>
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="d-flex gap-2 mb-3">
+                    <MudButton
+                            Variant="Variant.Outlined"
+                            Style="border: 1px solid #E0E0E0; border-radius: 8px; padding: 10px; flex: 1; min-width: 0;"
+                            OnClick="@(() => HandleExternalLogin("Google"))">
+                        <MudIcon Icon="@Icons.Custom.Brands.Google" Size="Size.Medium"/>
+                    </MudButton>
+
+                    <MudButton
+                            Variant="Variant.Outlined"
+                            Style="border: 1px solid #E0E0E0; border-radius: 8px; padding: 10px; flex: 1; min-width: 0;"
+                            OnClick="@(() => HandleExternalLogin("Facebook"))">
+                        <MudIcon Icon="@Icons.Custom.Brands.Facebook" Size="Size.Medium" Style="color: #1877F2;"/>
+                    </MudButton>
+
+                    <MudButton
+                            Variant="Variant.Outlined"
+                            Style="border: 1px solid #E0E0E0; border-radius: 8px; padding: 10px; flex: 1; min-width: 0;"
+                            OnClick="@(() => HandleExternalLogin("TikTok"))">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                        </svg>
+                    </MudButton>
+                </div>
+
+                <!-- Divider -->
+                <div class="d-flex align-center gap-3 mb-3">
+                    <MudDivider Style="flex: 1;"/>
+                    <MudText Typo="Typo.caption"
+                             Style="color: #9E9E9E; font-size: 12px; font-weight: 400; white-space: nowrap;">Or sign up
+                        with email
+                    </MudText>
+                    <MudDivider Style="flex: 1;"/>
+                </div>
+
+                <!-- Username Field -->
+                <MudTextField
+                        @bind-Value="_username"
+                        Label="Username"
+                        Variant="Variant.Outlined"
+                        Margin="Margin.Dense"
+                        FullWidth
+                        Style="margin-bottom: 12px;"
+                        Placeholder="Choose a username"
+                        Adornment="Adornment.End"
+                        AdornmentIcon="@Icons.Material.Filled.Person"
+                        AdornmentColor="Color.Default"/>
+
+                <!-- Email Field -->
+                <MudTextField
+                        @bind-Value="_email"
+                        Label="Email Address"
+                        Variant="Variant.Outlined"
+                        Margin="Margin.Dense"
+                        FullWidth
+                        Style="margin-bottom: 12px;"
+                        Placeholder="Enter your email"
+                        Adornment="Adornment.End"
+                        AdornmentIcon="@Icons.Material.Filled.Email"
+                        AdornmentColor="Color.Default"/>
+
+                <!-- Password Field -->
+                <MudTextField
+                        @bind-Value="_password"
+                        Label="Password"
+                        Variant="Variant.Outlined"
+                        Margin="Margin.Dense"
+                        FullWidth
+                        InputType="@_passwordInputType"
+                        Style="margin-bottom: 12px;"
+                        Placeholder="Create a password"
+                        Adornment="Adornment.End"
+                        AdornmentIcon="@_passwordIcon"
+                        AdornmentColor="Color.Default"
+                        OnAdornmentClick="TogglePasswordVisibility"/>
+
+                <!-- Confirm Password Field -->
+                <MudTextField
+                        @bind-Value="_confirmPassword"
+                        Label="Confirm Password"
+                        Variant="Variant.Outlined"
+                        Margin="Margin.Dense"
+                        FullWidth
+                        InputType="InputType.Password"
+                        Style="margin-bottom: 16px;"
+                        Placeholder="Re-enter password"
+                        Adornment="Adornment.End"
+                        AdornmentIcon="@Icons.Material.Filled.CheckCircle"
+                        AdornmentColor="Color.Default"/>
+
+                <!-- Sign Up Button -->
+                <MudButton
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        FullWidth
+                        Size="Size.Large"
+                        Style="border-radius: 8px; text-transform: none; font-weight: 600; padding: 12px; background-color: #2196F3; margin-bottom: 16px;"
+                        OnClick="@HandleSignUp"
+                        Disabled="@_isLoading">
+                    @if (_isLoading)
+                    {
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Style="color: white;"/>
+                    }
+                    else
+                    {
+                        <text>Sign Up</text>
+                    }
+                </MudButton>
+
+                <!-- Log In Link -->
+                <div class="text-center">
+                    <MudText Typo="Typo.body2" Style="color: #757575; font-size: 14px;">
+                        Already have an account?
+                        <MudLink Href="/login"
+                                 Style="color: #2196F3; text-decoration: none; font-weight: 600; margin-left: 4px;">Log
+                            In
+                        </MudLink>
+                    </MudText>
+                </div>
+
+            </div>
+        </div>
+    </MudPaper>
+</div>
+
+@code {
+    private string _username = string.Empty;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _confirmPassword = string.Empty;
+    private bool _isLoading;
+
+    private bool _passwordVisible;
+    private InputType _passwordInputType = InputType.Password;
+    private string _passwordIcon = Icons.Material.Filled.VisibilityOff;
+
+    private void TogglePasswordVisibility()
+    {
+        _passwordVisible = !_passwordVisible;
+        _passwordInputType = _passwordVisible ? InputType.Text : InputType.Password;
+        _passwordIcon = _passwordVisible ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+    }
+
+
+    private async Task HandleSignUp()
+    {
+        // Basic validation
+        if (string.IsNullOrWhiteSpace(_username) || string.IsNullOrWhiteSpace(_email) ||
+            string.IsNullOrWhiteSpace(_password) || string.IsNullOrWhiteSpace(_confirmPassword))
+        {
+            // TODO: Show validation error
+            return;
+        }
+
+        if (_password != _confirmPassword)
+        {
+            // TODO: Show password mismatch error
+            return;
+        }
+
+        _isLoading = true;
+        StateHasChanged();
+
+        // Simulate API call
+        await Task.Delay(1500);
+
+        // TODO: Implement actual registration logic
+        NavigationManager.NavigateTo("/");
+
+        _isLoading = false;
+    }
+
+    private void HandleExternalLogin(string provider)
+    {
+        NavigationManager.NavigateTo(
+                $"/authentication/signup-{provider.ToLower()}",
+                forceLoad: true);
+    }
+
+}
+

@@ -195,24 +195,29 @@
     --mud-zindex-tooltip: 1600;
 
 
-    --mud-palette-primary: #00A76F !important;
-    --mud-palette-primary-lighten: #5BE49B !important;
-    --mud-palette-primary-darken: #007867 !important;
-    --mud-palette-secondary: #8E33FF !important;
-    --mud-palette-secondary-lighten: #C684FF !important;
-    --mud-palette-secondary-darken: #5119B7 !important;
-    --mud-palette-success: #22C55E !important;
-    --mud-palette-success-lighten: #77ED8B !important;
-    --mud-palette-success-darken: #118D57 !important;
-    --mud-palette-info: #00B8D9 !important;
-    --mud-palette-info-lighten: #61F3F3 !important;
-    --mud-palette-info-darken: #006C9C !important;
-    --mud-palette-warning: #FFAB00 !important;
-    --mud-palette-warning-lighten: #FFD666 !important;
-    --mud-palette-warning-darken: #B76E00 !important;
-    --mud-palette-error: #FF5630 !important;
-    --mud-palette-error-lighten: #FFAC82 !important;
-    --mud-palette-error-darken: #B71D18 !important;
+    /* Primary Color - Vibrant Blue */
+    --mud-palette-primary: #2196F3 !important;
+    --mud-palette-primary-lighten: #BBDEFB !important;
+    --mud-palette-primary-darken: #1976D2 !important;
+
+    /* Secondary/Accent Color - Orange */
+    --mud-palette-secondary: #FF9800 !important;
+    --mud-palette-secondary-lighten: #FFE0B2 !important;
+    --mud-palette-secondary-darken: #F57C00 !important;
+
+    /* Feedback/Utility Colors */
+    --mud-palette-success: #4CAF50 !important;
+    --mud-palette-success-lighten: #81C784 !important;
+    --mud-palette-success-darken: #388E3C !important;
+    --mud-palette-info: #2196F3 !important;
+    --mud-palette-info-lighten: #64B5F6 !important;
+    --mud-palette-info-darken: #1976D2 !important;
+    --mud-palette-warning: #FFEB3B !important;
+    --mud-palette-warning-lighten: #FFF59D !important;
+    --mud-palette-warning-darken: #FBC02D !important;
+    --mud-palette-error: #F44336 !important;
+    --mud-palette-error-lighten: #E57373 !important;
+    --mud-palette-error-darken: #D32F2F !important;
 
     --mud-ripple-opacity: 0 !important;
     --mud-ripple-opacity-secondary: 0 !important;
@@ -224,4 +229,214 @@
     --mud-typography-button-size: .875rem !important;
     --mud-typography-button-lineheight: 1.75 !important;
     --mud-typography-button-letterspacing: .02857em !important;
+
+    /* Custom Neutral Colors - Material Design */
+    --app-background: #F8F9FA;
+    --app-surface: #FFFFFF;
+    --app-text-primary: #3C4043;
+    --app-text-secondary: #757575;
+    --app-text-disabled: #BDBDBD;
 }
+
+/* ===========================
+   Material Design Background Utilities
+   =========================== */
+
+.bg-app-background {
+    background-color: var(--app-background) !important;
+}
+
+.bg-app-surface {
+    background-color: var(--app-surface) !important;
+}
+
+.text-primary-color {
+    color: var(--app-text-primary) !important;
+}
+
+.text-secondary-color {
+    color: var(--app-text-secondary) !important;
+}
+
+.text-disabled-color {
+    color: var(--app-text-disabled) !important;
+}
+
+/* ===========================
+   MudBlazor Custom Utility Classes
+   Note: Use MudBlazor built-in classes first, then TailwindCSS, 
+   and only use these custom classes when neither is available.
+   =========================== */
+
+/* Border Radius - Use TailwindCSS (rounded-lg, rounded-xl) instead when possible */
+.rounded-default {
+    border-radius: var(--mud-default-borderradius) !important;
+}
+
+/* Font Weight - MudBlazor has fw-bold, add semibold for consistency */
+.fw-semibold {
+    font-weight: 600 !important;
+}
+
+/* Border Colors - Custom light borders not available in standard utilities */
+.border-light {
+    border: 1px solid #e0e0e0 !important;
+}
+
+.border-bottom-light {
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+.border-top-light {
+    border-top: 1px solid #e0e0e0 !important;
+}
+
+/* Background Colors - Custom light backgrounds */
+.bg-success-light {
+    background-color: #e8f5e9 !important;
+}
+
+.bg-info-light {
+    background-color: #e3f2fd !important;
+}
+
+.bg-gray-light {
+    background-color: #f5f5f5 !important;
+}
+
+/* Gradient Backgrounds - Not available in MudBlazor or base Tailwind */
+.bg-gradient-purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.bg-gradient-green {
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%) !important;
+}
+
+/* Hover Effects - Custom card interaction */
+.hover-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.hover-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: var(--mud-elevation-8) !important;
+}
+
+/* Component Specific Styles - Use scoped CSS in components instead when possible */
+.social-login-btn {
+    border-radius: var(--mud-default-borderradius) !important;
+    text-transform: none !important;
+    border-color: #e0e0e0 !important;
+}
+
+.primary-action-btn {
+    border-radius: var(--mud-default-borderradius) !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+}
+
+/* MudBlazor Component Overrides - Global styling for MudBlazor components */
+.mud-dialog {
+    border-radius: 16px !important;
+}
+
+.mud-dialog-content {
+    border-radius: 16px !important;
+}
+
+.mud-card.action-card {
+    border-radius: 12px !important;
+}
+
+/* Badge/Chip Utilities */
+.chip-badge {
+    text-transform: uppercase !important;
+    font-size: 10px !important;
+    height: 20px !important;
+}
+
+.chip-small-icon {
+    font-size: 8px !important;
+}
+
+/* Avatar with Gradient - Not available in standard utilities */
+.avatar-gradient-purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.avatar-gradient-green {
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%) !important;
+}
+
+/* Specific sizing utilities - Use only when Tailwind doesn't match exact needs */
+.avatar-large-custom {
+    width: 140px !important;
+    height: 140px !important;
+}
+
+.avatar-large-icon {
+    font-size: 80px !important;
+}
+
+.avatar-xs {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.flashcard-size {
+    width: 500px !important;
+    height: 300px !important;
+}
+
+.min-h-300 {
+    min-height: 300px !important;
+}
+
+.min-h-400 {
+    min-height: 400px !important;
+}
+
+.h-140 {
+    height: 140px !important;
+}
+
+.h-150 {
+    height: 150px !important;
+}
+
+.w-180 {
+    width: 180px !important;
+}
+
+/* Password Reset Form Styles */
+.password-field .mud-input-outlined {
+    border-radius: 8px;
+}
+
+.password-field .mud-input-outlined .mud-input-root {
+    border-color: #E0E0E0;
+}
+
+.password-field .mud-input-outlined:hover .mud-input-root {
+    border-color: #BDBDBD;
+}
+
+.password-field .mud-input-outlined.mud-input-outlined-focused .mud-input-root {
+    border-color: #2196F3;
+    border-width: 2px;
+}
+
+.password-field .mud-input-adornment {
+    color: #757575;
+}
+
+.password-field .mud-input-adornment:hover {
+    color: #424242;
+}
+
+.password-field input::placeholder {
+    color: #BDBDBD;
+    font-size: 14px;
+}
+
