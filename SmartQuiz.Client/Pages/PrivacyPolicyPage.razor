@@ -1,0 +1,351 @@
+@page "/privacy-policy"
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Privacy Policy - QuizMaster</PageTitle>
+
+<div class="privacy-page">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
+        <MudGrid>
+            <!-- Sidebar - Table of Contents -->
+            <MudItem xs="12" md="3">
+                <MudPaper Elevation="0" Class="pa-4 sticky-sidebar"
+                          Style="border-radius: 12px; background-color: #F8F9FA;">
+                    <MudText Typo="Typo.body2" Class="fw-bold mb-3" Style="color: #757575;">On this page</MudText>
+
+                    <MudNavMenu>
+                        <MudNavLink Href="#introduction" Style="font-size: 14px; padding: 8px 12px;">
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small"
+                                         Style="color: #2196F3; font-size: 8px;"/>
+                                <span>Introduction</span>
+                            </div>
+                        </MudNavLink>
+
+                        <MudNavLink Href="#data-collection" Style="font-size: 14px; padding: 8px 12px;">
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Storage" Size="Size.Small"
+                                         Style="color: #757575;"/>
+                                <span>Data Collection</span>
+                            </div>
+                        </MudNavLink>
+
+                        <MudNavLink Href="#usage" Style="font-size: 14px; padding: 8px 12px;">
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Small"
+                                         Style="color: #757575;"/>
+                                <span>Usage</span>
+                            </div>
+                        </MudNavLink>
+
+                        <MudNavLink Href="#sharing" Style="font-size: 14px; padding: 8px 12px;">
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Share" Size="Size.Small" Style="color: #757575;"/>
+                                <span>Sharing</span>
+                            </div>
+                        </MudNavLink>
+
+                        <MudNavLink Href="#security" Style="font-size: 14px; padding: 8px 12px;">
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Security" Size="Size.Small"
+                                         Style="color: #757575;"/>
+                                <span>Security</span>
+                            </div>
+                        </MudNavLink>
+
+                        <MudNavLink Href="#your-rights" Style="font-size: 14px; padding: 8px 12px;">
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small"
+                                         Style="color: #757575;"/>
+                                <span>Your Rights</span>
+                            </div>
+                        </MudNavLink>
+                    </MudNavMenu>
+
+                    <MudDivider Class="my-4"/>
+
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               FullWidth
+                               StartIcon="@Icons.Material.Filled.Download"
+                               Style="text-transform: none; border-radius: 8px;">
+                        Download PDF
+                    </MudButton>
+                </MudPaper>
+            </MudItem>
+
+            <!-- Main Content -->
+            <MudItem xs="12" md="9">
+                <MudPaper Elevation="0" Class="pa-8" Style="border-radius: 12px;">
+
+                    <!-- Header -->
+                    <div class="d-flex justify-space-between align-center mb-6">
+                        <div>
+                            <MudText Typo="Typo.h3" Class="fw-bold mb-2">Privacy Policy</MudText>
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Size="Size.Small"
+                                         Style="color: #757575;"/>
+                                <MudText Typo="Typo.body2" Style="color: #757575;">Last Updated: October 26, 2025
+                                </MudText>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <MudIconButton Icon="@Icons.Material.Filled.Print" Size="Size.Medium"
+                                           Style="color: #757575;"/>
+                            <MudIconButton Icon="@Icons.Material.Filled.Share" Size="Size.Medium"
+                                           Style="color: #757575;"/>
+                        </div>
+                    </div>
+
+                    <!-- Introduction -->
+                    <div class="mb-8">
+                        <MudText Typo="Typo.body1" Class="mb-4">
+                            At <strong>QuizMaster</strong>, we value your privacy and are committed to protecting your
+                            personal data.
+                            This policy outlines our practices regarding data collection, usage, and your rights.
+                        </MudText>
+
+                        <MudText Typo="Typo.body2" Style="color: #757575;">
+                            This Privacy Policy explains how QuizMaster ("we", "us", or "our") collects, uses, and
+                            discloses information
+                            about you when you access or use our website, mobile application, and other online products
+                            and
+                            services (collectively, the "Services"), or when you otherwise interact with us.
+                        </MudText>
+                    </div>
+
+                    <!-- Section 1: Information We Collect -->
+                    <div id="data-collection" class="mb-8">
+                        <div class="d-flex align-center gap-3 mb-4">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 50%; background-color: #E3F2FD; display: flex; align-items: center; justify-content: center;">
+                                <MudText Typo="Typo.body1" Class="fw-bold" Style="color: #2196F3;">1</MudText>
+                            </div>
+                            <MudText Typo="Typo.h5" Class="fw-bold">Information We Collect</MudText>
+                        </div>
+
+                        <MudText Typo="Typo.body1" Class="mb-4">
+                            We collect information you provide directly to us. For example, we collect information when
+                            you create
+                            an account, participate in a quiz, request customer support, or otherwise communicate with
+                            us.
+                        </MudText>
+
+                        <MudList T="string">
+                            <MudListItem T="string">
+                                <div>
+                                    <MudText Typo="Typo.body1" Class="fw-semibold mb-1">Account Information:</MudText>
+                                    <MudText Typo="Typo.body2" Style="color: #757575;">
+                                        Your name, email address, password, and profile picture.
+                                    </MudText>
+                                </div>
+                            </MudListItem>
+                            <MudListItem T="string">
+                                <div>
+                                    <MudText Typo="Typo.body1" Class="fw-semibold mb-1">Quiz Data:</MudText>
+                                    <MudText Typo="Typo.body2" Style="color: #757575;">
+                                        Your answers, scores, time taken, and quiz creation history.
+                                    </MudText>
+                                </div>
+                            </MudListItem>
+                            <MudListItem T="string">
+                                <div>
+                                    <MudText Typo="Typo.body1" Class="fw-semibold mb-1">Communications:</MudText>
+                                    <MudText Typo="Typo.body2" Style="color: #757575;">
+                                        Content of messages you send to us for support or feedback.
+                                    </MudText>
+                                </div>
+                            </MudListItem>
+                        </MudList>
+                    </div>
+
+                    <!-- Section 2: How We Use Data -->
+                    <div id="usage" class="mb-8">
+                        <div class="d-flex align-center gap-3 mb-4">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 50%; background-color: #E3F2FD; display: flex; align-items: center; justify-content: center;">
+                                <MudText Typo="Typo.body1" Class="fw-bold" Style="color: #2196F3;">2</MudText>
+                            </div>
+                            <MudText Typo="Typo.h5" Class="fw-bold">How We Use Data</MudText>
+                        </div>
+
+                        <MudText Typo="Typo.body1" Class="mb-4">
+                            We use the information we collect to provide, maintain, and improve our Services, such as to
+                            administer
+                            your account, process your quiz results, and personalize your experience.
+                        </MudText>
+
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-4">
+                            <MudText Typo="Typo.body2" Style="font-style: italic; color: #1565C0;">
+                                "Our goal is to make learning fun and accessible. Your data helps us recommend quizzes
+                                you'll love and
+                                track your progress over time."
+                            </MudText>
+                        </MudAlert>
+                    </div>
+
+                    <!-- Section 3: Third-Party Sharing -->
+                    <div id="sharing" class="mb-8">
+                        <div class="d-flex align-center gap-3 mb-4">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 50%; background-color: #E3F2FD; display: flex; align-items: center; justify-content: center;">
+                                <MudText Typo="Typo.body1" Class="fw-bold" Style="color: #2196F3;">3</MudText>
+                            </div>
+                            <MudText Typo="Typo.h5" Class="fw-bold">Third-Party Sharing</MudText>
+                        </div>
+
+                        <MudText Typo="Typo.body1" Class="mb-4">
+                            We do not sell your personal information. We may share your information with third-party
+                            vendors
+                            and service providers who need access to such information to carry out work on our behalf,
+                            such as:
+                        </MudText>
+
+                        <MudGrid Class="mb-4">
+                            <MudItem xs="12" sm="6">
+                                <MudPaper Elevation="0" Class="pa-4"
+                                          Style="background-color: #F8F9FA; border-radius: 8px;">
+                                    <div class="d-flex align-center gap-3 mb-2">
+                                        <MudIcon Icon="@Icons.Material.Filled.Analytics" Style="color: #2196F3;"/>
+                                        <MudText Typo="Typo.body1" Class="fw-semibold">Analytics Providers</MudText>
+                                    </div>
+                                    <MudText Typo="Typo.body2" Style="color: #757575; font-size: 12px;">
+                                        To help us understand usage patterns.
+                                    </MudText>
+                                </MudPaper>
+                            </MudItem>
+
+                            <MudItem xs="12" sm="6">
+                                <MudPaper Elevation="0" Class="pa-4"
+                                          Style="background-color: #F8F9FA; border-radius: 8px;">
+                                    <div class="d-flex align-center gap-3 mb-2">
+                                        <MudIcon Icon="@Icons.Material.Filled.Cloud" Style="color: #2196F3;"/>
+                                        <MudText Typo="Typo.body1" Class="fw-semibold">Cloud Hosting</MudText>
+                                    </div>
+                                    <MudText Typo="Typo.body2" Style="color: #757575; font-size: 12px;">
+                                        Secure infrastructure to store your data.
+                                    </MudText>
+                                </MudPaper>
+                            </MudItem>
+                        </MudGrid>
+                    </div>
+
+                    <!-- Section 4: Data Security -->
+                    <div id="security" class="mb-8">
+                        <div class="d-flex align-center gap-3 mb-4">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 50%; background-color: #E3F2FD; display: flex; align-items: center; justify-content: center;">
+                                <MudText Typo="Typo.body1" Class="fw-bold" Style="color: #2196F3;">4</MudText>
+                            </div>
+                            <MudText Typo="Typo.h5" Class="fw-bold">Data Security</MudText>
+                        </div>
+
+                        <MudText Typo="Typo.body1" Class="mb-4">
+                            We implement a variety of security measures to maintain the safety of your personal
+                            information.
+                            Your personal information is contained behind secured networks and is only accessible by a
+                            limited
+                            number of persons who have special access rights to such systems.
+                        </MudText>
+                    </div>
+
+                    <!-- Section 5: Your Rights -->
+                    <div id="your-rights" class="mb-8">
+                        <div class="d-flex align-center gap-3 mb-4">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 50%; background-color: #E3F2FD; display: flex; align-items: center; justify-content: center;">
+                                <MudText Typo="Typo.body1" Class="fw-bold" Style="color: #2196F3;">5</MudText>
+                            </div>
+                            <MudText Typo="Typo.h5" Class="fw-bold">Your Rights</MudText>
+                        </div>
+
+                        <MudText Typo="Typo.body1" Class="mb-4">
+                            Depending on your location, you may have certain rights regarding your personal information,
+                            including:
+                        </MudText>
+
+                        <MudSimpleTable Class="mb-4" Style="border: 1px solid #E0E0E0; border-radius: 8px;">
+                            <thead>
+                            <tr>
+                                <th style="background-color: #F8F9FA; font-weight: 600; padding: 16px;">Right</th>
+                                <th style="background-color: #F8F9FA; font-weight: 600; padding: 16px;">Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="padding: 16px; font-weight: 600;">Access</td>
+                                <td style="padding: 16px; color: #757575;">Request a copy of the data we hold about
+                                    you.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 16px; font-weight: 600;">Correction</td>
+                                <td style="padding: 16px; color: #757575;">Request that we correct inaccurate or
+                                    incomplete data.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 16px; font-weight: 600;">Deletion</td>
+                                <td style="padding: 16px; color: #757575;">Request that we delete your personal data
+                                    ("Right to be Forgotten").
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 16px; font-weight: 600;">Portability</td>
+                                <td style="padding: 16px; color: #757575;">Request a copy of your data in a structured
+                                    format.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 16px; font-weight: 600;">Objection</td>
+                                <td style="padding: 16px; color: #757575;">Object to our processing of your personal
+                                    data.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </MudSimpleTable>
+                    </div>
+
+                    <!-- Contact Section -->
+                    <MudDivider Class="my-6"/>
+
+                    <div class="mb-6">
+                        <MudText Typo="Typo.h6" Class="fw-bold mb-3">Contact Us</MudText>
+                        <MudText Typo="Typo.body1" Class="mb-3">
+                            If you have any questions about this Privacy Policy, please contact us at:
+                        </MudText>
+
+                        <div class="d-flex flex-column gap-2">
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Style="color: #2196F3;"/>
+                                <MudText Typo="Typo.body2">privacy@quizmaster.com</MudText>
+                            </div>
+                            <div class="d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small"
+                                         Style="color: #2196F3;"/>
+                                <MudText Typo="Typo.body2">123 Learning Street, Education City, EC 12345</MudText>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <MudAlert Severity="Severity.Normal" Variant="Variant.Filled"
+                              Style="background-color: #E3F2FD; color: #1565C0;">
+                        <MudText Typo="Typo.body2">
+                            <strong>Note:</strong> We reserve the right to update this Privacy Policy at any time.
+                            We will notify you of any changes by posting the new Privacy Policy on this page and
+                            updating
+                            the "Last Updated" date.
+                        </MudText>
+                    </MudAlert>
+
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</div>
+
+@code {
+
+}
+

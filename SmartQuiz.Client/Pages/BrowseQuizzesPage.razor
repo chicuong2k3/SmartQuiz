@@ -1,0 +1,389 @@
+@page "/browse"
+@inherits ComputedStateComponent<IEnumerable<FlashcardSetDto>>
+
+@inject IFlashcardSetService FlashcardSetService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Browse Quizzes - QuizMaster</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
+    <!-- Page Header -->
+    <div class="mb-6">
+        <MudText Typo="Typo.h4" Class="fw-bold mb-2">Discover Public Quizzes</MudText>
+        <MudText Typo="Typo.body2" Color="Color.Secondary">
+            Find and play thousands of quizzes created by the community. Challenge yourself and learn something new
+            today.
+        </MudText>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="mb-6">
+        <div class="d-flex gap-3 mb-4">
+            <!-- Search Bar -->
+            <MudTextField
+                    @bind-Value="_searchQuery"
+                    Placeholder="Search for quizzes, topics, or creators..."
+                    Variant="Variant.Outlined"
+                    Adornment="Adornment.Start"
+    Icons.Material.FilledmentIcon="@Icons.Material.Filled.Search"
+                    Margin="Margin.Dense"
+                    Class="flex-1"
+                    Style="background-color: white; border-radius: 8px;"/>
+
+            <!-- Sort Dropdown -->
+            <MudSelect
+                    @bind-Value="_sortBy"
+                    Variant="Variant.Outlined"
+                    Margin="Margin.Dense"
+                    Style="min-width: 200px; background-color: Icons.Material.Filled 8px;"
+                    AdornmentIcon="@Icons.Material.Filled.FilterList"
+                    Adornment="Adornment.Start">
+                <MudSelectItem Value="@("popular")">Most Popular</MudSelectItem>
+                <MudSelectItem Value="@("recent")">Most Recent</MudSelectItem>
+                <MudSelectItem Value="@("plays")">Most Played</MudSelectItem>
+                <MudSelectItem Value="@("rating")">Highest Rated</MudSelectItem>
+            </MudSelect>
+        </div>
+
+        <!-- Category Filter Chips -->
+        <div class="d-flex gap-2 flex-wrap">
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "all" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "all" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("all"))"
+                    Style="cursor: pointer;">
+                All
+            </MudChip>
+
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "trending" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "trending" ? Variant.Filled : VIcons.Material.Filled                 OnClick="@(() => SetCategory("trending"))"
+                    Icon="@Icons.Material.Filled.TrendingUp"
+                    Style="cursor: pointer;">
+                Trending
+            </MudChip>
+
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "science" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "science" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("science"))"
+                    Style="cursor: pointer;">
+                Science
+            </MudChip>
+
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "history" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "history" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("history"))"
+                    Style="cursor: pointer;">
+                History
+            </MudChip>
+
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "math" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "math" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("math"))"
+                    Style="cursor: pointer;">
+                Math
+            </MudChip>
+
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "pop-culture" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "pop-culture" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("pop-culture"))"
+                    Style="cursor: pointer;">
+                Pop Culture
+            </MudChip>
+
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "geography" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "geography" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("geography"))"
+                    Style="cursor: pointer;">
+                Geography
+            </MudChip>
+
+            <MudChip
+                    T="string"
+                    Color="@(_selectedCategory == "art" ? Color.Primary : Color.Default)"
+                    Variant="@(_selectedCategory == "art" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("art"))"
+                    Style="cursor: pointer;">
+                Art
+            </MudChip>
+        </div>
+    </div>
+
+    <!-- Quiz Cards Grid -->
+    @if (State.HasValue)
+    {
+        var quizzes = GetFilteredQuizzes();
+
+        <MudGrid Spacing="4">
+            @foreach (var quiz in quizzes)
+            {
+                <MudItem xs="12" sm="6" md="4" lg="3">
+                    <MudCard Class="quiz-card" Style="border-radius: 12px; height: 100%;">
+                        <!-- Quiz Image/Icon -->
+                        <div class="quiz-card-header position-relative">
+                            <div class="quiz-image" style="@GetQuizImageStyle(quiz)">
+                                <MudIcon Icon="@GetCategoryIcon(quiz)" Size="Size.Large"
+                                         Style="color: white; font-size: 48px;"/>
+                            </div>
+                            <!-- Category Badge -->
+                            <MudChip
+                                    T="string"
+                                    Size="Size.Small"
+                                    Color="Color.Surface"
+                                    Style="position: absolute; top: 12px; left: 12px; font-weight: 600; font-size: 11px;">
+                                @GetQuizCategory(quiz)
+                            </MudChip>
+                        </divIcons.Material.Filled      <MudCardContent Class="pa-4">
+                            <!-- Quiz Stats -->
+                            <div class="d-flex gap-4 mb-3">
+                                <div class="d-flex align-center gap-1">
+                                    <MudIcon Icon="@Icons.Material.Filled.Quiz" Size="Size.Small"
+                                             Style="colorIcons.Material.Filled 16px;"/>
+                                    <MudText Typo="Typo.caption"
+                                             Style="color: #757575; font-size: 12px;">@quiz.FlashcardCount Q+
+                                    </MudText>
+                                </div>
+                                <div class="d-flex align-center gap-1">
+                                    <MudIcon Icon="@Icons.Material.Filled.PlayArrow" Size="Size.Small"
+                                             Style="color: #757575; font-size: 16px;"/>
+                                    <MudText Typo="Typo.caption"
+                                             Style="color: #757575; font-size: 12px;">@GetRandomPlays() Plays
+                                    </MudText>
+                                </div>
+                            </div>
+
+                            <!-- Quiz Title -->
+                            <MudText Typo="Typo.h6" Class="fw-bold mb-2" Style="line-height: 1.3; min-height: 48px;">
+                                @quiz.Title
+                            </MudText>
+
+                            <!-- Quiz Description -->
+                            <MudText Typo="Typo.body2" Color="Color.Secondary"
+                                     Style="font-size: 13px; line-height: 1.4; min-height: 60px;">
+                                @(quiz.Description ?? "Test your knowledge and learn something new!")
+                            </MudText>
+                        </MudCardContent>
+
+                        <MudCardActions Class="pa-4 pt-0">
+                            <!-- Creator Info -->
+                            <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                <div class="d-flex align-center gap-2">
+                                    <MudAvatar Size="Size.Small" Style="@GetCreatorAvatarStyle(quiz)">
+                                        <MudText Typo="Typo.caption"
+                                                 Class="text-white fw-bold">@GetCreatorInitials(quiz)</MudText>
+                                    </MudAvatar>
+                                    <MudText Typo="Typo.body2"
+                                             Style="font-size: 13px; font-weight: 500;">@GetCreatorName(quiz)</MudText>
+                                </div>
+
+                                <!-- Play Now Button -->
+                                <MudButton
+                                        Variant="Variant.Filled"
+                                        Color="Color.Primary"
+                                        Size="Size.Small"
+                                        OnClick="@(() => PlayQuiz(quiz.Id))"
+                      Icons.Material.Filledle="border-radius: 6px; text-transform: none; font-weight: 600;">
+                                    Play Now
+                                </MudButton>
+                            </div>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+
+        <!-- Load More Button -->
+        @if (_showLoadMore)
+        {
+            <div class="d-flex justify-center mt-6">
+                <MudButton
+                        Variant="Variant.Outlined"
+                        Color="Color.Primary"
+                        Size="Size.Large"
+                        OnClick="LoadMore"
+                        EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                        Style="border-radius: 8px; text-transform: none; font-weight: 600; padding: 12px 32px;">
+                    Load More Quizzes
+                </MudButton>
+            </div>
+        }
+    }
+    else if (State.HasError)
+    {
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled" Class="my-4">
+            @(State.Error?.Message ?? "An error occurred")
+        </MudAlert>
+    }
+    else
+    {
+        <div class="d-flex justify-center align-center" style="min-height: 400px;">
+            <MudP, Icons.Material.Filled.Science rue" Color="Color.Prim, Icons.Material.Filled.HistoryEdu div>
+    }
+</MudContainer>, Icons.Material.Filled.Movie searchQuery = strin, Icons.Material.Filled.Calculate y = "popular";
+    priva, Icons.Material.Filled.Public all";
+    private , Icons.Material.Filled.Palette // Mock data for demo purposes
+    private readonly Dictionary<string, string> _categoryColors = new()
+    {
+            { "science", "#4CAF50" },
+            { "history", "#FF9800" },
+            { "pop-culture", "#E91E63" },
+            { "math", "#2196F3" },
+            { "geography", "#00BCD4" },
+            { "art", "#9C27B0" }
+    };
+
+    private readonly Dictionary<string, string> _categoryIcons = new()
+    {
+            { "science", Icons.Material.Filled.Science },
+            { "history", Icons.Material.Filled.HistoryEdu },
+            { "pop-culture", Icons.Material.Filled.Movie },
+            { "math", Icons.Material.Filled.Calculate },
+            { "geography", Icons.Material.Filled.Public },
+            { "art", Icons.Material.Filled.Palette }
+    };
+
+    private readonly string[] _creatorNames = { "ProProf", "HistoryBuff", "CinemaJoe", "MathWiz", "CodeNinja", "TravelMate", "ArtLover" };
+    private readonly string[] _creatorColors = { "#2196F3", "#4CAF50", "#FF9800", "#E91E63", "#9C27B0", "#00BCD4", "#F44336" };
+
+    protected override Task<IEnumerable<FlashcardSetDto>> ComputeState(CancellationToken cancellationToken)
+        => FlashcardSetService.GetFlashcardSetsAsync(cancellationToken);
+
+    private void SetCategory(string category)
+    {
+        _selectedCategory = category;
+        StateHasChanged();
+    }
+
+    private IEnumerable<FlashcardSetDto> GetFilteredQuizzes()
+    {
+        var quizzes = State.Value.AsEnumerable();
+
+        // Apply search filter
+        if (!string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            quizzes = quizzes.Where(q =>
+                    q.Title.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                    (q.Description?.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase) ?? false));
+        }
+
+        // Apply category filter (mock implementation)
+        if (_selectedCategory != "all")
+        {
+            // In a real implementation, you'd filter by actual category
+            // For now, we'll just return all quizzes
+        }
+
+        // Apply sorting
+        quizzes = _sortBy switch
+        {
+                "recent" => quizzes.OrderByDescending(q => q.CreatedAt),
+                "plays" => quizzes.OrderByDescending(q => q.FlashcardCount),
+                "rating" => quizzes.OrderBy(q => q.Title),
+                _ => quizzes.OrderByDescending(q => q.FlashcardCount) // popular
+        };
+
+        return quizzes;
+    }
+
+    private string GetQuizCategory(FlashcardSetDto quiz)
+    {
+        // Mock category assignment based on quiz title
+        var title = quiz.Title.ToLower();
+        if (title.Contains("science") || title.Contains("chemistry") || title.Contains("biology"))
+            returreturn _categoryIcons.GetValueOrDefault(category, Icons.Material.Filled.Quiz|| title.Contains("ancient"))
+            return "History";
+        if (title.Contains("movie") || title.Contains("music") || title.Contains("pop"))
+            return "Pop Culture";
+        if (title.Contains("math") || title.Contains("algebra") || title.Contains("calculus"))
+            return "Math";
+        if (title.Contains("geography") || title.Contains("capital") || title.Contains("country"))
+            return "Geography";
+        if (title.Contains("art") || title.Contains("paint") || title.Contains("artist"))
+            return "Art";
+
+        return "Science";
+    }
+
+    private string GetCategoryIcon(FlashcardSetDto quiz)
+    {
+        var category = GetQuizCategory(quiz).ToLower();
+        return _categoryIcons.GetValueOrDefault(category, Icons.Material.Filled.Quiz);
+    }
+
+    private string GetQuizImageStyle(FlashcardSetDto quiz)
+    {
+        var category = GetQuizCategory(quiz).ToLower();
+        var color = _categoryColors.GetValueOrDefault(category, "#2196F3");
+        return $"background: linear-gradient(135deg, {color} 0%, {AdjustBrightness(color, -0.2)} 100%);";
+    }
+
+    private string GetCreatorName(FlashcardSetDto quiz)
+    {
+        var hash = Math.Abs(quiz.Id.GetHashCode());
+        return _creatorNames[hash % _creatorNames.Length];
+    }
+
+    private string GetCreatorInitials(FlashcardSetDto quiz)
+    {
+        var name = GetCreatorName(quiz);
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}";
+        return name.Length >= 2 ? name.Substring(0, 2).ToUpper() : name.ToUpper();
+    }
+
+    private string GetCreatorAvatarStyle(FlashcardSetDto quiz)
+    {
+        var hash = Math.Abs(quiz.Id.GetHashCode());
+        var color = _creatorColors[hash % _creatorColors.Length];
+        return $"background-color: {color};";
+    }
+
+    private string GetRandomPlays()
+    {
+        var random = new Random(Guid.NewGuid().GetHashCode());
+        var plays = random.Next(100, 10000);
+        return plays >= 1000 ? $"{plays / 1000}.{(plays % 1000) / 100}k" : plays.ToString();
+    }
+
+    private string AdjustBrightness(string hex, double factor)
+    {
+        // Simple brightness adjustment
+        var r = Convert.ToInt32(hex.Substring(1, 2), 16);
+        var g = Convert.ToInt32(hex.Substring(3, 2), 16);
+        var b = Convert.ToInt32(hex.Substring(5, 2), 16);
+
+        r = Math.Clamp((int)(r * (1 + factor)), 0, 255);
+        g = Math.Clamp((int)(g * (1 + factor)), 0, 255);
+        b = Math.Clamp((int)(b * (1 + factor)), 0, 255);
+
+        return $"#{r:X2}{g:X2}{b:X2}";
+    }
+
+    private void PlayQuiz(Guid quizId)
+    {
+        NavigationManager.NavigateTo($"/quiz/{quizId}");
+    }
+
+    private void LoadMore()
+    {
+        // In a real implementation, this would load more quizzes from the API
+        // For now, we'll just hide the button
+        _showLoadMore = false;
+        StateHasChanged();
+    }
+
+}
+

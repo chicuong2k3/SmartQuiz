@@ -8,7 +8,6 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SmartQuiz.Client;
 using SmartQuiz.Client.Auth;
-using SmartQuiz.Client.Data.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -27,6 +26,7 @@ builder.Services.AddFusion(fusion =>
 
     fusion.AddClient<IFlashcardService>();
     fusion.AddClient<IFlashcardSetService>();
+    fusion.AddClient<IQuizResultService>();
 });
 
 // builder.Services.AddSingleton<RpcPeerOptions>(_ => RpcPeerOptions.Default with {

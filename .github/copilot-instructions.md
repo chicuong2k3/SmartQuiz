@@ -129,6 +129,177 @@ When styling components, follow this priority order:
 </div>
 ```
 
+## Blazor Scoped CSS Rules
+
+### Creating Scoped CSS Files
+For component-specific styles, ALWAYS create a separate `.razor.css` file next to your `.razor` component:
+
+```
+MyComponent.razor       # Component markup and code
+MyComponent.razor.css   # Component-specific styles (scoped)
+```
+
+### Important Rules for Blazor Scoped CSS
+
+1. **Automatic Scoping**: Blazor automatically scopes CSS to the component by adding unique attributes
+   - You don't need to add prefixes manually
+   - Styles in `.razor.css` files only apply to that component
+
+2. **Using `::deep` Combinator**: To style child components (like MudBlazor components), use `::deep`
+   ```css
+   /* ✅ CORRECT: Style MudBlazor child components */
+   .my-container ::deep .mud-button {
+       border-radius: 12px;
+   }
+   
+   .search-field ::deep .mud-input-root {
+       color: white;
+   }
+   
+   /* ❌ WRONG: Without ::deep won't work for child components */
+   .my-container .mud-button {
+       border-radius: 12px;  /* Won't apply! */
+   }
+   ```
+
+3. **Never Use `::deep` in Inline `<style>` Tags**: 
+   ```razor
+   <!-- ❌ BAD: ::deep in inline style tag causes CSS errors -->
+   <style>
+       .search-field ::deep .mud-input-root {
+           color: white;
+       }
+   </style>
+   
+   <!-- ✅ GOOD: Move to .razor.css file -->
+   ```
+
+4. **Targeting Root Element**: Styles without `::deep` only apply to elements defined in the component
+   ```css
+   /* MyComponent.razor.css */
+   
+   /* ✅ Applies to <div class="card"> in MyComponent.razor */
+   .card {
+       padding: 16px;
+       border-radius: 8px;
+   }
+   
+   /* ✅ Applies to hover state */
+   .card:hover {
+       transform: translateY(-2px);
+   }
+   
+   /* ✅ Use ::deep for child component styling */
+   .card ::deep .mud-card-content {
+       background: #f5f5f5;
+   }
+   ```
+
+5. **Global Styles vs Scoped Styles**:
+   ```css
+   /* wwwroot/app.css - Global styles */
+   .text-primary-color {
+       color: #3C4043;
+   }
+   
+   /* MyComponent.razor.css - Scoped to component */
+   .custom-card {
+       background: white;
+   }
+   ```
+
+### Complete Example
+
+**MyComponent.razor:**
+```razor
+<div class="container">
+    <MudCard Class="custom-card">
+        <MudCardContent>
+            <MudText Class="title">Hello World</MudText>
+            <MudButton>Click Me</MudButton>
+        </MudCardContent>
+    </MudCard>
+</div>
+```
+
+**MyComponent.razor.css:**
+```css
+/* Scoped to component - no ::deep needed */
+.container {
+    padding: 24px;
+    max-width: 800px;
+}
+
+.custom-card {
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Use ::deep to style MudBlazor child components */
+.custom-card ::deep .mud-card-content {
+    padding: 32px;
+}
+
+.custom-card ::deep .mud-button {
+    text-transform: none;
+    font-weight: 600;
+}
+
+.custom-card ::deep .title {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+```
+
+### Common Mistakes to Avoid
+
+❌ **Using inline `<style>` tags with `::deep`**
+```razor
+<!-- DON'T DO THIS -->
+<style>
+    .my-class ::deep .child { }  /* Causes CSS errors */
+</style>
+```
+
+✅ **Use separate `.razor.css` file**
+```css
+/* MyComponent.razor.css */
+.my-class ::deep .child { }  /* Works correctly */
+```
+
+❌ **Forgetting `::deep` for child components**
+```css
+/* Won't work - MudBlazor components won't be styled */
+.container .mud-button {
+    color: red;
+}
+```
+
+✅ **Use `::deep` for child components**
+```css
+/* Works correctly */
+.container ::deep .mud-button {
+    color: red;
+}
+```
+
+❌ **Using scoped CSS for global utilities**
+```css
+/* MyComponent.razor.css - DON'T create global utilities here */
+.pa-4 { padding: 16px; }
+.mb-2 { margin-bottom: 8px; }
+```
+
+✅ **Use global CSS file for utilities**
+```css
+/* wwwroot/app.css - Global utilities belong here */
+.bg-app-background { background-color: #F8F9FA; }
+```
+
 ## Core ActualLab.Fusion Principles
 - Fusion is a reactive state management framework for .NET
 - All compute methods are automatically cached and invalidated

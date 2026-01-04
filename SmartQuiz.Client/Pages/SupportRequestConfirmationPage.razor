@@ -1,0 +1,168 @@
+@page "/support-confirmation"
+@page "/support-confirmation/{ReferenceNumber}"
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Support Request Confirmation - QuizMaster</PageTitle>
+
+<div class="confirmation-page">
+    <MudContainer MaxWidth="MaxWidth.Small" Class="py-8">
+        <!-- Confirmation Card -->
+        <MudPaper Elevation="2" Class="pa-8 confirmation-card">
+            <!-- Success Icon -->
+            <div class="d-flex justify-center mb-6">
+                <div class="success-icon-container">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                             Color="Color.Primary"
+                             Style="font-size: 72px;"/>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="text-center mb-6">
+                <MudText Typo="Typo.h4" Class="fw-bold mb-3">Request Received!</MudText>
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Style="line-height: 1.6;">
+                    Thank you for reaching out. We have received your request and a confirmation email has been sent to
+                    your inbox.
+                </MudText>
+            </div>
+
+            <!-- Reference Number Box -->
+            <MudPaper Elevation="0" Class="pa-4 mb-6 reference-box">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="text-uppercase mb-2"
+                         Style="font-weight: 600; letter-spacing: 0.5px; font-size: 11px;">
+                    REFERENCE NUMBER
+                </MudText>
+                <div class="d-flex align-center justify-space-between">
+                    <MudText Typo="Typo.h6" Class="fw-bold" Style="letter-spacing: 0.5px;">
+                        @_referenceNumber
+                    </MudText>
+                    <MudIconButton
+                            Icon="@Icons.Material.Filled.ContentCopy"
+                            Color="Color.Primary"
+                            Size="Size.Small"
+                            OnClick="CopyReferenceNumber"
+                            Title="Copy reference number"/>
+                </div>
+            </MudPaper>
+
+            <!-- Response Time Info -->
+            <div class="text-center mb-6">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Our support team usually responds within <strong style="color: #2196F3;">24 hours</strong>.
+                </MudText>
+            </div>
+
+            <!-- Action Buttons -->
+            <MudStack Spacing="3">
+                <MudButton
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        FullWidth="true"
+                        Size="Size.Large"
+                        OnClick="@(() => NavigationManager.NavigateTo("/"))"
+                        Style="border-radius: 8px; text-transform: none; font-weight: 600; height: 48px;">
+                    Return to Dashboard
+                </MudButton>
+                <MudButton
+                        Variant="Variant.Text"
+                        Color="Color.Secondary"
+                        FullWidth="true"
+                        OnClick="@(() => NavigationManager.NavigateTo("/contact-support"))"
+                        Style="text-transform: none; font-weight: 500;">
+                    Submit another request
+                </MudButton>
+            </MudStack>
+        </MudPaper>
+
+        <!-- Footer Links -->
+        <div class="d-flex justify-center align-center gap-4 mt-6">
+            <MudLink Href="/faq" Typo="Typo.body2" Style="color: #757575; font-weight: 500;">FAQ</MudLink>
+            <MudText Typo="Typo.body2" Style="color: #BDBDBD;">•</MudText>
+            <MudLink Href="/contact-support" Typo="Typo.body2" Style="color: #757575; font-weight: 500;">Chat with us
+            </MudLink>
+            <MudText Typo="Typo.body2" Style="color: #BDBDBD;">•</MudText>
+            <MudLink Href="/system-status" Typo="Typo.body2" Style="color: #757575; font-weight: 500;">System Status
+            </MudLink>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8">
+            <!-- Social Icons -->
+            <div class="d-flex justify-center align-center gap-3 mb-4">
+                <MudIconButton
+                        Icon="@Icons.Custom.Brands.GitHub"
+                        Color="Color.Default"
+                        Size="Size.Small"
+                        Href="https://github.com"
+                        Target="_blank"
+                        Style="color: #757575;"/>
+                <MudIconButton
+                        Icon="@Icons.Material.Filled.Email"
+                        Color="Color.Default"
+                        Size="Size.Small"
+                        Href="mailto:support@quizmaster.com"
+                        Style="color: #757575;"/>
+                <MudIconButton
+                        Icon="@Icons.Material.Filled.RssFeed"
+                        Color="Color.Default"
+                        Size="Size.Small"
+                        Href="/blog"
+                        Style="color: #757575;"/>
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-center">
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    © 2026 QuizMaster Inc. All rights reserved.
+                </MudText>
+            </div>
+
+            <!-- Legal Links -->
+            <div class="d-flex justify-center align-center gap-4 mt-3">
+                <MudLink Href="/privacy-policy" Typo="Typo.caption" Style="color: #757575;">Privacy Policy</MudLink>
+                <MudText Typo="Typo.caption" Style="color: #BDBDBD;">•</MudText>
+                <MudLink Href="/terms-of-service" Typo="Typo.caption" Style="color: #757575;">Terms of Service</MudLink>
+            </div>
+        </div>
+    </MudContainer>
+</div>
+
+@code {
+    [Parameter] public string? ReferenceNumber { get; set; }
+
+    private string _referenceNumber = "#QZ-8921";
+
+    protected override void OnInitialized()
+    {
+        // Use the reference number from route parameter if provided
+        if (!string.IsNullOrEmpty(ReferenceNumber))
+        {
+            _referenceNumber = ReferenceNumber;
+        }
+        else
+        {
+            // Generate a random reference number if not provided
+            _referenceNumber = GenerateReferenceNumber();
+        }
+    }
+
+    private string GenerateReferenceNumber()
+    {
+        var random = new Random();
+        var number = random.Next(1000, 9999);
+        return $"#QZ-{number}";
+    }
+
+    private void CopyReferenceNumber()
+    {
+        // In a real implementation, you would use JS interop to copy to clipboard
+        // For now, we'll just show a success message
+        // await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", _referenceNumber);
+
+        // Placeholder - in production, implement clipboard copy
+        // Snackbar.Add("Reference number copied to clipboard!", Severity.Success);
+    }
+
+}
+

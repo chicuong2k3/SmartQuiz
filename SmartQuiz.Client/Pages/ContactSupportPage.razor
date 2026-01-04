@@ -1,0 +1,231 @@
+@page "/contact-support"
+@page "/support"
+
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+
+<PageTitle>Contact Support - QuizMaster</PageTitle>
+
+<div class="contact-support-page">
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <MudText Typo="Typo.h3" Class="fw-bold mb-3">Contact Support</MudText>
+            <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-3">
+                Having trouble with a quiz or your account? Fill out the form below and our team will get back to you.
+            </MudText>
+
+            <!-- Response Time Badge -->
+            <div class="d-flex justify-center align-center gap-2 mb-4">
+                <MudIcon Icon="@Icons.Material.Filled.Bolt" Color="Color.Primary" Size="Size.Small"/>
+                <MudText Typo="Typo.body2" Color="Color.Primary" Style="font-weight: 600;">
+                    We usually reply within 24 hours
+                </MudText>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <MudPaper Elevation="2" Class="pa-8 contact-form-paper">
+            <MudForm @ref="_form" ValidationDelay="0">
+                <div class="grid grid-cols-12 gap-4">
+                    <!-- Name Field -->
+                    <div class="col-span-12 md:col-span-6">
+                        <MudText Typo="Typo.body2" Class="mb-2 fw-semibold">Name</MudText>
+                        <MudTextField
+                                @bind-Value="_model.Name"
+                                Placeholder="Your full name"
+                                Variant="Variant.Outlined"
+                                Margin="Margin.Dense"
+                                Required="true"
+                                RequiredError="Name is required"
+                                Adornment="Adornment.Start"
+                                AdornmentIcon="@Icons.Material.Filled.Person"
+                                AdornmentColor="Color.Secondary"/>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="col-span-12 md:col-span-6">
+                        <MudText Typo="Typo.body2" Class="mb-2 fw-semibold">Email Address</MudText>
+                        <MudTextField
+                                @bind-Value="_model.Email"
+                                Placeholder="name@example.com"
+                                Variant="Variant.Outlined"
+                                Margin="Margin.Dense"
+                                Required="true"
+                                RequiredError="Email is required"
+                                Validation="@((string value) => ValidateEmail(value))"
+                                Adornment="Adornment.Start"
+                                AdornmentIcon="@Icons.Material.Filled.Email"
+                                AdornmentColor="Color.Secondary"/>
+                    </div>
+
+                    <!-- Subject Field -->
+                    <div class="col-span-12">
+                        <MudText Typo="Typo.body2" Class="mb-2 fw-semibold">Subject</MudText>
+                        <MudTextField
+                                @bind-Value="_model.Subject"
+                                Placeholder="What is this regarding?"
+                                Variant="Variant.Outlined"
+                                Margin="Margin.Dense"
+                                Required="true"
+                                RequiredError="Subject is required"
+                                Adornment="Adornment.Start"
+                                AdornmentIcon="@Icons.Material.Filled.Subject"
+                                AdornmentColor="Color.Secondary"/>
+                    </div>
+
+                    <!-- Message Field -->
+                    <div class="col-span-12">
+                        <div class="d-flex justify-space-between align-center mb-2">
+                            <MudText Typo="Typo.body2" Class="fw-semibold">Your Message</MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                Max 500 characters
+                            </MudText>
+                        </div>
+                        <MudTextField
+                                @bind-Value="_model.Message"
+                                Placeholder="Please describe your issue in detail so we can assist you better..."
+                                Variant="Variant.Outlined"
+                                Lines="6"
+                                MaxLength="500"
+                                Counter="500"
+                                Required="true"
+                                RequiredError="Message is required"
+                                Validation="@((string value) => ValidateMessage(value))"/>
+                    </div>
+
+                    <!-- Privacy Notice -->
+                    <div class="col-span-12">
+                        <div class="d-flex align-start gap-2 pa-3"
+                             style="background-color: #E3F2FD; border-radius: 8px;">
+                            <MudIcon Icon="@Icons.Material.Filled.Info" Color="Color.Primary" Size="Size.Small"
+                                     Style="margin-top: 2px;"/>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary" Style="line-height: 1.5;">
+                                By submitting this form, you agree to our
+                                <MudLink Typo="Typo.caption" Style="font-weight: 600; text-decoration: underline;">
+                                    Privacy Policy
+                                </MudLink>
+                                and allow us to contact you regarding your inquiry.
+                            </MudText>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-span-12">
+                        <MudButton
+                                OnClick="@HandleSubmit"
+                                Variant="Variant.Filled"
+                                Color="Color.Primary"
+                                FullWidth="true"
+                                Size="Size.Large"
+                                Disabled="@_isSubmitting"
+                                EndIcon="@Icons.Material.Filled.Send"
+                                Style="border-radius: 8px; text-transform: none; font-weight: 600; height: 48px;">
+                            @(_isSubmitting ? "Sending..." : "Send Message")
+                        </MudButton>
+                    </div>
+                </div>
+            </MudForm>
+
+            <!-- Alternative Contact -->
+            <div class="text-center mt-6">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Prefer to email us directly?
+                    <MudLink Href="mailto:support@quizmaster.com" Typo="Typo.body2"
+                             Style="font-weight: 600; color: #2196F3;">
+                        support@quizmaster.com
+                    </MudLink>
+                </MudText>
+            </div>
+        </MudPaper>
+
+        <!-- FAQ Link -->
+        <div class="text-center mt-6">
+            <div class="d-flex justify-center align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.QuestionAnswer" Color="Color.Secondary" Size="Size.Small"/>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Check our
+                    <MudLink Href="/faq" Typo="Typo.body2" Style="font-weight: 600; color: #2196F3;">
+                        FAQ
+                    </MudLink>
+                    for common questions
+                </MudText>
+            </div>
+        </div>
+    </MudContainer>
+</div>
+
+@code {
+    private MudForm? _form;
+    private bool _isSubmitting;
+    private ContactSupportModel _model = new();
+
+    private class ContactSupportModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Subject { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+    }
+
+    private string? ValidateEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return "Email is required";
+
+        if (!email.Contains("@") || !email.Contains("."))
+            return "Please enter a valid email address";
+
+        return null;
+    }
+
+    private string? ValidateMessage(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+            return "Message is required";
+
+        if (message.Length < 10)
+            return "Message must be at least 10 characters";
+
+        return null;
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (_form == null)
+            return;
+
+        await _form.Validate();
+
+        if (!_form.IsValid)
+        {
+            Snackbar.Add("Please fill in all required fields correctly", Severity.Warning);
+            return;
+        }
+
+        try
+        {
+            _isSubmitting = true;
+
+            // Simulate API call
+            await Task.Delay(1500);
+
+            // In a real implementation, you would send this to your backend:
+            // var result = await ContactService.SendSupportRequest(_model);
+
+            // Generate a reference number for the confirmation page
+            var random = new Random();
+            var referenceNumber = $"#QZ-{random.Next(1000, 9999)}";
+
+            // Navigate to confirmation page with reference number
+            NavigationManager.NavigateTo($"/support-confirmation/{Uri.EscapeDataString(referenceNumber)}");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error sending message: {ex.Message}", Severity.Error);
+            _isSubmitting = false;
+        }
+    }
+
+}
+

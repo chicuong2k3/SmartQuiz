@@ -1,0 +1,94 @@
+/* Page Background */
+.contact-support-page {
+    background-color: #F5F7FA;
+    min-height: 100vh;
+}
+
+/* Form Paper */
+.contact-form-paper {
+    border-radius: 16px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Input Field Styling */
+.contact-form-paper ::deep .mud-input-outlined {
+    background-color: #FAFAFA;
+    border-radius: 8px;
+}
+
+.contact-form-paper ::deep .mud-input-outlined:hover {
+    background-color: white;
+}
+
+.contact-form-paper ::deep .mud-input-root:focus-within {
+    background-color: white;
+}
+
+.contact-form-paper ::deep fieldset {
+    border-color: #E0E0E0;
+}
+
+.contact-form-paper ::deep .mud-input-root:hover fieldset {
+    border-color: #BDBDBD;
+}
+
+.contact-form-paper ::deep .mud-input-root.mud-input-focused fieldset {
+    border-color: #2196F3;
+    border-width: 2px;
+}
+
+/* Input Adornment Icons */
+.contact-form-paper ::deep .mud-input-adornment {
+    color: #9E9E9E;
+}
+
+.contact-form-paper ::deep .mud-input-root.mud-input-focused .mud-input-adornment {
+    color: #2196F3;
+}
+
+/* Text Counter */
+.contact-form-paper ::deep .mud-input-helper-text {
+    text-align: right;
+    color: #9E9E9E;
+    font-size: 12px;
+}
+
+/* Submit Button */
+.contact-form-paper ::deep .mud-button-root {
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    transition: all 0.3s ease;
+}
+
+.contact-form-paper ::deep .mud-button-root:hover {
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+    transform: translateY(-1px);
+}
+
+.contact-form-paper ::deep .mud-button-root:active {
+    transform: translateY(0);
+}
+
+/* Privacy Notice Box */
+.contact-form-paper ::deep .mud-link {
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 960px) {
+    .contact-form-paper {
+        padding: 24px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact-form-paper {
+        padding: 20px !important;
+    }
+
+    .contact-support-page ::deep .mud-container {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+}
+

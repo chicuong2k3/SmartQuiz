@@ -1,0 +1,331 @@
+@page "/help"
+@page "/faq"
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Help Center - QuizMaster</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-6">
+    <!-- Breadcrumb -->
+    <MudBreadcrumbs Items="_breadcrumbItems" Class="mb-4 px-0">
+        <ItemTemplate Context="item">
+            <MudLink Href="@item.Href" Class="text-decoration-none">
+                @item.Text
+            </MudLink>
+        </ItemTemplate>
+    </MudBreadcrumbs>
+
+    <div class="grid grid-cols-12 gap-6">
+        <!-- Left Sidebar -->
+        <div class="col-span-12 lg:col-span-3">
+            <MudPaper Elevation="1" Class="pa-0" Style="border-radius: 12px;">
+                <MudList T="string" Clickable="true" Class="pa-0">
+                    <MudListItem T="string"
+                                 OnClick="@(() => SelectCategory("account"))"
+                                 Class="@GetCategoryClass("account")"
+                                 Style="border-radius: 12px 12px 0 0;">
+                        <div class="d-flex align-center gap-3">
+                            <MudIcon Icon="@Icons.Material.Filled.AccountCircle"
+                                     Color="@GetCategoryIconColor("account")"/>
+                            <MudText Typo="Typo.body1" Style="font-weight: 500;">Account</MudText>
+                        </div>
+                    </MudListItem>
+
+                    <MudDivider/>
+
+                    <MudListItem T="string"
+                                 OnClick="@(() => SelectCategory("creating"))"
+                                 Class="@GetCategoryClass("creating")">
+                        <div class="d-flex align-center gap-3">
+                            <MudIcon Icon="@Icons.Material.Filled.Edit" Color="@GetCategoryIconColor("creating")"/>
+                            <MudText Typo="Typo.body1" Style="font-weight: 500;">Creating Quizzes</MudText>
+                        </div>
+                    </MudListItem>
+
+                    <MudDivider/>
+
+                    <MudListItem T="string"
+                                 OnClick="@(() => SelectCategory("studying"))"
+                                 Class="@GetCategoryClass("studying")">
+                        <div class="d-flex align-center gap-3">
+                            <MudIcon Icon="@Icons.Material.Filled.School" Color="@GetCategoryIconColor("studying")"/>
+                            <MudText Typo="Typo.body1" Style="font-weight: 500;">Studying</MudText>
+                        </div>
+                    </MudListItem>
+
+                    <MudDivider/>
+
+                    <MudListItem T="string"
+                                 OnClick="@(() => SelectCategory("billing"))"
+                                 Class="@GetCategoryClass("billing")">
+                        <div class="d-flex align-center gap-3">
+                            <MudIcon Icon="@Icons.Material.Filled.CreditCard" Color="@GetCategoryIconColor("billing")"/>
+                            <MudText Typo="Typo.body1" Style="font-weight: 500;">Billing</MudText>
+                        </div>
+                    </MudListItem>
+
+                    <MudDivider/>
+
+                    <MudListItem T="string"
+                                 OnClick="@(() => SelectCategory("support"))"
+                                 Class="@GetCategoryClass("support")"
+                                 Style="border-radius: 0 0 12px 12px;">
+                        <div class="d-flex align-center gap-3">
+                            <MudIcon Icon="@Icons.Material.Filled.ContactSupport"
+                                     Color="@GetCategoryIconColor("support")"/>
+                            <MudText Typo="Typo.body1" Style="font-weight: 500;">Contact Support</MudText>
+                        </div>
+                    </MudListItem>
+                </MudList>
+            </MudPaper>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-span-12 lg:col-span-9">
+            <!-- Header Section -->
+            <div class="help-header mb-6">
+                <MudText Typo="Typo.h3" Class="text-white fw-bold mb-3">How can we help?</MudText>
+                <MudText Typo="Typo.body1" Class="text-white mb-4" Style="opacity: 0.9;">
+                    Search our knowledge base for answers
+                </MudText>
+
+                <!-- Search Bar -->
+                <div class="d-flex gap-2">
+                    <MudTextField
+                            @bind-Value="_searchQuery"
+                            Placeholder="Search for questions, keywords, or topics..."
+                            Variant="Variant.Outlined"
+                            Adornment="Adornment.Start"
+                            AdornmentIcon="@Icons.Material.Filled.Search"
+                            Class="flex-1 search-input"
+                            Style="background-color: white; border-radius: 8px;"/>
+                    <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Surface"
+                            Size="Size.Large"
+                            Style="background-color: white; color: #2196F3; border-radius: 8px; text-transform: none; font-weight: 600; min-width: 100px;">
+                        Search
+                    </MudButton>
+                </div>
+            </div>
+
+            <!-- FAQ Sections -->
+            @if (_selectedCategory == "account")
+            {
+                <div class="faq-section mb-4">
+                    <div class="d-flex align-center gap-2 mb-4">
+                        <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Primary" Size="Size.Medium"/>
+                        <MudText Typo="Typo.h5" Class="fw-bold">Account Management</MudText>
+                    </div>
+
+                    <MudExpansionPanels MultiExpansion="true" Elevation="1">
+                        <MudExpansionPanel Class="faq-panel mb-3">
+                            <TitleContent>
+                                <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 500;">How do I reset my password?
+                                    </MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="line-height: 1.6;">
+                                    To reset your password, click on "Forgot Password" on the login page. Enter your
+                                    email address,
+                                    and we'll send you a link to reset your password. The link will be valid for 24
+                                    hours.
+                                    If you don't receive the email, check your spam folder or contact support.
+                                </MudText>
+                            </ChildContent>
+                        </MudExpansionPanel>
+
+                        <MudExpansionPanel Class="faq-panel mb-3">
+                            <TitleContent>
+                                <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 500;">Can I change my username?
+                                    </MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="line-height: 1.6;">
+                                    Yes! You can change your username from your profile settings. Go to Settings >
+                                    Profile > Edit Username.
+                                    Note that your username must be unique and can only be changed once every 30 days.
+                                </MudText>
+                            </ChildContent>
+                        </MudExpansionPanel>
+
+                        <MudExpansionPanel Class="faq-panel mb-3">
+                            <TitleContent>
+                                <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 500;">How do I delete my account?
+                                    </MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="line-height: 1.6;">
+                                    To delete your account, go to Settings > Account > Delete Account. Please note that
+                                    this action is
+                                    permanent and cannot be undone. All your quizzes, progress, and data will be
+                                    permanently deleted.
+                                    Consider exporting your data before deletion.
+                                </MudText>
+                            </ChildContent>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </div>
+            }
+
+            @if (_selectedCategory == "creating")
+            {
+                <div class="faq-section mb-4">
+                    <div class="d-flex align-center gap-2 mb-4">
+                        <MudIcon Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Medium"/>
+                        <MudText Typo="Typo.h5" Class="fw-bold">Creating Quizzes</MudText>
+                    </div>
+
+                    <MudExpansionPanels MultiExpansion="true" Elevation="1">
+                        <MudExpansionPanel Class="faq-panel mb-3">
+                            <TitleContent>
+                                <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 500;">How do I add images to a
+                                        question?
+                                    </MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="line-height: 1.6;">
+                                    When creating or editing a flashcard, click the image icon below the text field. You
+                                    can either upload
+                                    an image from your device or paste an image URL. Supported formats include JPG, PNG,
+                                    and GIF.
+                                    Maximum file size is 5MB.
+                                </MudText>
+                            </ChildContent>
+                        </MudExpansionPanel>
+
+                        <MudExpansionPanel Class="faq-panel mb-3">
+                            <TitleContent>
+                                <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 500;">What is the time limit for
+                                        quizzes?
+                                    </MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="line-height: 1.6;">
+                                    By default, quizzes don't have a time limit. However, you can set a custom time
+                                    limit when creating
+                                    a quiz. Time limits can range from 10 seconds to 10 minutes per question. You can
+                                    also enable or
+                                    disable time limits for individual study sessions.
+                                </MudText>
+                            </ChildContent>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </div>
+            }
+
+            @if (_selectedCategory == "studying")
+            {
+                <div class="faq-section mb-4">
+                    <div class="d-flex align-center gap-2 mb-4">
+                        <MudIcon Icon="@Icons.Material.Filled.School" Color="Color.Primary" Size="Size.Medium"/>
+                        <MudText Typo="Typo.h5" Class="fw-bold">Studying</MudText>
+                    </div>
+
+                    <MudExpansionPanels MultiExpansion="true" Elevation="1">
+                        <MudExpansionPanel Class="faq-panel mb-3">
+                            <TitleContent>
+                                <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 500;">How do flashcards work?
+                                    </MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="line-height: 1.6;">
+                                    Flashcards use spaced repetition to help you learn efficiently. When you study,
+                                    cards you find
+                                    difficult will appear more frequently, while cards you master will appear less
+                                    often. This optimizes
+                                    your study time and improves long-term retention.
+                                </MudText>
+                            </ChildContent>
+                        </MudExpansionPanel>
+
+                        <MudExpansionPanel Class="faq-panel mb-3">
+                            <TitleContent>
+                                <div class="d-flex align-center justify-space-between" style="width: 100%;">
+                                    <MudText Typo="Typo.body1" Style="font-weight: 500;">Can I save my progress
+                                        mid-quiz?
+                                    </MudText>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="line-height: 1.6;">
+                                    Yes! Your progress is automatically saved after each question. If you need to stop
+                                    mid-quiz,
+                                    simply close the page and return later. You'll be able to continue from where you
+                                    left off.
+                                    Progress is synced across all your devices.
+                                </MudText>
+                            </ChildContent>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </div>
+            }
+
+            <!-- Contact Support Section -->
+            <MudPaper Elevation="1" Class="pa-6 mt-6"
+                      Style="border-radius: 12px; background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);">
+                <div class="d-flex align-center gap-4">
+                    <MudIcon Icon="@Icons.Material.Filled.Help" Color="Color.Primary" Size="Size.Large"
+                             Style="font-size: 48px;"/>
+                    <div class="flex-1">
+                        <MudText Typo="Typo.h6" Class="fw-bold mb-2">Still need help?</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            Our support team is available 24/7 to assist you with any issues.
+                        </MudText>
+                    </div>
+                    <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            Size="Size.Large"
+                            OnClick="@(() => Microsoft.AspNetCore.Components.NavigationManager.NavigateTo("/contact-support"))"
+                            Style="border-radius: 8px; text-transform: none; font-weight: 600; min-width: 160px;">
+                        Contact Support
+                    </MudButton>
+                </div>
+            </MudPaper>
+        </div>
+    </div>
+</MudContainer>
+
+@code {
+    private string _searchQuery = string.Empty;
+    private string _selectedCategory = "account";
+
+    private List<BreadcrumbItem> _breadcrumbItems = new()
+    {
+            new BreadcrumbItem("Home", href: "/"),
+            new BreadcrumbItem("Help Center", href: "/help", disabled: true)
+    };
+
+    private void SelectCategory(string category)
+    {
+        _selectedCategory = category;
+        StateHasChanged();
+    }
+
+    private string GetCategoryClass(string category)
+    {
+        return _selectedCategory == category
+                ? "selected-category pa-4"
+                : "pa-4";
+    }
+
+    private Color GetCategoryIconColor(string category)
+    {
+        return _selectedCategory == category ? Color.Primary : Color.Default;
+    }
+
+}
+

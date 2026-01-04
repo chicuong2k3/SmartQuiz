@@ -88,6 +88,7 @@ public static class ServicesExtensions
             fusion.AddOperationReprocessor();
             fusion.AddServer<IFlashcardService, FlashcardService>();
             fusion.AddServer<IFlashcardSetService, FlashcardSetService>();
+            fusion.AddServer<IQuizResultService, QuizResultService>();
         });
 
         services.AddAuthentication(options =>

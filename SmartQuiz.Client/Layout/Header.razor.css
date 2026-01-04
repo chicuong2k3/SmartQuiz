@@ -1,0 +1,20 @@
+.search-field ::deep .mud-input-root {
+    color: white !important;
+}
+
+.search-field ::deep .mud-input-root::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.search-field ::deep .mud-input-adornment-start {
+    color: white !important;
+}
+
+.search-field ::deep fieldset {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.search-field ::deep .mud-input-root:hover fieldset {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+

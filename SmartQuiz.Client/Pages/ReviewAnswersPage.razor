@@ -1,0 +1,323 @@
+@page "/quiz-results/{QuizResultId:guid}/review"
+
+@inject IQuizResultService QuizResultService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Review Answers</PageTitle>
+
+@if (_quizResult != null)
+{
+    var result = _quizResult;
+
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="py-6">
+
+        <!-- Header Section -->
+        <div class="mb-6">
+            <MudButton Variant="Variant.Text"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.KeyboardArrowLeft"
+                       OnClick="@(() => NavigationManager.NavigateTo($"/quiz-results/{QuizResultId}"))"
+                       Class="mb-4"
+                       Style="text-transform: none;">
+                Back to Summary
+            </MudButton>
+
+            <MudText Typo="Typo.h4" Class="fw-bold mb-2">Review Answers</MudText>
+            <MudText Typo="Typo.body1" Color="Color.Secondary">
+                @result.QuizTitle • @result.CorrectAnswers/@result.TotalQuestions Correct
+            </MudText>
+        </div>
+
+        <!-- Questions List -->
+        <MudStack Spacing="4">
+            @foreach (var answer in result.Answers.OrderBy(a => a.QuestionNumber))
+            {
+                var borderStyle = answer.IsCorrect ? "border: 2px solid #E8F5E9;" : "border: 2px solid #FFEBEE;";
+                <MudPaper Elevation="2" Class="pa-6" Style="@($"border-radius: 12px; {borderStyle}")">
+
+                    <!-- Question Header -->
+                    <div class="d-flex justify-space-between align-center mb-4">
+                        <div class="d-flex align-center gap-2">
+                            <MudText Typo="Typo.body2" Color="Color.Primary" Class="fw-bold text-uppercase"
+                                     Style="font-size: 11px;">
+                                QUESTION @answer.QuestionNumber OF @result.TotalQuestions
+                            </MudText>
+                        </div>
+
+                        @if (answer.IsCorrect)
+                        {
+                            <MudChip T="string" Size="Size.Small" Color="Color.Success" Style="font-weight: 600;">
+                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Class="mr-1"/>
+                                CORRECT
+                            </MudChip>
+                        }
+                        else
+                        {
+                            <MudChip T="string" Size="Size.Small" Color="Color.Error" Style="font-weight: 600;">
+                                <MudIcon Icon="@Icons.Material.Filled.Cancel" Size="Size.Small" Class="mr-1"/>
+                                INCORRECT
+                            </MudChip>
+                        }
+                    </div>
+
+                    <!-- Question Text -->
+                    <MudText Typo="Typo.h6" Class="fw-bold mb-4">
+                        @answer.Question
+                    </MudText>
+
+                    <!-- Answer Options -->
+                    <MudStack Spacing="2" Class="mb-4">
+                        @{
+                            // Parse options from the answer (simplified - you may need to enhance this)
+                            var options = GetAnswerOptions(answer);
+
+                            @foreach (var option in options)
+                            {
+                                var isUserAnswer = option.Text == answer.UserAnswer;
+                                var isCorrectAnswer = option.Text == answer.CorrectAnswer;
+                                var backgroundColor = isCorrectAnswer ? "#E8F5E9" : (isUserAnswer && !answer.IsCorrect ? "#FFEBEE" : "#FFFFFF");
+                                var borderColor = isCorrectAnswer ? "#4CAF50" : (isUserAnswer && !answer.IsCorrect ? "#F44336" : "#E0E0E0");
+                                var textColor = isCorrectAnswer ? "#2E7D32" : (isUserAnswer && !answer.IsCorrect ? "#C62828" : "#3C4043");
+
+                                <MudPaper Elevation="0"
+                                          Class="pa-3 d-flex align-center gap-3"
+                                          Style="@($"background-color: {backgroundColor}; border: 2px solid {borderColor}; border-radius: 8px;")">
+
+                                    <!-- Radio Circle -->
+                                    <div
+                                        style="@($"width: 20px; height: 20px; border-radius: 50%; border: 2px solid {borderColor}; background-color: {(isUserAnswer || isCorrectAnswer ? borderColor : "white")}; display: flex; align-items: center; justify-content: center;")">
+                                        @if (isUserAnswer || isCorrectAnswer)
+                                        {
+                                            <div
+                                                style="width: 8px; height: 8px; border-radius: 50%; background-color: white;"></div>
+                                        }
+                                    </div>
+
+                                    <!-- Option Text -->
+                                    <MudText Typo="Typo.body1" Class="flex-1"
+                                             Style="@($"color: {textColor}; font-weight: {(isUserAnswer || isCorrectAnswer ? "600" : "400")};")">
+                                        @option.Text
+                                    </MudText>
+
+                                    <!-- Indicators -->
+                                    @if (isCorrectAnswer)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success"
+                                                 Size="Size.Small"/>
+                                        <MudText Typo="Typo.caption" Color="Color.Success" Class="fw-bold">Correct
+                                            Answer
+                                        </MudText>
+                                    }
+                                    else if (isUserAnswer && !answer.IsCorrect)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Filled.Cancel" Color="Color.Error"
+                                                 Size="Size.Small"/>
+                                        <MudText Typo="Typo.caption" Color="Color.Error" Class="fw-bold">Your Answer
+                                        </MudText>
+                                    }
+                                </MudPaper>
+                            }
+                        }
+                    </MudStack>
+
+                    <!-- Explanation Section (if available) -->
+                    @if (!string.IsNullOrEmpty(GetExplanation(answer)))
+                    {
+                        <MudPaper Elevation="0" Class="pa-4"
+                                  Style="background-color: #E3F2FD; border-radius: 8px; border-left: 4px solid #2196F3;">
+                            <div class="d-flex align-center gap-2 mb-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Color="Color.Info" Size="Size.Small"/>
+                                <MudText Typo="Typo.body2" Color="Color.Info" Class="fw-bold">Explanation</MudText>
+                            </div>
+                            <MudText Typo="Typo.body2" Style="color: #1565C0;">
+                                @GetExplanation(answer)
+                            </MudText>
+                        </MudPaper>
+                    }
+
+                </MudPaper>
+            }
+        </MudStack>
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-space-between align-center mt-8">
+            <MudButton Variant="Variant.Text"
+                       Color="Color.Default"
+                       StartIcon="@Icons.Material.Filled.KeyboardArrowLeft"
+                       OnClick="NavigateToPreviousQuestion"
+                       Disabled="@(_currentQuestionIndex == 0)"
+                       Style="text-transform: none;">
+                Previous Questions
+            </MudButton>
+
+            <div class="d-flex align-center gap-2">
+                @for (int i = 1; i <= Math.Min(7, result.TotalQuestions); i++)
+                {
+                    var pageNum = i;
+                    var isActive = _currentPage == pageNum;
+
+                    <MudButton Variant="@(isActive ? Variant.Filled : Variant.Outlined)"
+                               Color="@(isActive ? Color.Primary : Color.Default)"
+                               Size="Size.Small"
+                               OnClick="@(() => NavigateToPage(pageNum))"
+                               Style="min-width: 40px; height: 40px; border-radius: 8px;">
+                        @pageNum
+                    </MudButton>
+                }
+
+                @if (result.TotalQuestions > 7)
+                {
+                    <MudText Typo="Typo.body1">...</MudText>
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               Size="Size.Small"
+                               Style="min-width: 40px; height: 40px; border-radius: 8px;">
+                        @result.TotalQuestions
+                    </MudButton>
+                }
+            </div>
+
+            <MudButton Variant="Variant.Text"
+                       Color="Color.Default"
+                       EndIcon="@Icons.Material.Filled.KeyboardArrowRight"
+                       OnClick="NavigateToNextQuestion"
+                       Disabled="@(_currentQuestionIndex >= result.Answers.Count - 1)"
+                       Style="text-transform: none;">
+                Next Questions
+            </MudButton>
+        </div>
+
+    </MudContainer>
+}
+else if (_error != null)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+        <MudAlert Severity="Severity.Error">
+            Failed to load quiz results: @_error
+        </MudAlert>
+    </MudContainer>
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="py-8 d-flex justify-center">
+        <MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Primary"/>
+    </MudContainer>
+}
+
+@code {
+    [Parameter] public Guid QuizResultId { get; set; }
+
+    private QuizResultDto? _quizResult;
+    private string? _error;
+    private int _currentQuestionIndex;
+    private int _currentPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _quizResult = await QuizResultService.GetQuizResultByIdAsync(QuizResultId);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private List<AnswerOption> GetAnswerOptions(QuestionAnswerDto answer)
+    {
+        // This is a simplified version. In a real app, you'd store options in the database
+        List<AnswerOption> options;
+
+        // Add some dummy options to make it look realistic (4 options total)
+        if (answer.Question.Contains("planet") && answer.Question.Contains("Red Planet"))
+        {
+            options = new List<AnswerOption>
+            {
+                new() { Text = "Venus" },
+                new() { Text = "Mars" },
+                new() { Text = "Jupiter" },
+                new() { Text = "Saturn" }
+            };
+        }
+        else if (answer.Question.Contains("chemical symbol") && answer.Question.Contains("Gold"))
+        {
+            options = new List<AnswerOption>
+            {
+                new() { Text = "Ag" },
+                new() { Text = "Gd" },
+                new() { Text = "Au" },
+                new() { Text = "Fe" }
+            };
+        }
+        else if (answer.Question.Contains("World War II") || answer.Question.Contains("WWII"))
+        {
+            options = new List<AnswerOption>
+            {
+                new() { Text = "1944" },
+                new() { Text = "1945" },
+                new() { Text = "1939" },
+                new() { Text = "1950" }
+            };
+        }
+        else
+        {
+            // Generic options
+            options = new List<AnswerOption>
+            {
+                new() { Text = answer.CorrectAnswer },
+                new() { Text = answer.UserAnswer },
+                new() { Text = "Option C" },
+                new() { Text = "Option D" }
+            };
+        }
+
+        return options.DistinctBy(o => o.Text).ToList();
+    }
+
+    private string GetExplanation(QuestionAnswerDto answer)
+    {
+        // This would come from your database in a real application
+        // For demo purposes, return sample explanations
+        if (answer.Question.Contains("chemical symbol") && answer.Question.Contains("Gold"))
+        {
+            return "The chemical symbol for Gold is Au, which comes from the Latin word for gold, aurum. 'Ag' is Silver (argentum), 'Fe' is Iron (ferrum), and 'Gd' is Gadolinium.";
+        }
+
+        return string.Empty; // No explanation available
+    }
+
+    private void NavigateToPreviousQuestion()
+    {
+        if (_currentQuestionIndex > 0)
+        {
+            _currentQuestionIndex--;
+            StateHasChanged();
+        }
+    }
+
+    private void NavigateToNextQuestion()
+    {
+        if (_quizResult != null)
+        {
+            if (_currentQuestionIndex < _quizResult.Answers.Count - 1)
+            {
+                _currentQuestionIndex++;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void NavigateToPage(int pageNum)
+    {
+        _currentPage = pageNum;
+        StateHasChanged();
+    }
+
+    private class AnswerOption
+    {
+        public string Text { get; set; } = string.Empty;
+    }
+
+}
+

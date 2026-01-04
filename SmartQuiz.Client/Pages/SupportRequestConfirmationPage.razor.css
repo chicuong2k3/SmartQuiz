@@ -1,0 +1,142 @@
+/* Page Background */
+.confirmation-page {
+    background-color: #F5F7FA;
+    min-height: 100vh;
+}
+
+/* Confirmation Card */
+.confirmation-card {
+    border-radius: 16px;
+    background-color: white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    max-width: 100%;
+}
+
+/* Success Icon Container */
+.success-icon-container {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-icon-container ::deep .mud-icon-root {
+    animation: checkmarkAppear 0.6s ease-out 0.2s both;
+}
+
+@keyframes checkmarkAppear {
+    from {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Reference Number Box */
+.reference-box {
+    background-color: #FAFAFA;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.reference-box:hover {
+    background-color: #F5F5F5;
+    border-color: #BDBDBD;
+}
+
+/* Copy Button Styling */
+.reference-box ::deep .mud-icon-button {
+    transition: all 0.2s ease;
+}
+
+.reference-box ::deep .mud-icon-button:hover {
+    background-color: #E3F2FD;
+    transform: scale(1.1);
+}
+
+/* Action Buttons */
+.confirmation-card ::deep .mud-button-filled {
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    transition: all 0.3s ease;
+}
+
+.confirmation-card ::deep .mud-button-filled:hover {
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+    transform: translateY(-1px);
+}
+
+.confirmation-card ::deep .mud-button-filled:active {
+    transform: translateY(0);
+}
+
+/* Footer Links */
+.confirmation-page ::deep .mud-link {
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.confirmation-page ::deep .mud-link:hover {
+    color: #2196F3 !important;
+}
+
+/* Social Icons */
+.confirmation-page ::deep .mud-icon-button {
+    transition: all 0.2s ease;
+}
+
+.confirmation-page ::deep .mud-icon-button:hover {
+    color: #2196F3 !important;
+    transform: translateY(-2px);
+}
+
+/* Page Animation */
+.confirmation-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .confirmation-card {
+        padding: 32px 24px !important;
+    }
+
+    .success-icon-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    .success-icon-container ::deep .mud-icon-root {
+        font-size: 56px !important;
+    }
+}
+

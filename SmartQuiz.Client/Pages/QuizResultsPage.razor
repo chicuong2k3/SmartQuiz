@@ -1,0 +1,299 @@
+@page "/quiz-results/{QuizResultId:guid}"
+@inherits ComputedStateComponent<QuizResultState>
+
+@inject IQuizResultService QuizResultService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+<PageTitle>Quiz Results Summary</PageTitle>
+
+@if (State.HasValue && State.Value.QuizResult != null)
+{
+    var result = State.Value.QuizResult;
+
+    <MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
+        <MudPaper Elevation="0" Class="pa-8" Style="border-radius: 16px;">
+
+            <!-- Header Section -->
+            <div class="d-flex flex-column align-center mb-8">
+                <!-- Success Badge -->
+                <div class="d-flex align-center gap-2 mb-4">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                             Color="@(result.IsPassed ? Color.Success : Color.Error)"
+                             Size="Size.Small"/>
+                    <MudText Typo="Typo.caption"
+                             Color="@(result.IsPassed ? Color.Success : Color.Error)"
+                             Class="fw-bold text-uppercase">
+                        @(result.IsPassed ? "PASSED" : "FAILED")
+                    </MudText>
+                </div>
+
+                <!-- Title -->
+                <MudText Typo="Typo.h3" Class="fw-bold mb-3">Quiz Complete!</MudText>
+
+                <!-- Description -->
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="mb-2">
+                    Great job completing the <strong>@result.QuizTitle</strong>.
+                </MudText>
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center">
+                    You answered <strong style="color: #2196F3;">@result.CorrectAnswers</strong> out of
+                    <strong>@result.TotalQuestions</strong> questions correctly.
+                </MudText>
+            </div>
+
+            <!-- Score Circle -->
+            <div class="d-flex justify-center mb-8">
+                <div style="width: 240px; height: 240px; position: relative;">
+                    <MudProgressCircular Size="Size.Large"
+                                         Value="@result.ScorePercentage"
+                                         Min="0"
+                                         Max="100"
+                                         Color="Color.Primary"
+                                         Style="width: 240px; height: 240px;">
+                        <div class="d-flex flex-column align-center">
+                            <MudText Typo="Typo.h2" Class="fw-bold"
+                                     Style="font-size: 3.5rem;">@result.ScorePercentage%
+                            </MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="text-uppercase fw-bold">SCORE
+                            </MudText>
+                        </div>
+                    </MudProgressCircular>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-12 gap-4 mb-8">
+                <!-- Time Taken -->
+                <div class="col-span-12 md:col-span-4">
+                    <MudPaper Elevation="0" Class="pa-4 d-flex flex-column align-center"
+                              Style="background-color: #F8F9FA; border-radius: 12px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Timer"
+                                 Color="Color.Primary"
+                                 Size="Size.Medium"
+                                 Class="mb-2"/>
+                        <MudText Typo="Typo.caption"
+                                 Color="Color.Secondary"
+                                 Class="text-uppercase fw-bold mb-1"
+                                 Style="font-size: 11px;">
+                            Time Taken
+                        </MudText>
+                        <MudText Typo="Typo.h6" Class="fw-bold">
+                            @FormatTime(result.TimeTaken)
+                        </MudText>
+                    </MudPaper>
+                </div>
+
+                <!-- Points Earned -->
+                <div class="col-span-12 md:col-span-4">
+                    <MudPaper Elevation="0" Class="pa-4 d-flex flex-column align-center"
+                              Style="background-color: #F8F9FA; border-radius: 12px;">
+                        <MudIcon Icon="@Icons.Material.Filled.EmojiEvents"
+                                 Style="color: #FF9800;"
+                                 Size="Size.Medium"
+                                 Class="mb-2"/>
+                        <MudText Typo="Typo.caption"
+                                 Color="Color.Secondary"
+                                 Class="text-uppercase fw-bold mb-1"
+                                 Style="font-size: 11px;">
+                            Points Earned
+                        </MudText>
+                        <MudText Typo="Typo.h6" Class="fw-bold">
+                            +@result.PointsEarned XP
+                        </MudText>
+                    </MudPaper>
+                </div>
+
+                <!-- Global Rank -->
+                <div class="col-span-12 md:col-span-4">
+                    <MudPaper Elevation="0" Class="pa-4 d-flex flex-column align-center"
+                              Style="background-color: #F8F9FA; border-radius: 12px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Public"
+                                 Style="color: #FF5722;"
+                                 Size="Size.Medium"
+                                 Class="mb-2"/>
+                        <MudText Typo="Typo.caption"
+                                 Color="Color.Secondary"
+                                 Class="text-uppercase fw-bold mb-1"
+                                 Style="font-size: 11px;">
+                            Global Rank
+                        </MudText>
+                        <MudText Typo="Typo.h6" Class="fw-bold">
+                            Top @result.GlobalRankPercentile%
+                        </MudText>
+                    </MudPaper>
+                </div>
+            </div>
+
+            <!-- Performance by Topic & Answer Key -->
+            <div class="grid grid-cols-12 gap-6 mb-6">
+                <!-- Performance by Topic -->
+                <div class="col-span-12 lg:col-span-6">
+                    <div class="d-flex align-center gap-2 mb-4">
+                        <MudIcon Icon="@Icons.Material.Filled.BarChart"
+                                 Color="Color.Primary"
+                                 Size="Size.Small"/>
+                        <MudText Typo="Typo.h6" Class="fw-bold">Performance by Topic</MudText>
+                    </div>
+
+                    @foreach (var topic in result.TopicPerformances)
+                    {
+                        <div class="mb-4">
+                            <div class="d-flex justify-space-between align-center mb-1">
+                                <MudText Typo="Typo.body2" Class="fw-medium">@topic.TopicName</MudText>
+                                <MudText Typo="Typo.body2" Class="fw-bold"
+                                         Style="@($"color: {GetTopicColor(topic.Percentage)};")">
+                                    @topic.Percentage%
+                                </MudText>
+                            </div>
+                            <MudProgressLinear Value="@topic.Percentage"
+                                               Size="Size.Medium"
+                                               Color="@GetTopicColorEnum(topic.Percentage)"
+                                               Style="height: 8px; border-radius: 4px;"/>
+                        </div>
+                    }
+                </div>
+
+                <!-- Answer Key -->
+                <div class="col-span-12 lg:col-span-6">
+                    <div class="d-flex justify-space-between align-center mb-4">
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.List"
+                                     Color="Color.Primary"
+                                     Size="Size.Small"/>
+                            <MudText Typo="Typo.h6" Class="fw-bold">Answer Key</MudText>
+                        </div>
+                        <MudLink Typo="Typo.body2" Style="color: #2196F3;" Class="fw-semibold">View All</MudLink>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        @for (int i = 1; i <= result.TotalQuestions; i++)
+                        {
+                            var questionNum = i;
+                            var answer = result.Answers.FirstOrDefault(a => a.QuestionNumber == questionNum);
+                            var isCorrect = answer?.IsCorrect ?? false;
+
+                            <MudPaper Elevation="0"
+                                      Class="pa-2 d-flex align-center justify-center"
+                                      Style="@($"{GetAnswerBoxStyle(isCorrect)} width: 42px; height: 42px; border-radius: 8px; cursor: pointer;")"
+                                      @onclick="@(() => ShowAnswerDetail(questionNum))">
+                                <MudText Typo="Typo.body2" Class="fw-bold">@questionNum</MudText>
+                            </MudPaper>
+                        }
+                    </div>
+
+                    <div class="d-flex align-center gap-4">
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Circle"
+                                     Style="color: #4CAF50; font-size: 12px;"/>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">Correct</MudText>
+                        </div>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Circle"
+                                     Style="color: #F44336; font-size: 12px;"/>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">Incorrect</MudText>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-center gap-3">
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.Visibility"
+                           OnClick="@(() => NavigationManager.NavigateTo($"/quiz-results/{result.Id}/review"))"
+                           Style="border-radius: 8px; text-transform: none;">
+                    Review Answers
+                </MudButton>
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.Refresh"
+                           OnClick="RetakeQuiz"
+                           Style="border-radius: 8px; text-transform: none;">
+                    Retake Quiz
+                </MudButton>
+            </div>
+
+            <!-- Return to Dashboard -->
+            <div class="d-flex justify-center mt-6">
+                <MudButton Variant="Variant.Text"
+                           Color="Color.Default"
+                           StartIcon="@Icons.Material.Filled.ArrowBack"
+                           OnClick="@(() => NavigationManager.NavigateTo("/"))"
+                           Style="text-transform: none;">
+                    Return to Dashboard
+                </MudButton>
+            </div>
+
+        </MudPaper>
+    </MudContainer>
+}
+else if (State.HasError)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+        <MudAlert Severity="Severity.Error">
+            Failed to load quiz results: @(State.Error?.Message ?? "Unknown error")
+        </MudAlert>
+    </MudContainer>
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="py-8 d-flex justify-center">
+        <MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Primary"/>
+    </MudContainer>
+}
+
+@code {
+    [Parameter] public Guid QuizResultId { get; set; }
+
+    protected override Task<QuizResultState> ComputeState(CancellationToken cancellationToken)
+        => QuizResultState.LoadAsync(QuizResultService, QuizResultId, cancellationToken);
+
+    private string FormatTime(TimeSpan time)
+    {
+        return $"{time.Minutes:D2}:{time.Seconds:D2}";
+    }
+
+    private string GetTopicColor(int percentage)
+    {
+        if (percentage >= 80) return "#4CAF50";
+        if (percentage >= 60) return "#2196F3";
+        if (percentage >= 40) return "#FF9800";
+        return "#F44336";
+    }
+
+    private Color GetTopicColorEnum(int percentage)
+    {
+        if (percentage >= 80) return Color.Success;
+        if (percentage >= 60) return Color.Primary;
+        if (percentage >= 40) return Color.Warning;
+        return Color.Error;
+    }
+
+    private string GetAnswerBoxStyle(bool isCorrect)
+    {
+        if (isCorrect)
+            return "background-color: #E8F5E9; border: 2px solid #4CAF50; color: #2E7D32;";
+        return "background-color: #FFEBEE; border: 2px solid #F44336; color: #C62828;";
+    }
+
+    private void ShowAnswerDetail(int questionNumber)
+    {
+        // TODO: Implement answer detail modal or navigation
+        Snackbar.Add($"Showing details for question {questionNumber}", Severity.Info);
+    }
+
+    private void RetakeQuiz()
+    {
+        if (State.HasValue && State.Value.QuizResult != null)
+        {
+            var flashcardSetId = State.Value.QuizResult.FlashcardSetId;
+            NavigationManager.NavigateTo("/flashcard-sets/" + flashcardSetId.ToString() + "/quiz");
+        }
+    }
+
+}
+

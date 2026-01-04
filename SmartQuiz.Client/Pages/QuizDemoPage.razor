@@ -1,0 +1,254 @@
+@page "/quiz-demo"
+@inject ICommander Commander
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+<PageTitle>Quiz Demo - Create Sample Result</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+    <MudPaper Elevation="2" Class="pa-6" Style="border-radius: 12px;">
+        <MudText Typo="Typo.h4" Class="fw-bold mb-4">Create Sample Quiz Result</MudText>
+        <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-6">
+            Click the button below to generate a sample quiz result for testing the Quiz Results Summary page.
+        </MudText>
+
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Size="Size.Large"
+                   OnClick="CreateSampleQuizResult"
+                   Disabled="@_isCreating"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   Class="mb-4">
+            @(_isCreating ? "Creating..." : "Create Sample Quiz Result")
+        </MudButton>
+
+        @if (_lastCreatedId != Guid.Empty)
+        {
+            <MudAlert Severity="Severity.Success" Class="mt-4">
+                Quiz result created successfully!
+                <MudButton Variant="Variant.Text"
+                           Color="Color.Success"
+                           OnClick="@(() => NavigationManager.NavigateTo($"/quiz-results/{_lastCreatedId}"))"
+                           Class="mt-2">
+                    View Results
+                </MudButton>
+            </MudAlert>
+        }
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private bool _isCreating;
+    private Guid _lastCreatedId = Guid.Empty;
+
+    private async Task CreateSampleQuizResult()
+    {
+        try
+        {
+            _isCreating = true;
+
+            // Sample topic performances
+            var topicPerformances = new List<TopicPerformanceDto>
+            {
+                new() { TopicName = "World History", CorrectCount = 10, TotalCount = 10, Percentage = 100 },
+                new() { TopicName = "Modern Science", CorrectCount = 8, TotalCount = 10, Percentage = 80 },
+                new() { TopicName = "Geography", CorrectCount = 6, TotalCount = 10, Percentage = 60 }
+            };
+
+            // Sample question answers with realistic questions
+            var answers = new List<QuestionAnswerDto>
+            {
+                // Question 1 - Correct
+                new()
+                {
+                    QuestionNumber = 1, IsCorrect = true,
+                    Question = "Which planet in our solar system is known as the \"Red Planet\"?",
+                    CorrectAnswer = "Mars", UserAnswer = "Mars"
+                },
+
+                // Question 2 - Correct
+                new()
+                {
+                    QuestionNumber = 2, IsCorrect = true,
+                    Question = "What is the capital of France?",
+                    CorrectAnswer = "Paris", UserAnswer = "Paris"
+                },
+
+                // Question 3 - Correct
+                new()
+                {
+                    QuestionNumber = 3, IsCorrect = true,
+                    Question = "Who painted the Mona Lisa?",
+                    CorrectAnswer = "Leonardo da Vinci", UserAnswer = "Leonardo da Vinci"
+                },
+
+                // Question 4 - Incorrect
+                new()
+                {
+                    QuestionNumber = 4, IsCorrect = false,
+                    Question = "What is the chemical symbol for Gold?",
+                    CorrectAnswer = "Au", UserAnswer = "Gd"
+                },
+
+                // Question 5 - Correct
+                new()
+                {
+                    QuestionNumber = 5, IsCorrect = true,
+                    Question = "In which year did World War II end?",
+                    CorrectAnswer = "1945", UserAnswer = "1945"
+                },
+
+                // Question 6 - Correct
+                new()
+                {
+                    QuestionNumber = 6, IsCorrect = true,
+                    Question = "What is the largest ocean on Earth?",
+                    CorrectAnswer = "Pacific Ocean", UserAnswer = "Pacific Ocean"
+                },
+
+                // Question 7 - Correct
+                new()
+                {
+                    QuestionNumber = 7, IsCorrect = true,
+                    Question = "Who wrote 'Romeo and Juliet'?",
+                    CorrectAnswer = "William Shakespeare", UserAnswer = "William Shakespeare"
+                },
+
+                // Question 8 - Correct
+                new()
+                {
+                    QuestionNumber = 8, IsCorrect = true,
+                    Question = "What is the speed of light?",
+                    CorrectAnswer = "299,792,458 m/s", UserAnswer = "299,792,458 m/s"
+                },
+
+                // Question 9 - Correct
+                new()
+                {
+                    QuestionNumber = 9, IsCorrect = true,
+                    Question = "What is the smallest prime number?",
+                    CorrectAnswer = "2", UserAnswer = "2"
+                },
+
+                // Question 10 - Correct
+                new()
+                {
+                    QuestionNumber = 10, IsCorrect = true,
+                    Question = "How many continents are there?",
+                    CorrectAnswer = "7", UserAnswer = "7"
+                },
+
+                // Question 11 - Correct
+                new()
+                {
+                    QuestionNumber = 11, IsCorrect = true,
+                    Question = "What is the chemical formula for water?",
+                    CorrectAnswer = "H2O", UserAnswer = "H2O"
+                },
+
+                // Question 12 - Correct
+                new()
+                {
+                    QuestionNumber = 12, IsCorrect = true,
+                    Question = "Who was the first person to walk on the moon?",
+                    CorrectAnswer = "Neil Armstrong", UserAnswer = "Neil Armstrong"
+                },
+
+                // Question 13 - Correct
+                new()
+                {
+                    QuestionNumber = 13, IsCorrect = true,
+                    Question = "What is the largest planet in our solar system?",
+                    CorrectAnswer = "Jupiter", UserAnswer = "Jupiter"
+                },
+
+                // Question 14 - Incorrect
+                new()
+                {
+                    QuestionNumber = 14, IsCorrect = false,
+                    Question = "What is the capital of Australia?",
+                    CorrectAnswer = "Canberra", UserAnswer = "Sydney"
+                },
+
+                // Question 15 - Correct
+                new()
+                {
+                    QuestionNumber = 15, IsCorrect = true,
+                    Question = "How many bones are in the human body?",
+                    CorrectAnswer = "206", UserAnswer = "206"
+                },
+
+                // Question 16 - Correct
+                new()
+                {
+                    QuestionNumber = 16, IsCorrect = true,
+                    Question = "What is the tallest mountain in the world?",
+                    CorrectAnswer = "Mount Everest", UserAnswer = "Mount Everest"
+                },
+
+                // Question 17 - Incorrect
+                new()
+                {
+                    QuestionNumber = 17, IsCorrect = false,
+                    Question = "Who invented the telephone?",
+                    CorrectAnswer = "Alexander Graham Bell", UserAnswer = "Thomas Edison"
+                },
+
+                // Question 18 - Correct
+                new()
+                {
+                    QuestionNumber = 18, IsCorrect = true,
+                    Question = "What is the boiling point of water in Celsius?",
+                    CorrectAnswer = "100°C", UserAnswer = "100°C"
+                },
+
+                // Question 19 - Correct
+                new()
+                {
+                    QuestionNumber = 19, IsCorrect = true,
+                    Question = "How many players are on a soccer team?",
+                    CorrectAnswer = "11", UserAnswer = "11"
+                },
+
+                // Question 20 - Correct
+                new()
+                {
+                    QuestionNumber = 20, IsCorrect = true,
+                    Question = "What is the longest river in the world?",
+                    CorrectAnswer = "Nile River", UserAnswer = "Nile River"
+                }
+            };
+
+            var command = new CreateQuizResultCommand(
+                UserId: Guid.NewGuid(), // In real app, use actual user ID
+                FlashcardSetId: Guid.NewGuid(), // In real app, use actual flashcard set ID
+                QuizTitle: "General Knowledge Assessment",
+                TotalQuestions: 20,
+                CorrectAnswers: 17,
+                TimeTaken: new TimeSpan(0, 4, 12), // 4 minutes 12 seconds
+                PointsEarned: 340,
+                GlobalRankPercentile: 10,
+                TopicPerformances: topicPerformances,
+                Answers: answers
+            );
+
+            var result = await Commander.Call(command);
+
+            if (result != null)
+            {
+                _lastCreatedId = result.Id;
+                Snackbar.Add("Sample quiz result created successfully!", Severity.Success);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error creating quiz result: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isCreating = false;
+        }
+    }
+
+}
+

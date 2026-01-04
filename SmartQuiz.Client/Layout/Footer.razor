@@ -1,4 +1,74 @@
-<h3>Footer</h3>
+@inject NavigationManager NavigationManager
+
+<MudPaper Elevation="0" Class="py-6" Style="background-color: #F8F9FA; border-top: 1px solid #E0E0E0;">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+        <MudGrid>
+            <MudItem xs="12" md="4">
+                <div class="d-flex align-center gap-2 mb-3">
+                    <MudIcon Icon="@Icons.Material.Filled.School" Color="Color.Primary" Size="Size.Large" />
+                    <MudText Typo="Typo.h6" Class="fw-bold">QuizMaster</MudText>
+                </div>
+                <MudText Typo="Typo.body2" Style="color: #757575;" Class="mb-3">
+                    Making learning fun and accessible for everyone. Create, share, and take quizzes on any topic.
+                </MudText>
+                <div class="d-flex gap-2">
+                    <MudIconButton Icon="@Icons.Material.Filled.Face" Size="Size.Small" Style="color: #757575;" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Face" Size="Size.Small" Style="color: #757575;" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Face" Size="Size.Small" Style="color: #757575;" />
+                </div>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="2">
+                <MudText Typo="Typo.body1" Class="fw-bold mb-3">Product</MudText>
+                <MudStack Spacing="2">
+                    <MudLink Href="/" Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Home</MudLink>
+                    <MudLink Href="/browse" Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Browse Quizzes</MudLink>
+                    <MudLink Href="/create" Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Create Quiz</MudLink>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="2">
+                <MudText Typo="Typo.body1" Class="fw-bold mb-3">Company</MudText>
+                <MudStack Spacing="2">
+                    <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">About Us</MudLink>
+                    <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Careers</MudLink>
+                    <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Contact</MudLink>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="2">
+                <MudText Typo="Typo.body1" Class="fw-bold mb-3">Support</MudText>
+                <MudStack Spacing="2">
+                    <MudLink Href="/help" Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Help Center</MudLink>
+                    <MudLink Href="/contact" Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Contact Support</MudLink>
+                    <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">FAQ</MudLink>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="2">
+                <MudText Typo="Typo.body1" Class="fw-bold mb-3">Legal</MudText>
+                <MudStack Spacing="2">
+                    <MudLink Href="/privacy-policy" Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Privacy Policy</MudLink>
+                    <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Terms of Service</MudLink>
+                    <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Cookie Policy</MudLink>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+
+        <MudDivider Class="my-4" />
+
+        <div class="d-flex justify-space-between align-center flex-wrap gap-3">
+            <MudText Typo="Typo.body2" Style="color: #757575;">
+                © @DateTime.Now.Year QuizMaster. All rights reserved.
+            </MudText>
+            <div class="d-flex gap-3">
+                <MudLink Href="/privacy-policy" Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Privacy</MudLink>
+                <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Terms</MudLink>
+                <MudLink Typo="Typo.body2" Style="color: #757575; text-decoration: none;">Cookies</MudLink>
+            </div>
+        </div>
+    </MudContainer>
+</MudPaper>
 
 @code {
 
