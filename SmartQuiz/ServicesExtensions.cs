@@ -86,26 +86,44 @@ public static class ServicesExtensions
                 .AddPresenceReporter();
 
             fusion.AddOperationReprocessor();
+
+
+            fusion.AddServer<ICustomAuthService, CustomAuthService>();
+
             fusion.AddServer<IFlashcardService, FlashcardService>();
             fusion.AddServer<IFlashcardSetService, FlashcardSetService>();
             fusion.AddServer<IQuizResultService, QuizResultService>();
         });
 
         services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        }).AddCookie(options =>
-        {
-            options.LoginPath = "/signIn";
-            options.LogoutPath = "/signOut";
-            options.ExpireTimeSpan = TimeSpan.FromDays(7);
-            options.SlidingExpiration = true;
-            options.Events.OnSigningIn = ctx =>
             {
-                ctx.CookieOptions.Expires = DateTimeOffset.UtcNow.AddDays(28);
-                return Task.CompletedTask;
-            };
-        });
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/signIn";
+                options.LogoutPath = "/signOut";
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                options.SlidingExpiration = true;
+                options.Events.OnSigningIn = ctx =>
+                {
+                    ctx.CookieOptions.Expires = DateTimeOffset.UtcNow.AddDays(28);
+                    return Task.CompletedTask;
+                };
+            })
+            .AddGoogle(options =>
+            {
+                options.ClientId = configuration["Authentication:Google:ClientId"]!;
+                options.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
+                options.CallbackPath = "/authentication/signin-google";
+                options.SaveTokens = true;
+            })
+            .AddFacebook(options =>
+            {
+                options.AppId = configuration["Authentication:Facebook:AppId"]!;
+                options.AppSecret = configuration["Authentication:Facebook:AppSecret"]!;
+                options.CallbackPath = "/authentication/signin-facebook";
+                options.SaveTokens = true;
+            });
 
         return services;
     }

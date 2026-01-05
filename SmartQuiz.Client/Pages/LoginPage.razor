@@ -1,0 +1,241 @@
+@page "/login"
+@using System.Text.RegularExpressions
+
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject Session Session
+@inject ClientAuthHelper ClientAuthHelper
+@inject ICommander Commander
+
+<div class="d-flex align-center justify-center overflow-hidden"
+     style="min-height: calc(100vh - var(--mud-appbar-height)); background: var(--color-background);">
+
+    <MudGrid Justify="Justify.Center" Class="ma-0" Style="width: 100%; max-width: 1200px;">
+        <MudItem xs="12" sm="10" md="8" lg="5" Class="pa-3 pa-sm-4">
+            <MudPaper Elevation="0" Class="pa-6 pa-sm-8"
+                      Style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 8px;">
+
+                <!-- Logo and Title -->
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5"
+                             Style="font-weight: 600; color: var(--color-foreground); text-align: center;">
+                        Đăng nhập vào tài khoản
+                    </MudText>
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="d-flex gap-2 mb-6">
+                    <MudButton
+                        Variant="Variant.Outlined"
+                        FullWidth
+                        Style="text-transform: none; font-weight: 500; color: var(--color-foreground); border-color: var(--color-border); height: 40px; font-size: 0.875rem;"
+                        OnClick="@(() => HandleExternalLogin("Google"))">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                            <path
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                fill="#4285F4"/>
+                            <path
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                fill="#34A853"/>
+                            <path
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                                fill="#FBBC05"/>
+                            <path
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                fill="#EA4335"/>
+                        </svg>
+                        Google
+                    </MudButton>
+
+                    <MudButton
+                        Variant="Variant.Outlined"
+                        FullWidth
+                        Style="text-transform: none; font-weight: 500; color: var(--color-foreground); border-color: var(--color-border); height: 40px; font-size: 0.875rem;"
+                        OnClick="@(() => HandleExternalLogin("Facebook"))">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2" style="margin-right: 8px;">
+                            <path
+                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Facebook
+                    </MudButton>
+                </div>
+
+                <!-- Divider -->
+                <div class="d-flex align-center gap-2 mb-6">
+                    <div style="flex: 1; height: 1px; background: var(--color-border);"></div>
+                    <MudText Typo="Typo.body2"
+                             Style="color: var(--color-muted-foreground); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Hoặc tiếp tục với
+                    </MudText>
+                    <div style="flex: 1; height: 1px; background: var(--color-border);"></div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <MudAlert Severity="Severity.Error" Class="mb-4" Dense="true" Elevation="0">
+                        @_errorMessage
+                    </MudAlert>
+                }
+
+                <MudForm @ref="@_form" @bind-IsValid="_isFormValid">
+                    <!-- Email Field -->
+                    <div class="mb-4">
+                        <MudTextField
+                            @bind-Value="_email"
+                            Variant="Variant.Outlined"
+                            FullWidth
+                            Margin="Margin.Dense"
+                            Label="Email"
+                            Placeholder="ten@example.com"
+                            Style="font-size: 0.875rem;"
+                            Validation="@(new Func<string, string?>(ValidateEmail))"/>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-4">
+                        <MudTextField
+                            @bind-Value="_password"
+                            Variant="Variant.Outlined"
+                            FullWidth
+                            Margin="Margin.Dense"
+                            InputType="@_passwordInputType"
+                            Placeholder="Nhập mật khẩu"
+                            Label="Mật khẩu"
+                            Adornment="Adornment.End"
+                            AdornmentIcon="@_passwordIcon"
+                            OnAdornmentClick="TogglePasswordVisibility"
+                            Style="font-size: 0.875rem;"
+                            Validation="@(new Func<string, string?>(ValidatePassword))"/>
+                    </div>
+
+                    <!-- Forgot Password -->
+                    <div class="text-right mb-6">
+                        <MudLink Typo="Typo.body2"
+                                 Style="color: var(--color-foreground); text-decoration: underline; text-underline-offset: 4px; font-size: 0.875rem; cursor: pointer;"
+                                 OnClick="@OpenForgotPasswordDialog">
+                            Quên mật khẩu?
+                        </MudLink>
+                    </div>
+
+                    <!-- Login Button -->
+                    <MudButton
+                        Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        FullWidth
+                        Size="Size.Medium"
+                        OnClick="@HandleLogin"
+                        Disabled="@_isLoading">
+                        @if (_isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Style="color: white;"/>
+                        }
+                        else
+                        {
+                            <text>Đăng nhập</text>
+                        }
+                    </MudButton>
+                </MudForm>
+
+
+                <!-- Sign Up Link -->
+                <div class="text-center mt-6">
+                    <MudText Typo="Typo.body1" Style="color: var(--color-muted-foreground);">
+                        <span>Chưa có tài khoản?</span>
+                        <MudLink Href="/signup" Typo="Typo.body1"
+                                 Style="color: var(--color-foreground); text-decoration: underline; text-underline-offset: 4px; font-weight: 500; margin-left: 4px;">
+                            Đăng ký
+                        </MudLink>
+                    </MudText>
+                </div>
+
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</div>
+
+@code {
+    private MudForm _form;
+    private bool _isFormValid;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _errorMessage = string.Empty;
+    private bool _isLoading;
+    private bool _passwordVisible;
+    private InputType _passwordInputType = InputType.Password;
+    private string _passwordIcon = Icons.Material.Filled.VisibilityOff;
+
+    private string? ValidateEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return "Email không được để trống";
+        if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            return "Email không hợp lệ";
+        return null;
+    }
+
+    private string? ValidatePassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+            return "Mật khẩu không được để trống";
+        if (password.Length < 6)
+            return "Mật khẩu phải có ít nhất 6 ký tự";
+        return null;
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        _passwordVisible = !_passwordVisible;
+        _passwordInputType = _passwordVisible ? InputType.Text : InputType.Password;
+        _passwordIcon = _passwordVisible ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+    }
+
+    private async Task HandleLogin()
+    {
+        await _form.Validate();
+        if (!_isFormValid)
+            return;
+
+        _isLoading = true;
+        StateHasChanged();
+        try
+        {
+            var command = new SignInCommand(
+                Session,
+                _email,
+                _password
+            );
+
+            var user = await Commander.Call(command);
+
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleExternalLogin(string provider)
+    {
+        await ClientAuthHelper.SignIn(provider);
+    }
+
+    private async Task OpenForgotPasswordDialog()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            CloseButton = true,
+            BackdropClick = true,
+            CloseOnEscapeKey = true
+        };
+
+        await DialogService.ShowAsync<ForgotPasswordDialog>("", options);
+    }
+}

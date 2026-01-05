@@ -24,6 +24,8 @@ builder.Services.AddFusion(fusion =>
     fusion.Rpc.AddWebSocketClient(builder.HostEnvironment.BaseAddress);
     fusion.AddFusionTime();
 
+    fusion.AddClient<ICustomAuthService>();
+
     fusion.AddClient<IFlashcardService>();
     fusion.AddClient<IFlashcardSetService>();
     fusion.AddClient<IQuizResultService>();

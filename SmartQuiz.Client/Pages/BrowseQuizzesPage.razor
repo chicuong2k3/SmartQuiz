@@ -25,7 +25,7 @@
                     Placeholder="Search for quizzes, topics, or creators..."
                     Variant="Variant.Outlined"
                     Adornment="Adornment.Start"
-    Icons.Material.FilledmentIcon="@Icons.Material.Filled.Search"
+                    AdornmentIcon="@Icons.Material.Filled.Search"
                     Margin="Margin.Dense"
                     Class="flex-1"
                     Style="background-color: white; border-radius: 8px;"/>
@@ -35,7 +35,7 @@
                     @bind-Value="_sortBy"
                     Variant="Variant.Outlined"
                     Margin="Margin.Dense"
-                    Style="min-width: 200px; background-color: Icons.Material.Filled 8px;"
+                    Style="min-width: 200px; background-color: white; border-radius: 8px;"
                     AdornmentIcon="@Icons.Material.Filled.FilterList"
                     Adornment="Adornment.Start">
                 <MudSelectItem Value="@("popular")">Most Popular</MudSelectItem>
@@ -59,7 +59,8 @@
             <MudChip
                     T="string"
                     Color="@(_selectedCategory == "trending" ? Color.Primary : Color.Default)"
-                    Variant="@(_selectedCategory == "trending" ? Variant.Filled : VIcons.Material.Filled                 OnClick="@(() => SetCategory("trending"))"
+                    Variant="@(_selectedCategory == "trending" ? Variant.Filled : Variant.Outlined)"
+                    OnClick="@(() => SetCategory("trending"))"
                     Icon="@Icons.Material.Filled.TrendingUp"
                     Style="cursor: pointer;">
                 Trending
@@ -145,12 +146,14 @@
                                     Style="position: absolute; top: 12px; left: 12px; font-weight: 600; font-size: 11px;">
                                 @GetQuizCategory(quiz)
                             </MudChip>
-                        </divIcons.Material.Filled      <MudCardContent Class="pa-4">
+                        </div>
+
+                        <MudCardContent Class="pa-4">
                             <!-- Quiz Stats -->
                             <div class="d-flex gap-4 mb-3">
                                 <div class="d-flex align-center gap-1">
                                     <MudIcon Icon="@Icons.Material.Filled.Quiz" Size="Size.Small"
-                                             Style="colorIcons.Material.Filled 16px;"/>
+                                             Style="color: #757575; font-size: 16px;"/>
                                     <MudText Typo="Typo.caption"
                                              Style="color: #757575; font-size: 12px;">@quiz.FlashcardCount Q+
                                     </MudText>
@@ -194,7 +197,7 @@
                                         Color="Color.Primary"
                                         Size="Size.Small"
                                         OnClick="@(() => PlayQuiz(quiz.Id))"
-                      Icons.Material.Filledle="border-radius: 6px; text-transform: none; font-weight: 600;">
+                                        Style="border-radius: 6px; text-transform: none; font-weight: 600;">
                                     Play Now
                                 </MudButton>
                             </div>
@@ -229,11 +232,18 @@
     else
     {
         <div class="d-flex justify-center align-center" style="min-height: 400px;">
-            <MudP, Icons.Material.Filled.Science rue" Color="Color.Prim, Icons.Material.Filled.HistoryEdu div>
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" Size="Size.Large"/>
+        </div>
     }
-</MudContainer>, Icons.Material.Filled.Movie searchQuery = strin, Icons.Material.Filled.Calculate y = "popular";
-    priva, Icons.Material.Filled.Public all";
-    private , Icons.Material.Filled.Palette // Mock data for demo purposes
+</MudContainer>
+
+@code {
+    private string _searchQuery = string.Empty;
+    private string _sortBy = "popular";
+    private string _selectedCategory = "all";
+    private bool _showLoadMore = true;
+
+    // Mock data for demo purposes
     private readonly Dictionary<string, string> _categoryColors = new()
     {
             { "science", "#4CAF50" },
@@ -302,7 +312,8 @@
         // Mock category assignment based on quiz title
         var title = quiz.Title.ToLower();
         if (title.Contains("science") || title.Contains("chemistry") || title.Contains("biology"))
-            returreturn _categoryIcons.GetValueOrDefault(category, Icons.Material.Filled.Quiz|| title.Contains("ancient"))
+            return "Science";
+        if (title.Contains("history") || title.Contains("war") || title.Contains("ancient"))
             return "History";
         if (title.Contains("movie") || title.Contains("music") || title.Contains("pop"))
             return "Pop Culture";

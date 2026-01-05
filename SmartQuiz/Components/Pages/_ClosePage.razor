@@ -1,0 +1,19 @@
+@page "/fusion/close"
+@attribute [ExcludeFromInteractiveRouting]
+@layout NoLayout
+
+<script>
+    setTimeout(function () {
+        if (window.opener) {
+            window.opener.location.href = "/";
+        }
+        window.close();
+    }, 0)
+</script>
+
+@code {
+
+    [SupplyParameterFromQuery(Name = "flow")]
+    public string Flow { get; set; } = "";
+
+}

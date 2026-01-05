@@ -1,22 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Global Styles - Premium Look */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.01em;
+}
+
+html, body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Better scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F7FAFC;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CBD5E0;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #A0AEC0;
+}
 
 :root {
     --mud-elevation-0: none !important;
 
-    --mud-elevation-1: 0px 2px 1px -1px rgba(145 158 171 / 20%),
-    0px 1px 1px 0px rgba(145 158 171 / 14%),
-    0px 1px 3px 0px rgba(145 158 171 / 12%) !important;
+    --mud-elevation-1: 0px 1px 3px rgba(0, 0, 0, 0.02),
+    0px 1px 2px rgba(0, 0, 0, 0.03) !important;
 
-    --mud-elevation-2: 0px 3px 1px -2px rgba(145 158 171 / 20%),
-    0px 2px 2px 0px rgba(145 158 171 / 14%),
-    0px 1px 5px 0px rgba(145 158 171 / 12%) !important;
+    --mud-elevation-2: 0px 2px 4px rgba(0, 0, 0, 0.02),
+    0px 4px 8px rgba(0, 0, 0, 0.04) !important;
 
-    --mud-elevation-3: 0px 3px 3px -2px rgba(145 158 171 / 20%),
-    0px 3px 4px 0px rgba(145 158 171 / 14%),
-    0px 1px 8px 0px rgba(145 158 171 / 12%) !important;
+    --mud-elevation-3: 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 8px 16px rgba(0, 0, 0, 0.06) !important;
 
-    --mud-elevation-4: 0px 2px 4px -1px rgba(145 158 171 / 20%),
-    0px 4px 5px 0px rgba(145 158 171 / 14%),
-    0px 1px 10px 0px rgba(145 158 171 / 12%) !important;
+    --mud-elevation-4: 0px 8px 16px rgba(0, 0, 0, 0.06),
+    0px 12px 24px rgba(0, 0, 0, 0.08) !important;
 
     --mud-elevation-5: 0px 3px 5px -1px rgba(145 158 171 / 20%),
     0px 5px 8px 0px rgba(145 158 171 / 14%),
@@ -98,95 +132,95 @@
     0px 24px 38px 3px rgba(145 158 171 / 14%),
     0px 9px 46px 8px rgba(145 158 171 / 12%) !important;
     --mud-elevation-25: 0 5px 5px -3px rgba(0, 0, 0, .06), 0 8px 10px 1px rgba(0, 0, 0, .042), 0 3px 14px 2px rgba(0, 0, 0, .036) !important;
-    --mud-appbar-height: 60px;
+    --mud-appbar-height: 64px;
     --mud-drawer-mini-width-left: 56px;
     --mud-drawer-mini-width-right: 56px;
     --mud-drawer-width-left: 240px;
     --mud-drawer-width-right: 240px;
-    --mud-typography-default-family: Roboto, Helvetica, Arial, sans-serif;
+    --mud-typography-default-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --mud-typography-default-weight: 400;
-    --mud-typography-default-size: .875rem;
-    --mud-typography-default-lineheight: 1.43;
-    --mud-typography-default-letterspacing: .01071em;
+    --mud-typography-default-size: 1rem;
+    --mud-typography-default-lineheight: 1.5;
+    --mud-typography-default-letterspacing: 0;
     --mud-typography-default-text-transform: none;
-    --mud-typography-h1-family: ;
-    --mud-typography-h1-weight: 300;
-    --mud-typography-h1-size: 6rem;
-    --mud-typography-h1-lineheight: 1.167;
-    --mud-typography-h1-letterspacing: -.01562em;
+    --mud-typography-h1-family: 'Inter', sans-serif;
+    --mud-typography-h1-weight: 800;
+    --mud-typography-h1-size: 4rem;
+    --mud-typography-h1-lineheight: 1.2;
+    --mud-typography-h1-letterspacing: -0.02em;
     --mud-typography-h1-text-transform: none;
-    --mud-typography-h2-family: ;
-    --mud-typography-h2-weight: 300;
-    --mud-typography-h2-size: 3.75rem;
-    --mud-typography-h2-lineheight: 1.2;
-    --mud-typography-h2-letterspacing: -.00833em;
+    --mud-typography-h2-family: 'Inter', sans-serif;
+    --mud-typography-h2-weight: 700;
+    --mud-typography-h2-size: 3rem;
+    --mud-typography-h2-lineheight: 1.25;
+    --mud-typography-h2-letterspacing: -0.01em;
     --mud-typography-h2-text-transform: none;
-    --mud-typography-h3-family: ;
-    --mud-typography-h3-weight: 400;
-    --mud-typography-h3-size: 3rem;
-    --mud-typography-h3-lineheight: 1.167;
-    --mud-typography-h3-letterspacing: 0;
+    --mud-typography-h3-family: 'Inter', sans-serif;
+    --mud-typography-h3-weight: 700;
+    --mud-typography-h3-size: 2.25rem;
+    --mud-typography-h3-lineheight: 1.3;
+    --mud-typography-h3-letterspacing: -0.01em;
     --mud-typography-h3-text-transform: none;
-    --mud-typography-h4-family: ;
-    --mud-typography-h4-weight: 400;
-    --mud-typography-h4-size: 2.125rem;
-    --mud-typography-h4-lineheight: 1.235;
-    --mud-typography-h4-letterspacing: .00735em;
+    --mud-typography-h4-family: 'Inter', sans-serif;
+    --mud-typography-h4-weight: 700;
+    --mud-typography-h4-size: 1.75rem;
+    --mud-typography-h4-lineheight: 1.35;
+    --mud-typography-h4-letterspacing: 0;
     --mud-typography-h4-text-transform: none;
-    --mud-typography-h5-family: ;
-    --mud-typography-h5-weight: 400;
+    --mud-typography-h5-family: 'Inter', sans-serif;
+    --mud-typography-h5-weight: 700;
     --mud-typography-h5-size: 1.5rem;
-    --mud-typography-h5-lineheight: 1.334;
+    --mud-typography-h5-lineheight: 1.4;
     --mud-typography-h5-letterspacing: 0;
     --mud-typography-h5-text-transform: none;
-    --mud-typography-h6-family: ;
-    --mud-typography-h6-weight: 500;
+    --mud-typography-h6-family: 'Inter', sans-serif;
+    --mud-typography-h6-weight: 700;
     --mud-typography-h6-size: 1.25rem;
-    --mud-typography-h6-lineheight: 1.6;
-    --mud-typography-h6-letterspacing: .0075em;
+    --mud-typography-h6-lineheight: 1.5;
+    --mud-typography-h6-letterspacing: 0;
     --mud-typography-h6-text-transform: none;
-    --mud-typography-subtitle1-family: ;
-    --mud-typography-subtitle1-weight: 400;
-    --mud-typography-subtitle1-size: 1rem;
-    --mud-typography-subtitle1-lineheight: 1.75;
-    --mud-typography-subtitle1-letterspacing: .00938em;
+    --mud-typography-subtitle1-family: 'Inter', sans-serif;
+    --mud-typography-subtitle1-weight: 600;
+    --mud-typography-subtitle1-size: 1.125rem;
+    --mud-typography-subtitle1-lineheight: 1.6;
+    --mud-typography-subtitle1-letterspacing: 0;
     --mud-typography-subtitle1-text-transform: none;
-    --mud-typography-subtitle2-family: ;
-    --mud-typography-subtitle2-weight: 500;
-    --mud-typography-subtitle2-size: .875rem;
-    --mud-typography-subtitle2-lineheight: 1.57;
-    --mud-typography-subtitle2-letterspacing: .00714em;
+    --mud-typography-subtitle2-family: 'Inter', sans-serif;
+    --mud-typography-subtitle2-weight: 600;
+    --mud-typography-subtitle2-size: 1rem;
+    --mud-typography-subtitle2-lineheight: 1.5;
+    --mud-typography-subtitle2-letterspacing: 0;
     --mud-typography-subtitle2-text-transform: none;
-    --mud-typography-body1-family: ;
+    --mud-typography-body1-family: 'Inter', sans-serif;
     --mud-typography-body1-weight: 400;
     --mud-typography-body1-size: 1rem;
-    --mud-typography-body1-lineheight: 1.5;
-    --mud-typography-body1-letterspacing: .00938em;
+    --mud-typography-body1-lineheight: 1.6;
+    --mud-typography-body1-letterspacing: 0;
     --mud-typography-body1-text-transform: none;
-    --mud-typography-body2-family: ;
+    --mud-typography-body2-family: 'Inter', sans-serif;
     --mud-typography-body2-weight: 400;
-    --mud-typography-body2-size: .875rem;
-    --mud-typography-body2-lineheight: 1.43;
-    --mud-typography-body2-letterspacing: .01071em;
+    --mud-typography-body2-size: 0.875rem;
+    --mud-typography-body2-lineheight: 1.5;
+    --mud-typography-body2-letterspacing: 0;
     --mud-typography-body2-text-transform: none;
 
     --mud-typography-input-weight: 400;
     --mud-typography-input-size: 1rem;
-    --mud-typography-input-lineheight: 1.1876;
-    --mud-typography-input-letterspacing: .00938em;
+    --mud-typography-input-lineheight: 1.5;
+    --mud-typography-input-letterspacing: 0;
     --mud-typography-input-text-transform: none;
 
     --mud-typography-caption-weight: 400;
-    --mud-typography-caption-size: .75rem;
-    --mud-typography-caption-lineheight: 1.66;
-    --mud-typography-caption-letterspacing: .03333em;
+    --mud-typography-caption-size: 0.875rem;
+    --mud-typography-caption-lineheight: 1.4;
+    --mud-typography-caption-letterspacing: 0;
     --mud-typography-caption-text-transform: none;
 
-    --mud-typography-overline-weight: 400;
-    --mud-typography-overline-size: .75rem;
-    --mud-typography-overline-lineheight: 2.66;
-    --mud-typography-overline-letterspacing: .08333em;
-    --mud-typography-overline-text-transform: none;
+    --mud-typography-overline-weight: 700;
+    --mud-typography-overline-size: 0.75rem;
+    --mud-typography-overline-lineheight: 1.5;
+    --mud-typography-overline-letterspacing: 0.08em;
+    --mud-typography-overline-text-transform: uppercase;
     --mud-zindex-appbar: 1300;
     --mud-zindex-dialog: 1400;
     --mud-zindex-drawer: 1100;
@@ -195,29 +229,29 @@
     --mud-zindex-tooltip: 1600;
 
 
-    /* Primary Color - Vibrant Blue */
-    --mud-palette-primary: #2196F3 !important;
-    --mud-palette-primary-lighten: #BBDEFB !important;
-    --mud-palette-primary-darken: #1976D2 !important;
+    /* Primary Color - shadcn/ui zinc-900 */
+    --mud-palette-primary: #18181B !important;
+    --mud-palette-primary-lighten: #3F3F46 !important;
+    --mud-palette-primary-darken: #09090B !important;
 
-    /* Secondary/Accent Color - Orange */
-    --mud-palette-secondary: #FF9800 !important;
-    --mud-palette-secondary-lighten: #FFE0B2 !important;
-    --mud-palette-secondary-darken: #F57C00 !important;
+    /* Secondary/Accent Color - shadcn/ui zinc-500 */
+    --mud-palette-secondary: #71717A !important;
+    --mud-palette-secondary-lighten: #A1A1AA !important;
+    --mud-palette-secondary-darken: #52525B !important;
 
-    /* Feedback/Utility Colors */
-    --mud-palette-success: #4CAF50 !important;
-    --mud-palette-success-lighten: #81C784 !important;
-    --mud-palette-success-darken: #388E3C !important;
-    --mud-palette-info: #2196F3 !important;
-    --mud-palette-info-lighten: #64B5F6 !important;
-    --mud-palette-info-darken: #1976D2 !important;
-    --mud-palette-warning: #FFEB3B !important;
-    --mud-palette-warning-lighten: #FFF59D !important;
-    --mud-palette-warning-darken: #FBC02D !important;
-    --mud-palette-error: #F44336 !important;
-    --mud-palette-error-lighten: #E57373 !important;
-    --mud-palette-error-darken: #D32F2F !important;
+    /* Feedback/Utility Colors - shadcn/ui style */
+    --mud-palette-success: #22C55E !important;
+    --mud-palette-success-lighten: #4ADE80 !important;
+    --mud-palette-success-darken: #16A34A !important;
+    --mud-palette-info: #3B82F6 !important;
+    --mud-palette-info-lighten: #60A5FA !important;
+    --mud-palette-info-darken: #2563EB !important;
+    --mud-palette-warning: #F59E0B !important;
+    --mud-palette-warning-lighten: #FBBF24 !important;
+    --mud-palette-warning-darken: #D97706 !important;
+    --mud-palette-error: #EF4444 !important;
+    --mud-palette-error-lighten: #F87171 !important;
+    --mud-palette-error-darken: #DC2626 !important;
 
     --mud-ripple-opacity: 0 !important;
     --mud-ripple-opacity-secondary: 0 !important;
@@ -226,16 +260,41 @@
 
     --mud-typography-button-text-transform: none !important;
     --mud-typography-button-weight: 500 !important;
-    --mud-typography-button-size: .875rem !important;
-    --mud-typography-button-lineheight: 1.75 !important;
-    --mud-typography-button-letterspacing: .02857em !important;
+    --mud-typography-button-size: 1rem !important;
+    --mud-typography-button-lineheight: 1.5 !important;
+    --mud-typography-button-letterspacing: 0 !important;
 
-    /* Custom Neutral Colors - Material Design */
-    --app-background: #F8F9FA;
+    /* shadcn/ui Color System - Zinc Palette */
+    --color-background: #FAFAFA;
+    --color-foreground: #09090B;
+    --color-card: #FFFFFF;
+    --color-card-foreground: #09090B;
+    --color-popover: #FFFFFF;
+    --color-popover-foreground: #09090B;
+    --color-primary: #18181B;
+    --color-primary-foreground: #FAFAFA;
+    --color-secondary: #F4F4F5;
+    --color-secondary-foreground: #18181B;
+    --color-muted: #F4F4F5;
+    --color-muted-foreground: #71717A;
+    --color-accent: #F4F4F5;
+    --color-accent-foreground: #18181B;
+    --color-destructive: #EF4444;
+    --color-destructive-foreground: #FAFAFA;
+    --color-border: #E4E4E7;
+    --color-input: #E4E4E7;
+    --color-ring: #18181B;
+
+    /* Legacy app colors - keeping for compatibility */
+    --app-background: #FAFAFA;
     --app-surface: #FFFFFF;
-    --app-text-primary: #3C4043;
-    --app-text-secondary: #757575;
-    --app-text-disabled: #BDBDBD;
+    --app-surface-elevated: #FFFFFF;
+    --app-text-primary: #09090B;
+    --app-text-secondary: #71717A;
+    --app-text-tertiary: #A1A1AA;
+    --app-text-disabled: #D4D4D8;
+    --app-border: #E4E4E7;
+    --app-border-light: #F4F4F5;
 }
 
 /* ===========================
@@ -304,26 +363,127 @@
     background-color: #f5f5f5 !important;
 }
 
-/* Gradient Backgrounds - Not available in MudBlazor or base Tailwind */
+/* Gradient Backgrounds - Quizlet vibrant style */
 .bg-gradient-purple {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, #4255FF 0%, #6B7FFF 100%) !important;
+}
+
+.bg-gradient-blue {
+    background: linear-gradient(135deg, #4255FF 0%, #42A5FF 100%) !important;
+}
+
+.bg-gradient-yellow {
+    background: linear-gradient(135deg, #FFCD1F 0%, #FFE17F 100%) !important;
 }
 
 .bg-gradient-green {
-    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%) !important;
+    background: linear-gradient(135deg, #23B26B 0%, #4FD98B 100%) !important;
 }
 
-/* Hover Effects - Custom card interaction */
+.bg-gradient-pink {
+    background: linear-gradient(135deg, #FF6B9D 0%, #FFA5C0 100%) !important;
+}
+
+.bg-gradient-teal {
+    background: linear-gradient(135deg, #3CCFCF 0%, #7DE2E2 100%) !important;
+}
+
+/* Auth page gradients - softer, more subtle */
+.bg-auth-gradient-1 {
+    background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%) !important;
+}
+
+.bg-auth-gradient-2 {
+    background: linear-gradient(135deg, #F6F7FB 0%, #E8EAF6 100%) !important;
+}
+
+.bg-auth-gradient-quizlet {
+    background: linear-gradient(135deg, #F0F2FF 0%, #FFF9E6 100%) !important;
+}
+
+/* Hover Effects - Quizlet card interactions */
 .hover-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
 }
 
 .hover-card:hover {
     transform: translateY(-4px) !important;
-    box-shadow: var(--mud-elevation-8) !important;
+    box-shadow: 0 12px 24px rgba(66, 85, 255, 0.15) !important;
+}
+
+.hover-lift {
+    transition: transform 0.2s ease !important;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px) !important;
+}
+
+.hover-scale {
+    transition: transform 0.2s ease !important;
+}
+
+.hover-scale:hover {
+    transform: scale(1.02) !important;
+}
+
+/* Premium Glass Effects */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+}
+
+.glass-card-dark {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Premium Surface Elevations */
+.surface-elevated {
+    background: white !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    border-radius: 16px !important;
+}
+
+.surface-elevated:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+    transform: translateY(-2px) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Smooth Transitions */
+.transition-all {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.transition-transform {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.transition-colors {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
 /* Component Specific Styles - Use scoped CSS in components instead when possible */
+.social-login-btn {
+    border-radius: var(--mud-default-borderradius) !important;
+    text-transform: none !important;
+    border-color: #e0e0e0 !important;
+}
+
+.primary-action-btn {
+    border-radius: var(--mud-default-borderradius) !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+}
+
 .social-login-btn {
     border-radius: var(--mud-default-borderradius) !important;
     text-transform: none !important;
@@ -345,8 +505,238 @@
     border-radius: 16px !important;
 }
 
+.mud-card {
+    border-radius: 16px !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    background: white !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mud-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
 .mud-card.action-card {
+    cursor: pointer !important;
+}
+
+.mud-card.action-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: rgba(66, 85, 255, 0.2) !important;
+    box-shadow: 0 12px 32px rgba(66, 85, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Quizlet-style buttons - Premium look */
+.mud-button-filled {
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    padding: 10px 16px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+.mud-button-filled:hover {
+    box-shadow: none !important;
+    opacity: 0.9 !important;
+}
+
+.mud-button-filled:active {
+    transform: translateY(0) !important;
+    opacity: 0.8 !important;
+}
+
+.mud-button-outlined {
+    border-radius: 8px !important;
+    border-width: 1px !important;
+    padding: 10px 16px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}
+
+.mud-button-outlined:hover {
+    background-color: #F4F4F5 !important;
+}
+
+.mud-button-text {
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+/* shadcn/ui style inputs - Compact and refined */
+.mud-input-outlined {
+    border-radius: 6px !important;
+}
+
+.mud-input-outlined .mud-input-root {
+    border-color: #E4E4E7 !important;
+    border-width: 1px !important;
+    transition: all 0.2s ease !important;
+    padding: 0 !important;
+    min-height: 36px !important;
+}
+
+.mud-input-outlined .mud-input-slot {
+    font-size: 0.875rem !important;
+    padding: 6px 12px !important;
+    min-height: 34px !important;
+}
+
+.mud-input-outlined .mud-input-slot input {
+    padding: 0 !important;
+    line-height: 1.25 !important;
+    font-size: 0.875rem !important;
+}
+
+.mud-input-outlined:hover .mud-input-root {
+    border-color: #E4E4E7 !important;
+    background-color: #FAFAFA !important;
+}
+
+.mud-input-outlined.mud-input-outlined-focused .mud-input-root,
+.mud-input-outlined .mud-input-root:focus-within,
+.mud-input-outlined .mud-input-root.mud-focused,
+.mud-input-control.mud-input-control-focused .mud-input-root {
+    border-color: #E4E4E7 !important;
+    border-width: 1px !important;
+    background-color: #FAFAFA !important;
+    box-shadow: none !important;
+}
+
+/* Override MudBlazor default focus outline - high specificity */
+.mud-input-outlined .mud-input-root fieldset,
+.mud-input-outlined .mud-input-outlined-border,
+.mud-input-outlined fieldset.mud-input-outlined-border {
+    border-color: #E4E4E7 !important;
+    border-width: 1px !important;
+    transition: all 0.2s ease !important;
+}
+
+.mud-input-outlined.mud-input-outlined-focused .mud-input-root fieldset,
+.mud-input-outlined.mud-input-outlined-focused .mud-input-outlined-border,
+.mud-input-outlined.mud-input-outlined-focused fieldset.mud-input-outlined-border,
+.mud-input-control.mud-input-control-focused .mud-input-root fieldset,
+.mud-input-control.mud-input-control-focused .mud-input-outlined-border,
+.mud-input.mud-input-outlined.mud-input-outlined-focused .mud-input-outlined-border,
+.mud-input.mud-input-outlined.mud-input-outlined-focused fieldset,
+fieldset.mud-input-outlined-border {
+    border-color: #E4E4E7 !important;
+    border-width: 1px !important;
+}
+
+/* Force same style for all states */
+.mud-input-control .mud-input-outlined-border,
+.mud-input-control:hover .mud-input-outlined-border,
+.mud-input-control:focus-within .mud-input-outlined-border,
+.mud-input-control.mud-input-control-focused .mud-input-outlined-border {
+    border-color: #E4E4E7 !important;
+    border-width: 1px !important;
+}
+
+.mud-input-outlined .mud-input-adornment {
+    min-height: 34px !important;
+}
+
+.mud-input-outlined .mud-input-adornment .mud-icon-button {
+    padding: 4px !important;
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.mud-input-outlined .mud-input-adornment .mud-icon-button .mud-icon-root {
+    font-size: 1.25rem !important;
+}
+
+/* Modern Header/AppBar - Quizlet Style */
+.mud-appbar {
+    background: white !important;
+    color: #282E3E !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    border-bottom: 1px solid #F0F0F0 !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.mud-appbar .mud-toolbar {
+    padding: 0 24px !important;
+    min-height: 64px !important;
+}
+
+.mud-appbar .mud-button-text {
+    color: #586380 !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    text-transform: none !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.mud-appbar .mud-button-text:hover {
+    background-color: #F6F7FB !important;
+    color: #4255FF !important;
+}
+
+.mud-appbar .mud-button-text.active {
+    background-color: #F0F2FF !important;
+    color: #4255FF !important;
+}
+
+.mud-appbar .mud-icon-button {
+    color: #586380 !important;
+    transition: all 0.2s ease !important;
+}
+
+.mud-appbar .mud-icon-button:hover {
+    background-color: #F6F7FB !important;
+    color: #4255FF !important;
+}
+
+/* AppBar Logo/Brand */
+.mud-appbar .app-logo {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #4255FF !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* AppBar User Menu */
+.mud-appbar .mud-menu {
     border-radius: 12px !important;
+}
+
+.mud-appbar .mud-avatar {
+    border: 2px solid #F0F0F0 !important;
+    transition: all 0.2s ease !important;
+}
+
+.mud-appbar .mud-avatar:hover {
+    border-color: #4255FF !important;
+    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.1) !important;
+}
+
+/* AppBar Search Field */
+.mud-appbar .search-field .mud-input-root {
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.mud-appbar .search-field .mud-input-slot {
+    color: #586380 !important;
+}
+
+.mud-appbar .search-field input::placeholder {
+    color: #939BB4 !important;
+}
+
+.mud-appbar .search-field:hover {
+    background-color: #EEEFF4 !important;
+}
+
+.mud-appbar .search-field.mud-input-outlined-focused {
+    background-color: white !important;
+    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.1) !important;
 }
 
 /* Badge/Chip Utilities */
@@ -360,13 +750,36 @@
     font-size: 8px !important;
 }
 
-/* Avatar with Gradient - Not available in standard utilities */
+/* Avatar with Gradient - Quizlet vibrant style */
 .avatar-gradient-purple {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, #4255FF 0%, #6B7FFF 100%) !important;
+}
+
+.avatar-gradient-blue {
+    background: linear-gradient(135deg, #4255FF 0%, #42A5FF 100%) !important;
 }
 
 .avatar-gradient-green {
-    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%) !important;
+    background: linear-gradient(135deg, #23B26B 0%, #4FD98B 100%) !important;
+}
+
+.avatar-gradient-yellow {
+    background: linear-gradient(135deg, #FFCD1F 0%, #FFE17F 100%) !important;
+}
+
+.avatar-gradient-pink {
+    background: linear-gradient(135deg, #FF6B9D 0%, #FFA5C0 100%) !important;
+}
+
+/* Badge/Chip Utilities */
+.chip-badge {
+    text-transform: uppercase !important;
+    font-size: 10px !important;
+    height: 20px !important;
+}
+
+.chip-small-icon {
+    font-size: 8px !important;
 }
 
 /* Specific sizing utilities - Use only when Tailwind doesn't match exact needs */
@@ -439,4 +852,3 @@
     color: #BDBDBD;
     font-size: 14px;
 }
-
