@@ -12,6 +12,8 @@ using ActualLab.Fusion.Server.Middlewares;
 using ActualLab.Rpc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SmartQuiz.Application;
+using SmartQuiz.Application.Auth;
+using SmartQuiz.Application.Flashcards;
 using SmartQuiz.Client.Data.Services;
 
 namespace SmartQuiz;
@@ -87,13 +89,13 @@ public static class ServicesExtensions
 
             fusion.AddOperationReprocessor();
 
-
             fusion.AddServer<ICustomAuthService, CustomAuthService>();
-
             fusion.AddServer<IFlashcardService, FlashcardService>();
             fusion.AddServer<IFlashcardSetService, FlashcardSetService>();
             fusion.AddServer<IQuizResultService, QuizResultService>();
         });
+
+        services.Decorate<IAuthBackend, LinkedAccountAuthBackendDecorator>();
 
         services.AddAuthentication(options =>
             {

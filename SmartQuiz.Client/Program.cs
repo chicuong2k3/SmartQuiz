@@ -7,11 +7,9 @@ using ActualLab.Rpc;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SmartQuiz.Client;
-using SmartQuiz.Client.Auth;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Services.AddAuthServices();
 builder.Services.RegisterSharedServices();
 
 RpcSerializationFormatResolver.Default = new("msgpack5");

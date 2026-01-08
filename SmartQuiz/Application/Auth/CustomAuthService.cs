@@ -8,7 +8,7 @@ using Konscious.Security.Cryptography;
 using SmartQuiz.Client.Data.Commands;
 using SmartQuiz.Client.Data.Services;
 
-namespace SmartQuiz.Application;
+namespace SmartQuiz.Application.Auth;
 
 public class CustomAuthService(
     IServiceProvider services,
@@ -20,6 +20,11 @@ public class CustomAuthService(
         SignInCommand command,
         CancellationToken cancellationToken)
     {
+        if (Invalidation.IsActive)
+        {
+            return null;
+        }
+
         await using var dbContext = await DbHub.CreateDbContext(cancellationToken);
 
         var dbUser = await FindUserByEmailAsync(command.Email, cancellationToken);
@@ -70,6 +75,11 @@ public class CustomAuthService(
         RegisterCommand command,
         CancellationToken cancellationToken)
     {
+        if (Invalidation.IsActive)
+        {
+            return new User("", "");
+        }
+
         await using var dbContext = await DbHub.CreateOperationDbContext(cancellationToken);
 
         var existingUser = await FindUserByEmailAsync(command.Email, cancellationToken);

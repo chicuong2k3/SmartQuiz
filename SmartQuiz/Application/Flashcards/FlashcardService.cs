@@ -2,7 +2,7 @@ using ActualLab.Collections;
 using SmartQuiz.Client.Data.Commands;
 using SmartQuiz.Client.Data.Services;
 
-namespace SmartQuiz.Application;
+namespace SmartQuiz.Application.Flashcards;
 
 public class FlashcardService(
     IServiceProvider services)
