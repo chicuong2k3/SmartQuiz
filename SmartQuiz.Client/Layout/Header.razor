@@ -1,6 +1,6 @@
 @inject NavigationManager NavigationManager
 @inject ClientAuthHelper ClientAuthHelper
-
+@inject Session Session
 
 <MudAppBar Elevation="0"
            Style="background-color: white; border-bottom: 1px solid #F0F0F0; height: 64px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
@@ -179,9 +179,10 @@
 @code {
     private string _searchQuery = "";
 
-    private void Logout()
+    private async Task Logout()
     {
-        ClientAuthHelper.SignOut();
+        await ClientAuthHelper.SignOut(Session);
+        NavigationManager.NavigateTo("/login");
     }
 
 }

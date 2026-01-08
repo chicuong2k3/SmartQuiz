@@ -22,6 +22,11 @@
     <script src="@Assets["_content/ActualLab.Fusion.Blazor.Authentication/scripts/fusionAuth.js"]"></script>
     <script>
         window.FusionAuth.schemas = "@_authSchemas";
+        window.FusionAuth.enablePopup = false;
+        window.FusionAuth.authRedirect = function (action) {
+            let url = action + "?returnUrl=" + encodeURIComponent("/");
+            window.location.replace(url);
+        };
     </script>
 </head>
 

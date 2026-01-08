@@ -6,8 +6,10 @@
     setTimeout(function () {
         if (window.opener) {
             window.opener.location.href = "/";
+            window.close();
+        } else {
+            window.location.href = "/";
         }
-        window.close();
     }, 0)
 </script>
 
