@@ -6,6 +6,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartQuiz", "SmartQuiz\Smar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartQuiz.Client", "SmartQuiz.Client\SmartQuiz.Client.csproj", "{7DBB396B-F7AC-4B97-B243-11B973ECEF1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationModule", "NotificationModule\NotificationModule.csproj", "{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,18 @@ Global
 		{AD9BB326-2F1B-4D62-87B2-B75890A75215}.Release|x64.Build.0 = Release|Any CPU
 		{AD9BB326-2F1B-4D62-87B2-B75890A75215}.Release|x86.ActiveCfg = Release|Any CPU
 		{AD9BB326-2F1B-4D62-87B2-B75890A75215}.Release|x86.Build.0 = Release|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Debug|x64.Build.0 = Debug|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Debug|x86.Build.0 = Debug|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Release|x64.ActiveCfg = Release|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Release|x64.Build.0 = Release|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9F61D7F-18D1-48C5-ADD6-ACEBF63F5D75}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

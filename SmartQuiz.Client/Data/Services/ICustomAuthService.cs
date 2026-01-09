@@ -13,4 +13,14 @@ public interface ICustomAuthService : IComputeService
     Task<User> RegisterAsync(
         RegisterCommand command,
         CancellationToken cancellationToken);
+
+    [CommandHandler]
+    Task<bool> ConfirmEmailAsync(
+        ConfirmEmailCommand command,
+        CancellationToken cancellationToken);
+
+    [CommandHandler]
+    Task SendConfirmationEmailAsync(
+        SendConfirmationEmailCommand command,
+        CancellationToken cancellationToken);
 }

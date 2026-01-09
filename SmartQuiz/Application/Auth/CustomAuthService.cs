@@ -5,14 +5,19 @@ using System.Text.Json;
 using ActualLab.Fusion.Authentication;
 using ActualLab.Fusion.Authentication.Services;
 using Konscious.Security.Cryptography;
+using NotificationModule;
 using SmartQuiz.Client.Data.Commands;
 using SmartQuiz.Client.Data.Services;
+using SmartQuiz.Templates;
 
 namespace SmartQuiz.Application.Auth;
 
 public class CustomAuthService(
     IServiceProvider services,
-    ICommander commander)
+    ICommander commander,
+    IEmailSender emailSender,
+    IOtpService otpService,
+    IEmailTemplateService emailTemplateService)
     : DbServiceBase<ApplicationDbContext>(services), ICustomAuthService
 {
     [CommandHandler]
@@ -45,10 +50,24 @@ public class CustomAuthService(
         }
 
 
-        string? passwordHash = existingIdentity.Secret;
+        var passwordHash = existingIdentity.Secret;
 
         if (!VerifyPassword(command.Password, passwordHash))
             throw new InvalidOperationException("Email hoặc mật khẩu không đúng");
+
+        // Check if email is confirmed
+        var isEmailConfirmed = dbUser.Claims.TryGetValue("EmailConfirmed", out var confirmed)
+                               && confirmed == "true";
+        if (!isEmailConfirmed)
+        {
+            // Resend OTP for verification
+            await commander.Call(new SendConfirmationEmailCommand(
+                command.Email,
+                dbUser.Name
+            ), cancellationToken);
+
+            throw new InvalidOperationException("Email chưa được xác thực. Mã OTP mới đã được gửi đến email của bạn.");
+        }
 
         var userIdentity = new UserIdentity("email", command.Email);
         var user = new User(dbUser.Id, dbUser.Name)
@@ -132,7 +151,61 @@ public class CustomAuthService(
             user.WithClaim(claim.Key, claim.Value);
         }
 
+        // Send confirmation email
+        await commander.Call(new SendConfirmationEmailCommand(
+            command.Email,
+            command.FullName
+        ), cancellationToken);
+
         return user;
+    }
+
+    [CommandHandler]
+    public virtual async Task SendConfirmationEmailAsync(
+        SendConfirmationEmailCommand command,
+        CancellationToken cancellationToken)
+    {
+        if (Invalidation.IsActive)
+            return;
+
+        var otp = otpService.GenerateOtp(command.Email);
+        var emailBody = emailTemplateService.GetOtpEmailTemplate(command.FullName, otp);
+
+        await emailSender.SendEmailAsync(
+            command.Email,
+            "Mã xác nhận OTP - Đăng ký tài khoản mới",
+            emailBody
+        );
+    }
+
+    [CommandHandler]
+    public virtual async Task<bool> ConfirmEmailAsync(
+        ConfirmEmailCommand command,
+        CancellationToken cancellationToken)
+    {
+        if (Invalidation.IsActive)
+            return false;
+
+        if (!otpService.ValidateOtp(command.Email, command.Otp))
+            return false;
+
+        await using var dbContext = await DbHub.CreateOperationDbContext(cancellationToken);
+
+        var user = await FindUserByEmailAsync(command.Email, cancellationToken);
+
+        if (user == null)
+            return false;
+
+        var claims = user.Claims.ToDictionary(c => c.Key, c => c.Value);
+        claims["EmailConfirmed"] = "true";
+        user.ClaimsJson = JsonSerializer.Serialize(claims);
+
+        dbContext.Set<DbUser<string>>().Update(user);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        otpService.InvalidateOtp(command.Email);
+
+        return true;
     }
 
     private string HashPassword(string password)

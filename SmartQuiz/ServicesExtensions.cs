@@ -11,10 +11,12 @@ using ActualLab.Fusion.Server.Endpoints;
 using ActualLab.Fusion.Server.Middlewares;
 using ActualLab.Rpc;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using NotificationModule;
 using SmartQuiz.Application;
 using SmartQuiz.Application.Auth;
 using SmartQuiz.Application.Flashcards;
 using SmartQuiz.Client.Data.Services;
+using SmartQuiz.Templates;
 
 namespace SmartQuiz;
 
@@ -126,6 +128,11 @@ public static class ServicesExtensions
                 options.CallbackPath = "/authentication/signin-facebook";
                 options.SaveTokens = true;
             });
+
+        // Email services
+        services.AddEmailSender(configuration);
+        services.AddSingleton<IOtpService, OtpService>();
+        services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
 
         return services;
     }

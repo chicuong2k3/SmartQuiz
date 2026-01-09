@@ -10,6 +10,104 @@
 
     <MudGrid Justify="Justify.Center" Class="ma-0" Style="width: 100%; max-width: 1200px;">
         <MudItem xs="12" sm="10" md="8" lg="5" Class="pa-3 pa-sm-4">
+            @if (_emailConfirmed)
+            {
+                <MudPaper Elevation="0" Class="pa-8 text-center"
+                          Style="background: var(--color-card); border: 1px solid var(--color-border);">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success"
+                             Style="font-size: 64px;" Class="mb-4"/>
+                    <MudText Typo="Typo.h5" Class="mb-2 font-bold">
+                        Email đã được xác nhận!
+                    </MudText>
+                    <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-6">
+                        Tài khoản của bạn đã được kích hoạt thành công.
+                    </MudText>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                               OnClick="@(() => NavigationManager.NavigateTo("/login"))">
+                        Đăng nhập ngay
+                    </MudButton>
+                </MudPaper>
+            }
+            else if (_registrationSuccess)
+            {
+                <MudPaper Elevation="0" Class="pa-8"
+                          Style="background: var(--color-card); border: 1px solid var(--color-border);">
+                    <div class="text-center mb-6">
+                        <MudIcon Icon="@Icons.Material.Filled.MarkEmailRead" Color="Color.Info"
+                                 Style="font-size: 64px;" Class="mb-4"/>
+                        <MudText Typo="Typo.h5" Class="mb-2 font-bold">
+                            Xác nhận email
+                        </MudText>
+                        <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-2">
+                            Chúng tôi đã gửi mã OTP đến
+                        </MudText>
+                        <MudText Typo="Typo.body1" Style="font-weight: 600;">
+                            @_email
+                        </MudText>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(_otpErrorMessage))
+                    {
+                        <MudAlert Severity="Severity.Error" Class="mb-4" Dense="true" Elevation="0">
+                            @_otpErrorMessage
+                        </MudAlert>
+                    }
+
+                    <MudForm @ref="@_otpForm" @bind-IsValid="_isOtpFormValid">
+                        <div class="mb-4">
+                            <MudCodeInput T="string"
+                                          @bind-Value="@_otpCode" Count="6" Spacing="1" Variant="Variant.Outlined"
+                                          Margin="Margin.None"
+                            />
+                        </div>
+
+                        <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            FullWidth
+                            Class="mb-4"
+                            OnClick="@HandleVerifyOtp"
+                            Disabled="@_isVerifying">
+                            @if (_isVerifying)
+                            {
+                                <MudProgressCircular Size="Size.Small" Indeterminate="true"/>
+                            }
+                            else
+                            {
+                                <text>Xác nhận</text>
+                            }
+                        </MudButton>
+                    </MudForm>
+
+                    <div class="text-center">
+                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                            Không nhận được mã?
+                        </MudText>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary"
+                                   OnClick="@HandleResendOtp"
+                                   Disabled="@(_resendCooldown > 0)">
+                            @if (_resendCooldown > 0)
+                            {
+                                <text>Gửi lại sau @_resendCooldown giây</text>
+                            }
+                            else
+                            {
+                                <text>Gửi lại mã OTP</text>
+                            }
+                        </MudButton>
+                    </div>
+
+                    <MudDivider Class="my-4"/>
+
+                    <div class="text-center">
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            Mã OTP sẽ hết hạn sau 5 phút
+                        </MudText>
+                    </div>
+                </MudPaper>
+            }
+            else
+            {
             <MudPaper Elevation="0" Class="pa-6 pa-sm-8"
                       Style="background: var(--color-card); border: 1px solid var(--color-border); border-radius: 8px;">
 
@@ -183,13 +281,16 @@
                 </div>
 
             </MudPaper>
+            }
         </MudItem>
     </MudGrid>
 </div>
 
 @code {
-    private MudForm _form;
+    private MudForm _form = null!;
+    private MudForm _otpForm = null!;
     private bool _isFormValid;
+    private bool _isOtpFormValid;
     private string _fullName = string.Empty;
     private string _email = string.Empty;
     private string _password = string.Empty;
@@ -205,6 +306,15 @@
     private string _confirmPasswordIcon = Icons.Material.Filled.VisibilityOff;
 
     private string _errorMessage = string.Empty;
+
+    private bool _registrationSuccess;
+    private bool _emailConfirmed;
+    private string _otpCode = string.Empty;
+    private string _otpErrorMessage = string.Empty;
+    private bool _isVerifying;
+    private int _resendCooldown;
+    private Timer? _resendTimer;
+    private string _userId = string.Empty;
 
     private string? ValidateFullName(string fullName)
     {
@@ -272,9 +382,11 @@
                 _fullName
             );
 
-            await Commander.Call(command);
+            var user = await Commander.Call(command);
+            _userId = user.Id;
 
-            NavigationManager.NavigateTo("/login");
+            _registrationSuccess = true;
+            StartResendCooldown();
         }
         catch (Exception ex)
         {
@@ -287,9 +399,83 @@
         }
     }
 
+    private async Task HandleVerifyOtp()
+    {
+        await _otpForm.Validate();
+        if (!_isOtpFormValid)
+            return;
+
+        _isVerifying = true;
+        _otpErrorMessage = string.Empty;
+        StateHasChanged();
+
+        try
+        {
+            var result = await Commander.Call(new ConfirmEmailCommand(_email, _otpCode));
+
+            if (result)
+            {
+                _emailConfirmed = true;
+            }
+            else
+            {
+                _otpErrorMessage = "Mã OTP không đúng hoặc đã hết hạn";
+            }
+        }
+        catch (Exception ex)
+        {
+            _otpErrorMessage = ex.Message;
+        }
+        finally
+        {
+            _isVerifying = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleResendOtp()
+    {
+        if (_resendCooldown > 0)
+            return;
+
+        try
+        {
+            await Commander.Call(new SendConfirmationEmailCommand(_email, _fullName));
+            StartResendCooldown();
+        }
+        catch (Exception ex)
+        {
+            _otpErrorMessage = ex.Message;
+            StateHasChanged();
+        }
+    }
+
+    private void StartResendCooldown()
+    {
+        _resendCooldown = 60;
+        _resendTimer?.Dispose();
+        _resendTimer = new Timer(_ =>
+        {
+            if (_resendCooldown > 0)
+            {
+                _resendCooldown--;
+                InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                _resendTimer?.Dispose();
+            }
+        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+    }
+
     private async Task HandleExternalLogin(string provider)
     {
         await ClientAuthHelper.SignIn(provider);
     }
-}
 
+    public void Dispose()
+    {
+        _resendTimer?.Dispose();
+    }
+
+}

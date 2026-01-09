@@ -17,6 +17,7 @@
       <PackageReference Include="ActualLab.Fusion.Blazor" Version="11.3.93"/>
       <PackageReference Include="ActualLab.Fusion.Blazor.Authentication" Version="11.3.93"/>
       <PackageReference Include="Blazored.LocalStorage" Version="4.3.0"/>
+      <PackageReference Include="CodeBeam.MudBlazor.Extensions" Version="8.3.0"/>
       <PackageReference Include="MemoryPack.Generator" Version="1.21.4">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
