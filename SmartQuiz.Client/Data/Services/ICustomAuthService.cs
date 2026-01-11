@@ -23,4 +23,19 @@ public interface ICustomAuthService : IComputeService
     Task SendConfirmationEmailAsync(
         SendConfirmationEmailCommand command,
         CancellationToken cancellationToken);
+
+    [CommandHandler]
+    Task SendPasswordResetOtpAsync(
+        SendPasswordResetOtpCommand command,
+        CancellationToken cancellationToken);
+
+    [CommandHandler]
+    Task<bool> VerifyPasswordResetOtpAsync(
+        VerifyPasswordResetOtpCommand command,
+        CancellationToken cancellationToken);
+
+    [CommandHandler]
+    Task<bool> ResetPasswordAsync(
+        ResetPasswordCommand command,
+        CancellationToken cancellationToken);
 }

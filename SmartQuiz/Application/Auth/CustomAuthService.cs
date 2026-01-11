@@ -208,6 +208,77 @@ public class CustomAuthService(
         return true;
     }
 
+    [CommandHandler]
+    public virtual async Task SendPasswordResetOtpAsync(
+        SendPasswordResetOtpCommand command,
+        CancellationToken cancellationToken)
+    {
+        if (Invalidation.IsActive)
+            return;
+
+        var user = await FindUserByEmailAsync(command.Email, cancellationToken);
+        if (user == null)
+        {
+            // Don't reveal if user exists or not for security
+            return;
+        }
+
+        var otp = otpService.GenerateOtp(command.Email, OtpPurpose.PasswordReset);
+        var emailBody = emailTemplateService.GetPasswordResetOtpEmailTemplate(otp);
+
+        await emailSender.SendEmailAsync(
+            command.Email,
+            "Mã xác nhận OTP - Đặt lại mật khẩu",
+            emailBody
+        );
+    }
+
+    [CommandHandler]
+    public virtual Task<bool> VerifyPasswordResetOtpAsync(
+        VerifyPasswordResetOtpCommand command,
+        CancellationToken cancellationToken)
+    {
+        if (Invalidation.IsActive)
+            return Task.FromResult(false);
+
+        // Only validate, don't invalidate the OTP
+        var isValid = otpService.ValidateOtp(command.Email, command.Otp, OtpPurpose.PasswordReset);
+        return Task.FromResult(isValid);
+    }
+
+    [CommandHandler]
+    public virtual async Task<bool> ResetPasswordAsync(
+        ResetPasswordCommand command,
+        CancellationToken cancellationToken)
+    {
+        if (Invalidation.IsActive)
+            return false;
+
+        if (!otpService.ValidateOtp(command.Email, command.Otp, OtpPurpose.PasswordReset))
+            return false;
+
+        await using var dbContext = await DbHub.CreateOperationDbContext(cancellationToken);
+
+        var user = await FindUserByEmailAsync(command.Email, cancellationToken);
+        if (user == null)
+            return false;
+
+        var emailIdentityId = $"email/{command.Email}";
+        var identity = await FindIdentityAsync(user.Id, emailIdentityId, cancellationToken);
+
+        if (identity == null)
+            return false;
+
+        // Update password
+        identity.Secret = HashPassword(command.NewPassword);
+        dbContext.Set<DbUserIdentity<string>>().Update(identity);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        otpService.InvalidateOtp(command.Email, OtpPurpose.PasswordReset);
+
+        return true;
+    }
+
     private string HashPassword(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(16);

@@ -5,6 +5,7 @@ namespace SmartQuiz.Templates;
 public interface IEmailTemplateService
 {
     string GetOtpEmailTemplate(string fullName, string otpCode);
+    string GetPasswordResetOtpEmailTemplate(string otpCode);
 }
 
 public class EmailTemplateService : IEmailTemplateService
@@ -18,6 +19,15 @@ public class EmailTemplateService : IEmailTemplateService
 
         return template
             .Replace("{{FullName}}", fullName)
+            .Replace("{{OtpCode}}", otpCode)
+            .Replace("{{Year}}", DateTime.UtcNow.Year.ToString());
+    }
+
+    public string GetPasswordResetOtpEmailTemplate(string otpCode)
+    {
+        var template = LoadTemplate("PasswordResetOtpEmailTemplate.html");
+
+        return template
             .Replace("{{OtpCode}}", otpCode)
             .Replace("{{Year}}", DateTime.UtcNow.Year.ToString());
     }

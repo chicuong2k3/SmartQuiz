@@ -3,11 +3,17 @@ using System.Security.Cryptography;
 
 namespace SmartQuiz.Application.Auth;
 
+public enum OtpPurpose
+{
+    EmailConfirmation,
+    PasswordReset
+}
+
 public interface IOtpService
 {
-    string GenerateOtp(string email);
-    bool ValidateOtp(string email, string otp);
-    void InvalidateOtp(string email);
+    string GenerateOtp(string email, OtpPurpose purpose = OtpPurpose.EmailConfirmation);
+    bool ValidateOtp(string email, string otp, OtpPurpose purpose = OtpPurpose.EmailConfirmation);
+    void InvalidateOtp(string email, OtpPurpose purpose = OtpPurpose.EmailConfirmation);
 }
 
 public record OtpData(string Otp, DateTime ExpiresAt);
@@ -17,39 +23,45 @@ public class OtpService : IOtpService
     private static readonly TimeSpan OtpLifetime = TimeSpan.FromMinutes(5);
     private readonly ConcurrentDictionary<string, OtpData> _otpStore = new();
 
-    public string GenerateOtp(string email)
+    public string GenerateOtp(string email, OtpPurpose purpose = OtpPurpose.EmailConfirmation)
     {
-        var normalizedEmail = email.ToLowerInvariant();
+        var key = GetKey(email, purpose);
         var otp = GenerateRandomOtp();
         var data = new OtpData(otp, DateTime.UtcNow.Add(OtpLifetime));
 
-        _otpStore.AddOrUpdate(normalizedEmail, data, (_, _) => data);
+        _otpStore.AddOrUpdate(key, data, (_, _) => data);
 
         CleanupExpiredOtps();
 
         return otp;
     }
 
-    public bool ValidateOtp(string email, string otp)
+    public bool ValidateOtp(string email, string otp, OtpPurpose purpose = OtpPurpose.EmailConfirmation)
     {
-        var normalizedEmail = email.ToLowerInvariant();
+        var key = GetKey(email, purpose);
 
-        if (!_otpStore.TryGetValue(normalizedEmail, out var data))
+        if (!_otpStore.TryGetValue(key, out var data))
             return false;
 
         if (data.ExpiresAt < DateTime.UtcNow)
         {
-            _otpStore.TryRemove(normalizedEmail, out _);
+            _otpStore.TryRemove(key, out _);
             return false;
         }
 
         return string.Equals(data.Otp, otp, StringComparison.OrdinalIgnoreCase);
     }
 
-    public void InvalidateOtp(string email)
+    public void InvalidateOtp(string email, OtpPurpose purpose = OtpPurpose.EmailConfirmation)
+    {
+        var key = GetKey(email, purpose);
+        _otpStore.TryRemove(key, out _);
+    }
+
+    private static string GetKey(string email, OtpPurpose purpose)
     {
         var normalizedEmail = email.ToLowerInvariant();
-        _otpStore.TryRemove(normalizedEmail, out _);
+        return $"{purpose}:{normalizedEmail}";
     }
 
     private static string GenerateRandomOtp()
