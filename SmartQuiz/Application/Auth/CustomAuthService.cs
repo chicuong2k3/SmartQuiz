@@ -21,7 +21,7 @@ public class CustomAuthService(
     : DbServiceBase<ApplicationDbContext>(services), ICustomAuthService
 {
     private const int MaxOtpAttempts = 5;
-    private readonly Dictionary<string, int> otpAttemptCounter = new();
+    private readonly Dictionary<string, int> _otpAttemptCounter = new();
 
     [CommandHandler]
     public virtual async Task<User?> SignInAsync(
@@ -189,20 +189,20 @@ public class CustomAuthService(
         if (Invalidation.IsActive)
             return false;
 
-        if (otpAttemptCounter.TryGetValue(command.Email, out var attempts) && attempts >= MaxOtpAttempts)
+        if (_otpAttemptCounter.TryGetValue(command.Email, out var attempts) && attempts >= MaxOtpAttempts)
         {
             throw new InvalidOperationException("Thử quá nhiều lần. Vui lòng thử lại sau.");
         }
 
-        var isValid = otpService.ValidateOtp(command.Email, command.Otp, OtpPurpose.EmailConfirmation);
+        var isValid = otpService.ValidateOtp(command.Email, command.Otp);
 
         if (!isValid)
         {
-            otpAttemptCounter[command.Email] = attempts + 1;
+            _otpAttemptCounter[command.Email] = attempts + 1;
             return false;
         }
 
-        otpAttemptCounter.Remove(command.Email);
+        _otpAttemptCounter.Remove(command.Email);
 
         await using var dbContext = await DbHub.CreateOperationDbContext(cancellationToken);
 
@@ -218,7 +218,7 @@ public class CustomAuthService(
         dbContext.Set<DbUser<string>>().Update(user);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        otpService.InvalidateOtp(command.Email, OtpPurpose.EmailConfirmation);
+        otpService.InvalidateOtp(command.Email);
 
         return true;
     }
@@ -256,7 +256,7 @@ public class CustomAuthService(
         if (Invalidation.IsActive)
             return Task.FromResult(false);
 
-        if (otpAttemptCounter.TryGetValue(command.Email, out var attempts) && attempts >= MaxOtpAttempts)
+        if (_otpAttemptCounter.TryGetValue(command.Email, out var attempts) && attempts >= MaxOtpAttempts)
         {
             throw new InvalidOperationException("Thử quá nhiều lần. Vui lòng thử lại sau.");
         }
@@ -265,11 +265,11 @@ public class CustomAuthService(
 
         if (!isValid)
         {
-            otpAttemptCounter[command.Email] = attempts + 1;
+            _otpAttemptCounter[command.Email] = attempts + 1;
             return Task.FromResult(false);
         }
 
-        otpAttemptCounter.Remove(command.Email);
+        _otpAttemptCounter.Remove(command.Email);
         return Task.FromResult(true);
     }
 
