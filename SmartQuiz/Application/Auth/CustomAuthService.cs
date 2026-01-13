@@ -20,6 +20,9 @@ public class CustomAuthService(
     IEmailTemplateService emailTemplateService)
     : DbServiceBase<ApplicationDbContext>(services), ICustomAuthService
 {
+    private const int MaxOtpAttempts = 5;
+    private readonly Dictionary<string, int> otpAttemptCounter = new();
+
     [CommandHandler]
     public virtual async Task<User?> SignInAsync(
         SignInCommand command,
@@ -186,8 +189,20 @@ public class CustomAuthService(
         if (Invalidation.IsActive)
             return false;
 
-        if (!otpService.ValidateOtp(command.Email, command.Otp))
+        if (otpAttemptCounter.TryGetValue(command.Email, out var attempts) && attempts >= MaxOtpAttempts)
+        {
+            throw new InvalidOperationException("Thử quá nhiều lần. Vui lòng thử lại sau.");
+        }
+
+        var isValid = otpService.ValidateOtp(command.Email, command.Otp, OtpPurpose.EmailConfirmation);
+
+        if (!isValid)
+        {
+            otpAttemptCounter[command.Email] = attempts + 1;
             return false;
+        }
+
+        otpAttemptCounter.Remove(command.Email);
 
         await using var dbContext = await DbHub.CreateOperationDbContext(cancellationToken);
 
@@ -203,7 +218,7 @@ public class CustomAuthService(
         dbContext.Set<DbUser<string>>().Update(user);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        otpService.InvalidateOtp(command.Email);
+        otpService.InvalidateOtp(command.Email, OtpPurpose.EmailConfirmation);
 
         return true;
     }
@@ -241,9 +256,21 @@ public class CustomAuthService(
         if (Invalidation.IsActive)
             return Task.FromResult(false);
 
-        // Only validate, don't invalidate the OTP
+        if (otpAttemptCounter.TryGetValue(command.Email, out var attempts) && attempts >= MaxOtpAttempts)
+        {
+            throw new InvalidOperationException("Thử quá nhiều lần. Vui lòng thử lại sau.");
+        }
+
         var isValid = otpService.ValidateOtp(command.Email, command.Otp, OtpPurpose.PasswordReset);
-        return Task.FromResult(isValid);
+
+        if (!isValid)
+        {
+            otpAttemptCounter[command.Email] = attempts + 1;
+            return Task.FromResult(false);
+        }
+
+        otpAttemptCounter.Remove(command.Email);
+        return Task.FromResult(true);
     }
 
     [CommandHandler]
