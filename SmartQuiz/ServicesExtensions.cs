@@ -91,6 +91,7 @@ public static class ServicesExtensions
 
             fusion.AddOperationReprocessor();
 
+            fusion.AddServer<IUserContext, UserContext>();
             fusion.AddServer<ICustomAuthService, CustomAuthService>();
             fusion.AddServer<IFlashcardService, FlashcardService>();
             fusion.AddServer<IFlashcardSetService, FlashcardSetService>();

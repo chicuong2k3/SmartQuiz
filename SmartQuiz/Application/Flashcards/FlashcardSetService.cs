@@ -5,7 +5,7 @@ using SmartQuiz.Client.Data.Services;
 
 namespace SmartQuiz.Application.Flashcards;
 
-public class FlashcardSetService(IServiceProvider services)
+public class FlashcardSetService(IServiceProvider services, IUserContext userContext)
     : DbServiceBase<ApplicationDbContext>(services), IFlashcardSetService
 {
     // ============ COMPUTE METHODS - Cached, read-only ============
@@ -29,6 +29,7 @@ public class FlashcardSetService(IServiceProvider services)
     {
         await using var dbContext = await DbHub.CreateDbContext(cancellationToken);
         var item = await dbContext.FlashcardSets
+            .Include(x => x.Flashcards)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         return item?.Adapt<FlashcardSetDto>();
@@ -47,18 +48,35 @@ public class FlashcardSetService(IServiceProvider services)
             return null!; // Return value ignored during invalidation
         }
 
+        // Get current user ID from session in command
+        var session = command.Session;
+        var userId = await userContext.GetCurrentUserIdAsync(session, cancellationToken);
+
         // Use CreateOperationDbContext for write operations
         await using var dbContext = await DbHub.CreateOperationDbContext(cancellationToken);
 
         var flashcardSet = new FlashcardSet(
+            userId,
             command.Title,
-            command.Description
+            command.Description,
+            command.IsPublic
         );
+
+        // Add flashcards to the set
+        foreach (var flashcardItem in command.Flashcards)
+        {
+            flashcardSet.AddFlashcard(flashcardItem.Term, flashcardItem.Definition);
+        }
 
         dbContext.FlashcardSets.Add(flashcardSet);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return flashcardSet.Adapt<FlashcardSetDto>();
+        // Reload with flashcards for proper DTO mapping
+        var result = await dbContext.FlashcardSets
+            .Include(x => x.Flashcards)
+            .FirstAsync(x => x.Id == flashcardSet.Id, cancellationToken);
+
+        return result.Adapt<FlashcardSetDto>();
     }
 
     public virtual async Task<FlashcardSetDto> UpdateFlashcardSetAsync(

@@ -3,152 +3,184 @@
 @inject ICommander Commander
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
+@inject Session Session
 
-<PageTitle>Create a new study set</PageTitle>
+<PageTitle>Tạo bộ thẻ flashcard mới</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
-    <MudText Typo="Typo.h5" Class="fw-bold mb-1">Create a new study set</MudText>
-    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-6">
-        Add a title and description to get started
-    </MudText>
+<div class="min-h-screen bg-gray-100 py-8">
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <!-- Header -->
+        <MudText Typo="Typo.h4" Class="fw-bold mb-1">Tạo bộ thẻ flashcard mới</MudText>
+        <MudText Typo="Typo.body2" Class="text-secondary-color mb-6">
+            Tạo bộ thẻ flashcard để giúp bạn học tập hiệu quả hơn!
+        </MudText>
 
-    <MudForm @ref="_form" ValidationDelay="0">
-        <!-- Title and Description -->
-        <MudGrid Spacing="3" Class="mb-4">
-            <MudItem xs="12" md="6">
-                <MudTextField
-                    @bind-Value="_command.Title"
-                    Label="Title"
-                    Variant="Variant.Outlined"
-                    Placeholder="Enter title"
-                    Required="true"
-                    RequiredError="Title is required"
-                    MaxLength="200"
-                    Immediate="true"
-                    Validation="@((string value) => ValidateTitle(value))"
-                    Style="background-color: white;"/>
-            </MudItem>
-            <MudItem xs="12" md="6">
-                <MudTextField
-                    @bind-Value="_command.Description"
-                    Label="Description"
-                    Variant="Variant.Outlined"
-                    Placeholder="Enter description"
-                    MaxLength="1000"
-                    Immediate="true"
-                    Style="background-color: white;"/>
-            </MudItem>
-        </MudGrid>
+        <MudForm @ref="_form" ValidationDelay="0" @bind-IsValid="_isFormValid">
+            <!-- Title and Description -->
+            <MudPaper Elevation="0" Class="pa-5 mb-6 rounded-lg bg-white">
+                <MudGrid Spacing="4">
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body2" Class="mb-2">Tên bộ thẻ</MudText>
+                        <MudTextField
+                            @bind-Value="_title"
+                            Variant="Variant.Outlined"
+                            Placeholder="Ví dụ: Từ vựng tiếng Anh cơ bản"
+                            Required="true"
+                            RequiredError="Vui lòng nhập tên bộ thẻ"
+                            MaxLength="200"
+                            Immediate="true"
+                            Validation="@((string value) => ValidateTitle(value))"
+                            Margin="Margin.Dense"
+                            Class="mud-input-outlined-white"/>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body2" Class="mb-2">Mô tả</MudText>
+                        <MudTextField
+                            @bind-Value="_description"
+                            Variant="Variant.Outlined"
+                            Placeholder="Thêm mô tả..."
+                            MaxLength="1000"
+                            Immediate="true"
+                            Margin="Margin.Dense" Lines="4"
+                            Class="mud-input-outlined-white"/>
+                    </MudItem>
+                </MudGrid>
 
-        <!-- Visibility Options -->
-        <div class="mb-6">
-            <MudText Typo="Typo.body2" Class="fw-semibold mb-2">WHO CAN VIEW THIS SET?</MudText>
-            <MudRadioGroup @bind-Value="_visibility" Class="d-flex gap-4">
-                <MudRadio Value="@("everyone")" Color="Color.Primary">
-                    <div class="d-flex align-center gap-2">
-                        <MudIcon Icon="@Icons.Material.Filled.Public" Size="Size.Small"/>
-                        <MudText Typo="Typo.body2">Visible to everyone</MudText>
+                <!-- Visibility Options -->
+                <div class="mt-5">
+                    <MudText Typo="Typo.body2" Class="mb-3">Ai có thể xem bộ thẻ này?</MudText>
+                    <div class="d-flex gap-3">
+                        <MudButton
+                            Variant="@(Visibility == "everyone" ? Variant.Filled : Variant.Outlined)"
+                            Color="@(Visibility == "everyone" ? Color.Primary : Color.Default)"
+                            OnClick="@(() => Visibility = "everyone")"
+                            StartIcon="@Icons.Material.Filled.Public"
+                            Class="rounded-pill text-transform-none">
+                            Mọi người
+                        </MudButton>
+                        <MudButton
+                            Variant="@(Visibility == "justme" ? Variant.Filled : Variant.Outlined)"
+                            Color="@(Visibility == "justme" ? Color.Primary : Color.Default)"
+                            OnClick="@(() => Visibility = "justme")"
+                            StartIcon="@Icons.Material.Filled.Lock"
+                            Class="rounded-pill text-transform-none">
+                            Chỉ mình tôi
+                        </MudButton>
                     </div>
-                </MudRadio>
-                <MudRadio Value="@("justme")" Color="Color.Primary">
-                    <div class="d-flex align-center gap-2">
-                        <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small"/>
-                        <MudText Typo="Typo.body2">Visible to just me</MudText>
-                    </div>
-                </MudRadio>
-            </MudRadioGroup>
-        </div>
+                </div>
+            </MudPaper>
 
-        <!-- Flashcards Section -->
-        <div class="mb-4">
-            <div class="d-flex justify-space-between align-center mb-3">
-                <MudText Typo="Typo.h6" Class="fw-bold">Flashcards</MudText>
-                <MudLink Typo="Typo.body2" Color="Color.Primary" Class="fw-semibold">
-                    <MudIcon Icon="@Icons.Material.Filled.AutoAwesome" Size="Size.Small" Class="mr-1"/>
-                    FLIP TERMS AND DEFINITIONS
-                </MudLink>
+            <!-- Flashcards Section -->
+            <div class="mb-4">
+                <div class="d-flex justify-space-between align-center mb-4">
+                    <MudText Typo="Typo.h6" Class="fw-bold">Flashcards</MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.ImportExport"
+                               Class="text-transform-none">
+                        Nhập từ Excel
+                    </MudButton>
+                </div>
+
+                @for (int i = 0; i < _flashcards.Count; i++)
+                {
+                    var index = i;
+                    <MudPaper Elevation="0" Class="mb-4 rounded-lg overflow-hidden bg-white border border-gray-200">
+                        <!-- Card Header -->
+                        <div class="d-flex justify-space-between align-center px-5 py-3 border-b border-gray-100">
+                            <MudText Typo="Typo.body1" Class="fw-semibold">@(index + 1)</MudText>
+                            @if (_flashcards.Count > 1)
+                            {
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                               Size="Size.Small"
+                                               Color="Color.Default"
+                                               OnClick="@(() => RemoveFlashcard(index))"
+                                               tabindex="-1"/>
+                            }
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="pa-5">
+                            <MudGrid Spacing="4">
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.caption"
+                                             Class="fw-bold text-secondary-color mb-2 tracking-wide">Mặt trước
+                                    </MudText>
+                                    <MudTextField
+                                        @bind-Value="_flashcards[index].Term"
+                                        Variant="Variant.Outlined"
+                                        Placeholder="Nhập mặt trước"
+                                        Margin="Margin.Dense" Lines="4"
+                                        Class="mud-input-outlined-white"/>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudText Typo="Typo.caption"
+                                             Class="fw-bold text-secondary-color mb-2 tracking-wide">Mặt sau
+                                    </MudText>
+                                    <MudTextField
+                                        @bind-Value="_flashcards[index].Definition"
+                                        Variant="Variant.Outlined"
+                                        Placeholder="Nhập mặt sau"
+                                        Margin="Margin.Dense" Lines="4"
+                                        Class="mud-input-outlined-white"/>
+                                </MudItem>
+                            </MudGrid>
+                        </div>
+                    </MudPaper>
+                }
+
+                <!-- Add Card Button -->
+                <div
+                    class="bg-gray-100 rounded-xl py-8 border-2 border-dashed border-gray-300 cursor-pointer hover:border-gray-400 transition-colors"
+                    @onclick="AddFlashcard">
+                    <div class="d-flex flex-column align-center justify-center">
+                        <div class="add-card-icon">
+                            <MudIcon Icon="@Icons.Material.Outlined.Add"/>
+                        </div>
+                        <MudText Typo="Typo.body2" Class="text-gray-600 font-medium">Thêm thẻ</MudText>
+                    </div>
+                </div>
             </div>
 
-            @for (int i = 0; i < _flashcards.Count; i++)
-            {
-                var index = i;
-                <MudPaper Elevation="1" Class="pa-4 mb-3" Style="border-radius: 8px; background-color: white;">
-                    <div class="d-flex justify-space-between align-center mb-3">
-                        <MudText Typo="Typo.body1" Class="fw-semibold">@(index + 1)</MudText>
-                        @if (_flashcards.Count > 1)
-                        {
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small"
-                                           OnClick="@(() => RemoveFlashcard(index))"/>
-                        }
-                    </div>
-
-                    <MudGrid Spacing="3">
-                        <MudItem xs="12" md="6">
-                            <MudTextField
-                                    @bind-Value="_flashcards[index].Term"
-                                    Label="TERM"
-                                    Variant="Variant.Filled"
-                                    Placeholder="Enter term"
-                                    Lines="3"
-                                    Style="background-color: #F8F9FA;"/>
-                        </MudItem>
-                        <MudItem xs="12" md="6">
-                            <MudTextField
-                                    @bind-Value="_flashcards[index].Definition"
-                                    Label="DEFINITION"
-                                    Variant="Variant.Filled"
-                                    Placeholder="Enter definition"
-                                    Lines="3"
-                                    Style="background-color: #F8F9FA;"/>
-                        </MudItem>
-                    </MudGrid>
-                </MudPaper>
-            }
-
-            <MudButton Variant="Variant.Text" Color="Color.Primary"
-                       OnClick="AddFlashcard" FullWidth="true" Class="mt-2">
-                + ADD CARD
-            </MudButton>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="d-flex justify-end mt-6">
-            <MudButton
+            <!-- Create Set Button -->
+            <div class="d-flex justify-end mt-6">
+                <MudButton
                     OnClick="@HandleSubmit"
                     Variant="Variant.Filled"
-                    Color="Color.Secondary"
+                    Color="Color.Primary"
                     Size="Size.Large"
-                    Disabled="@(_isSubmitting || !(_form?.IsValid ?? false))"
-                    Class="px-8"
-                    Style="text-transform: uppercase; font-weight: 600;">
-                @(_isSubmitting ? "Creating..." : "Create Set")
-            </MudButton>
-        </div>
-    </MudForm>
-</MudContainer>
+                    Disabled="@_isSubmitting"
+                    Class="px-8 rounded-lg text-transform-none font-semibold">
+                    @(_isSubmitting ? "Đang tạo..." : "Tạo bộ thẻ")
+                </MudButton>
+            </div>
+        </MudForm>
+    </MudContainer>
+</div>
 
 @code {
     private bool _isSubmitting;
     private MudForm? _form;
-    private readonly CreateFlashcardSetCommand _command = new();
-    private string _visibility = "everyone";
+    private bool _isFormValid;
 
-    private List<FlashcardInput> _flashcards = new()
-    {
-            new FlashcardInput(),
-            new FlashcardInput(),
-            new FlashcardInput()
-    };
+    // Form data (separate from command to avoid Session initialization issue)
+    private string _title = string.Empty;
+    private string? _description;
+    private bool _isPublic = true;
 
-    private class FlashcardInput
+    private readonly List<FlashcardItemCommand> _flashcards =
+    [
+        new FlashcardItemCommand()
+    ];
+
+    private string Visibility
     {
-        public string Term { get; set; } = string.Empty;
-        public string Definition { get; set; } = string.Empty;
+        get => _isPublic ? "everyone" : "justme";
+        set => _isPublic = value == "everyone";
     }
 
     private void AddFlashcard()
     {
-        _flashcards.Add(new FlashcardInput());
+        _flashcards.Add(new FlashcardItemCommand());
     }
 
     private void RemoveFlashcard(int index)
@@ -162,13 +194,13 @@
     private string? ValidateTitle(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            return "Title is required";
+            return "Vui lòng nhập tên bộ thẻ";
 
         if (value.Length < 3)
-            return "Title must be at least 3 characters long";
+            return "Tên bộ thẻ phải có ít nhất 3 ký tự";
 
         if (value.Length > 200)
-            return "Title cannot exceed 200 characters";
+            return "Tên bộ thẻ không được vượt quá 200 ký tự";
 
         return null;
     }
@@ -179,21 +211,17 @@
             return;
 
         await _form.Validate();
-
-        if (!_form.IsValid)
-        {
-            Snackbar.Add("Please fix validation errors", Severity.Warning);
+        if (!_isFormValid)
             return;
-        }
 
         // Validate that at least one flashcard has content
         var validFlashcards = _flashcards
-                .Where(f => !string.IsNullOrWhiteSpace(f.Term) || !string.IsNullOrWhiteSpace(f.Definition))
-                .ToList();
+            .Where(f => !string.IsNullOrWhiteSpace(f.Term) || !string.IsNullOrWhiteSpace(f.Definition))
+            .ToList();
 
         if (validFlashcards.Count == 0)
         {
-            Snackbar.Add("Please add at least one flashcard", Severity.Warning);
+            Snackbar.Add("Thêm ít nhất 1 thẻ", Severity.Warning);
             return;
         }
 
@@ -201,14 +229,21 @@
         {
             _isSubmitting = true;
 
-            var result = await Commander.Call(_command);
+            var command = new CreateFlashcardSetCommand(
+                Session,
+                _title,
+                _description,
+                _isPublic,
+                validFlashcards
+            );
+            var result = await Commander.Call(command);
 
-            Snackbar.Add($"Flashcard set '{result.Title}' created successfully!", Severity.Success);
+            Snackbar.Add($"Bộ thẻ '{result.Title}' đã được tạo!", Severity.Success);
             Navigation.NavigateTo($"/flashcard-sets/{result.Id}");
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Error creating flashcard set: {ex.Message}", Severity.Error);
+            Snackbar.Add($"Có lỗi xảy ra: {ex.Message}", Severity.Error);
         }
         finally
         {

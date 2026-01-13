@@ -1,0 +1,30 @@
+/* Scoped styles for MudBlazor child components - must use ::deep */
+
+/* Fix multiline MudTextField placeholder being cut off */
+::deep .mud-input-control.mud-input-input-control .mud-input.mud-input-text textarea {
+    padding-top: 12px !important;
+    line-height: 1.5 !important;
+}
+
+/* Ensure textarea placeholder is visible */
+::deep .mud-input-control textarea::placeholder {
+    transform: translateY(0) !important;
+    line-height: 1.5 !important;
+}
+
+/* Add Card icon container */
+.add-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #d1d5db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.add-card-icon ::deep .mud-icon-root {
+    color: #9ca3af;
+}
