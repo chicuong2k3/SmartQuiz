@@ -1,0 +1,34 @@
+@inherits ComponentBase
+
+<MudDialog>
+    <DialogContent>
+        <div class="d-flex align-start gap-3">
+            <MudIcon Icon="@Icon" Color="@IconColor" Size="Size.Large" Class="mt-1"/>
+            <div class="flex-grow-1">
+                <MudText Typo="Typo.h6" Class="fw-bold mb-1">@Title</MudText>
+                @if (!string.IsNullOrWhiteSpace(Message))
+                {
+                    <MudText Typo="Typo.body2" Class="text-secondary-color">@Message</MudText>
+                }
+            </div>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Close">
+            @OkText
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public string Title { get; set; } = "Thông báo";
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public string OkText { get; set; } = "OK";
+
+    [Parameter] public string Icon { get; set; } = Icons.Material.Filled.Info;
+    [Parameter] public Color IconColor { get; set; } = Color.Info;
+
+    private void Close() => MudDialog.Close(DialogResult.Ok(true));
+}

@@ -1,10 +1,91 @@
+/* ============================================================
+   Sidebar Styles - Quizlet Dark Theme
+   ============================================================ */
+
+/* Sidebar Container */
+.sidebar-container {
+    background-color: #151b33 !important;
+    border-right: 1px solid #334155 !important;
+    height: 100%;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #334155;
+}
+
+/* Nav Items */
+::deep .mud-nav-item {
+    margin: 0.25rem 0.5rem;
+}
+
+::deep .mud-nav-link {
+    color: #a0aec0 !important;
+    border-radius: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+::deep .mud-nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f7fafc !important;
+}
+
+::deep .mud-nav-link.active {
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    color: #4255ff !important;
+}
+
+::deep .mud-nav-link .mud-nav-link-icon {
+    color: inherit !important;
+}
+
+/* List Items */
+::deep .mud-list-item {
+    color: #a0aec0 !important;
+    border-radius: 0.5rem !important;
+    margin: 0.25rem 0.5rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
 ::deep .mud-list-item:hover,
 ::deep .mud-list-item:focus {
-    background-color: #b91c1c;
-    color: white;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f7fafc !important;
 }
-    
+
+::deep .mud-list-item.mud-selected {
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    color: #4255ff !important;
+}
+
 ::deep .mud-list-item:hover span,
 ::deep .mud-list-item:focus span {
-    color: white;
+    color: #f7fafc !important;
+}
+
+::deep .mud-list-item-icon {
+    color: #a0aec0 !important;
+}
+
+::deep .mud-list-item:hover .mud-list-item-icon,
+::deep .mud-list-item.mud-selected .mud-list-item-icon {
+    color: inherit !important;
+}
+
+/* Section Headers */
+.sidebar-section-header {
+    color: #64748b !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 1rem 1rem 0.5rem !important;
+}
+
+/* Dividers */
+::deep .mud-divider {
+    border-color: #334155 !important;
+    margin: 0.5rem 1rem !important;
 }

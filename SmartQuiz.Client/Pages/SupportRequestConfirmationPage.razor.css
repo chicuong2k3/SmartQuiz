@@ -1,14 +1,19 @@
+/* ============================================================
+   SupportRequestConfirmationPage Styles - Quizlet Dark Theme
+   ============================================================ */
+
 /* Page Background */
 .confirmation-page {
-    background-color: #F5F7FA;
+    background-color: #0a092d;
     min-height: 100vh;
 }
 
 /* Confirmation Card */
 .confirmation-card {
-    border-radius: 16px;
-    background-color: white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 1rem !important;
+    background-color: #1e2544 !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 0.25rem 2rem rgba(10, 9, 45, 0.4) !important;
     max-width: 100%;
 }
 
@@ -17,7 +22,7 @@
     width: 96px;
     height: 96px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+    background: linear-gradient(135deg, #23b26b 0%, #4fd98b 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,7 +40,14 @@
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .success-icon-container {
+        animation: none;
+    }
+}
+
 .success-icon-container ::deep .mud-icon-root {
+    color: white !important;
     animation: checkmarkAppear 0.6s ease-out 0.2s both;
 }
 
@@ -50,93 +62,147 @@
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .success-icon-container ::deep .mud-icon-root {
+        animation: none;
+    }
+}
+
 /* Reference Number Box */
 .reference-box {
-    background-color: #FAFAFA;
-    border: 1px solid #E0E0E0;
-    border-radius: 12px;
-    transition: all 0.3s ease;
+    background-color: #151b33 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 0.75rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
 }
 
 .reference-box:hover {
-    background-color: #F5F5F5;
-    border-color: #BDBDBD;
+    background-color: #1e2544 !important;
+    border-color: #475569 !important;
+}
+
+.reference-box ::deep .mud-typography {
+    color: #e2e8f0 !important;
 }
 
 /* Copy Button Styling */
 .reference-box ::deep .mud-icon-button {
-    transition: all 0.2s ease;
+    color: #94a3b8 !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
 }
 
 .reference-box ::deep .mud-icon-button:hover {
-    background-color: #E3F2FD;
-    transform: scale(1.1);
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    color: #4255ff !important;
+    transform: scale(1.1) !important;
 }
 
 /* Action Buttons */
 .confirmation-card ::deep .mud-button-filled {
-    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
-    transition: all 0.3s ease;
+    background-color: #4255ff !important;
+    color: white !important;
+    box-shadow: 0 0.25rem 1rem rgba(66, 85, 255, 0.3) !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
 }
 
 .confirmation-card ::deep .mud-button-filled:hover {
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
-    transform: translateY(-1px);
+    background-color: #5266ff !important;
+    box-shadow: 0 0.5rem 1.5rem rgba(66, 85, 255, 0.4) !important;
+    transform: translateY(-1px) !important;
 }
 
-.confirmation-card ::deep .mud-button-filled:active {
-    transform: translateY(0);
+.confirmation-card ::deep .mud-button-outlined {
+    border-color: #334155 !important;
+    color: #a0aec0 !important;
 }
 
-/* Footer Links */
-.confirmation-page ::deep .mud-link {
-    text-decoration: none;
-    transition: color 0.2s ease;
+.confirmation-card ::deep .mud-button-outlined:hover {
+    border-color: #4255ff !important;
+    background-color: rgba(66, 85, 255, 0.1) !important;
+    color: #4255ff !important;
 }
 
-.confirmation-page ::deep .mud-link:hover {
-    color: #2196F3 !important;
+/* Typography */
+.confirmation-card ::deep .mud-typography-h4,
+.confirmation-card ::deep .mud-typography-h5 {
+    color: #f7fafc !important;
 }
 
-/* Social Icons */
-.confirmation-page ::deep .mud-icon-button {
-    transition: all 0.2s ease;
+.confirmation-card ::deep .mud-typography-body1,
+.confirmation-card ::deep .mud-typography-body2 {
+    color: #a0aec0 !important;
 }
 
-.confirmation-page ::deep .mud-icon-button:hover {
-    color: #2196F3 !important;
-    transform: translateY(-2px);
+.confirmation-card ::deep .mud-typography-caption {
+    color: #64748b !important;
 }
 
-/* Page Animation */
-.confirmation-card {
-    animation: fadeInUp 0.5s ease-out;
+/* Info Alert */
+.confirmation-card ::deep .mud-alert {
+    background-color: rgba(66, 85, 255, 0.1) !important;
+    border: 1px solid rgba(66, 85, 255, 0.2) !important;
+    border-radius: 0.5rem !important;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.confirmation-card ::deep .mud-alert .mud-alert-message {
+    color: #e2e8f0 !important;
 }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-    .confirmation-card {
-        padding: 32px 24px !important;
-    }
+/* Divider */
+.confirmation-card ::deep .mud-divider {
+    border-color: #334155 !important;
+}
 
+/* Next Steps List */
+.next-steps-list ::deep .mud-list-item {
+    color: #a0aec0 !important;
+    padding: 0.75rem 0 !important;
+}
+
+.next-steps-list ::deep .mud-list-item-icon {
+    color: #4255ff !important;
+}
+
+/* Timeline Items */
+.timeline-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-left: 2px solid #334155;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    top: 1.5rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: #4255ff;
+    border-radius: 50%;
+}
+
+.timeline-item:last-child {
+    border-left-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 60rem) {
     .success-icon-container {
         width: 80px;
         height: 80px;
     }
-
-    .success-icon-container ::deep .mud-icon-root {
-        font-size: 56px !important;
-    }
 }
 
+@media (max-width: 38.75rem) {
+    .success-icon-container {
+        width: 72px;
+        height: 72px;
+    }
+
+    .confirmation-card {
+        padding: 1.5rem !important;
+    }
+}

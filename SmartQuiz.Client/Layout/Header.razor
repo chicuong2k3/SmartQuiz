@@ -1,90 +1,100 @@
+@using SmartQuiz.Client.Components.Notifications
 @inject NavigationManager NavigationManager
 @inject ClientAuthHelper ClientAuthHelper
 @inject Session Session
+@inject INotificationService NotificationService
+@inject ICommander Commander
 
 <MudAppBar Elevation="0"
-           Style="background-color: white; border-bottom: 1px solid #F0F0F0; height: 64px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+           Style="background-color: #0a092d; border-bottom: 1px solid #334155; height: 64px;">
     <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="d-flex align-center justify-space-between pa-0">
-        <div class="d-flex align-center gap-4">
+        <div class="d-flex align-center gap-4 grow">
+            <!-- Mobile Menu Toggle -->
+            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+                               OnClick="@ToggleDrawer" Class="mr-2"/>
+            </MudHidden>
+
             <!-- Logo -->
-            <div class="d-flex align-center gap-2 cursor-pointer" @onclick="@(() => NavigationManager.NavigateTo("/"))">
+            <div class="d-flex align-center gap-2 cursor-pointer shrink-0"
+                 @onclick="@(() => NavigationManager.NavigateTo("/"))">
                 <MudIcon Icon="@Icons.Material.Filled.School" Style="color: #4255FF;" Size="Size.Large"/>
-                <MudText Typo="Typo.h6" Class="fw-bold app-logo" Style="color: #4255FF;">QuizMaster</MudText>
+                <MudHidden Breakpoint="Breakpoint.Xs">
+                    <MudText Typo="Typo.h6" Class="fw-bold app-logo" Style="color: #4255FF;">QuizMaster</MudText>
+                </MudHidden>
             </div>
 
-            <!-- Navigation Links -->
-            <div class="d-flex align-center gap-1">
-                <MudButton
-                    Variant="Variant.Text"
-                    OnClick="@(() => NavigationManager.NavigateTo("/"))"
-                    Style="color: #586380; text-transform: none; font-weight: 600; padding: 8px 16px; border-radius: 8px;">
-                    Home
-                </MudButton>
-                <MudButton
-                    Variant="Variant.Text"
-                    OnClick="@(() => NavigationManager.NavigateTo("/my-quizzes"))"
-                    Style="color: #586380; text-transform: none; font-weight: 600; padding: 8px 16px; border-radius: 8px;">
-                    My Quizzes
-                </MudButton>
-                <MudButton
-                    Variant="Variant.Text"
-                    OnClick="@(() => NavigationManager.NavigateTo("/browse"))"
-                    Style="color: #586380; text-transform: none; font-weight: 600; padding: 8px 16px; border-radius: 8px;">
-                    Browse
-                </MudButton>
-                <MudButton
-                    Variant="Variant.Text"
-                    OnClick="@(() => NavigationManager.NavigateTo("/create"))"
-                    Style="color: #586380; text-transform: none; font-weight: 600; padding: 8px 16px; border-radius: 8px;">
-                    Create
-                </MudButton>
-                <MudButton
-                    Variant="Variant.Text"
-                    OnClick="@(() => NavigationManager.NavigateTo("/quiz-demo"))"
-                    Style="color: #586380; text-transform: none; font-weight: 600; padding: 8px 16px; border-radius: 8px;">
-                    Quiz Demo
-                </MudButton>
-            </div>
+            <!-- Navigation Links (Desktop) -->
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <div class="d-flex align-center gap-1">
+                    <MudButton Variant="Variant.Text" OnClick="@(() => NavigationManager.NavigateTo("/"))"
+                               Class="header-nav-btn">Home
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" OnClick="@(() => NavigationManager.NavigateTo("/my-quizzes"))"
+                               Class="header-nav-btn">My Quizzes
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" OnClick="@(() => NavigationManager.NavigateTo("/browse"))"
+                               Class="header-nav-btn">Browse
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" OnClick="@(() => NavigationManager.NavigateTo("/create"))"
+                               Class="header-nav-btn">Create
+                    </MudButton>
+                    <MudButton Variant="Variant.Text" OnClick="@(() => NavigationManager.NavigateTo("/quiz-demo"))"
+                               Class="header-nav-btn">Quiz Demo
+                    </MudButton>
+                </div>
+            </MudHidden>
 
             <!-- Search Bar -->
-            <MudTextField
-                @bind-Value="_searchQuery"
-                Placeholder="Search..."
-                Variant="Variant.Outlined"
-                Adornment="Adornment.Start"
-                AdornmentIcon="@Icons.Material.Filled.Search"
-                Margin="Margin.Dense"
-                Class="search-field"
-                Style="min-width: 300px; background-color: #F6F7FB; border-radius: 8px;"/>
+            <MudTextField @bind-Value="_searchQuery"
+                          Placeholder="Search..."
+                          Variant="Variant.Outlined"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          Margin="Margin.Dense"
+                          Class="search-field grow mx-4"/>
         </div>
 
-        <div class="d-flex align-center gap-3">
+        <div class="d-flex align-center gap-2">
             <AuthorizeView>
                 <Authorized>
                     <!-- Notification Bell -->
-                    <MudIconButton Icon="@Icons.Material.Filled.Notifications"
-                                   Style="color: #586380;"
-                                   Size="Size.Medium"/>
+                    <MudHidden Breakpoint="Breakpoint.Xs">
+                        <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight"
+                                 ActivationEvent="@MouseEvent.LeftClick">
+                            <ActivatorContent>
+                                <MudBadge Dot="@(UnreadCount > 0)" Color="Color.Error" Overlap="true">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Notifications" Class="header-icon-btn"
+                                                   Size="Size.Medium"/>
+                                </MudBadge>
+                            </ActivatorContent>
+                            <ChildContent>
+                                <NotificationsPopover Items="Notifications" IsBusy="_notificationsBusy"
+                                                      OnMarkAllRead="MarkAllRead" OnNotificationClick="MarkRead"/>
+                            </ChildContent>
+                        </MudMenu>
+                    </MudHidden>
 
                     <!-- Help Icon -->
-                    <MudIconButton Icon="@Icons.Material.Filled.Help"
-                                   Style="color: #586380;"
-                                   Size="Size.Medium"/>
+                    <MudHidden Breakpoint="Breakpoint.Xs">
+                        <MudIconButton Icon="@Icons.Material.Filled.Help" Class="header-icon-btn" Size="Size.Medium"/>
+                    </MudHidden>
 
                     <!-- User Dropdown Menu -->
                     <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight"
                              ActivationEvent="@MouseEvent.LeftClick">
                         <ActivatorContent>
-                            <div class="d-flex align-center gap-2 cursor-pointer pa-2"
-                                 style="border-radius: 8px; transition: all 0.2s ease;">
-                                <MudText Typo="Typo.body1" Style="color: #282E3E; font-weight: 600;">Alex Johnson
-                                </MudText>
+                            <div class="d-flex align-center gap-2 cursor-pointer pa-2 user-avatar"
+                                 style="border-radius: 8px;">
+                                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                                    <MudText Typo="Typo.body1" Style="color: #282E3E; font-weight: 600;">Alex Johnson
+                                    </MudText>
+                                </MudHidden>
                                 <MudAvatar Size="Size.Medium"
-                                           Style="background: linear-gradient(135deg, #4255FF 0%, #6B7FFF 100%); border: 2px solid #F0F0F0;">
+                                           Style="background: linear-gradient(135deg, #4255FF 0%, #6B7FFF 100%);">
                                     <MudText Typo="Typo.body1" Class="text-white fw-bold">AJ</MudText>
                                 </MudAvatar>
-                                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"
-                                         Style="color: #586380;"
+                                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" Style="color: #586380;"
                                          Size="Size.Small"/>
                             </div>
                         </ActivatorContent>
@@ -165,9 +175,11 @@
                     </MudMenu>
                 </Authorized>
                 <NotAuthorized>
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" DropShadow="false"
-                               OnClick="@(() => NavigationManager.NavigateTo("/login"))">
-                        Đăng nhập
+                    <MudButton Variant="Variant.Text" OnClick="@(() => NavigationManager.NavigateTo("/login"))"
+                               Class="header-nav-btn">Log in
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" OnClick="@(() => NavigationManager.NavigateTo("/signup"))"
+                               Class="create-btn ml-2">Sign up
                     </MudButton>
                 </NotAuthorized>
             </AuthorizeView>
@@ -175,9 +187,119 @@
     </MudContainer>
 </MudAppBar>
 
+<!-- Mobile Navigation Drawer -->
+<MudDrawer @bind-Open="@_drawerOpen" Anchor="Anchor.Left" Elevation="1" Variant="DrawerVariant.Temporary" Width="280px">
+    <MudDrawerHeader Class="d-flex align-center gap-2 px-4 py-4">
+        <MudIcon Icon="@Icons.Material.Filled.School" Style="color: #4255FF;" Size="Size.Large"/>
+        <MudText Typo="Typo.h6" Class="fw-bold" Style="color: #4255FF;">QuizMaster</MudText>
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="@ToggleDrawer" Color="Color.Default"
+                       Size="Size.Small"/>
+    </MudDrawerHeader>
+    <MudNavMenu Class="pt-2">
+        <MudNavLink OnClick="@(() =>
+                             {
+                                 NavigationManager.NavigateTo("/");
+                                 ToggleDrawer();
+                             })" Icon="@Icons.Material.Filled.Home">Home
+        </MudNavLink>
+        <MudNavLink OnClick="@(() =>
+                             {
+                                 NavigationManager.NavigateTo("/my-quizzes");
+                                 ToggleDrawer();
+                             })" Icon="@Icons.Material.Filled.LibraryBooks">My Quizzes
+        </MudNavLink>
+        <MudNavLink OnClick="@(() =>
+                             {
+                                 NavigationManager.NavigateTo("/browse");
+                                 ToggleDrawer();
+                             })" Icon="@Icons.Material.Filled.Search">Browse
+        </MudNavLink>
+        <MudNavLink OnClick="@(() =>
+                             {
+                                 NavigationManager.NavigateTo("/create");
+                                 ToggleDrawer();
+                             })" Icon="@Icons.Material.Filled.AddBox">Create
+        </MudNavLink>
+        <MudNavLink OnClick="@(() =>
+                             {
+                                 NavigationManager.NavigateTo("/quiz-demo");
+                                 ToggleDrawer();
+                             })" Icon="@Icons.Material.Filled.PlayCircle">Quiz Demo
+        </MudNavLink>
+    </MudNavMenu>
+    <MudSpacer/>
+    <AuthorizeView>
+        <Authorized>
+            <div class="px-4 py-4 border-t">
+                <MudButton Variant="Variant.Text" FullWidth OnClick="@Logout" StartIcon="@Icons.Material.Filled.Logout"
+                           Color="Color.Error">Log Out
+                </MudButton>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</MudDrawer>
 
 @code {
     private string _searchQuery = "";
+    private bool _drawerOpen;
+
+    private IReadOnlyList<NotificationDto> Notifications { get; set; } = Array.Empty<NotificationDto>();
+    private bool _notificationsBusy;
+
+    private int UnreadCount => Notifications.Count(x => !x.IsRead);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await RefreshNotifications();
+    }
+
+    private async Task RefreshNotifications()
+    {
+        try
+        {
+            _notificationsBusy = true;
+            Notifications = await NotificationService.GetMyNotificationsAsync(Session);
+        }
+        finally
+        {
+            _notificationsBusy = false;
+        }
+    }
+
+    private async Task MarkAllRead()
+    {
+        try
+        {
+            _notificationsBusy = true;
+            await Commander.Call(new MarkAllNotificationsReadCommand(Session));
+        }
+        finally
+        {
+            _notificationsBusy = false;
+        }
+
+        await RefreshNotifications();
+    }
+
+    private async Task MarkRead(NotificationDto item)
+    {
+        if (item.IsRead)
+            return;
+
+        try
+        {
+            _notificationsBusy = true;
+            await Commander.Call(new MarkNotificationReadCommand(Session, item.Id));
+        }
+        finally
+        {
+            _notificationsBusy = false;
+        }
+
+        await RefreshNotifications();
+    }
 
     private async Task Logout()
     {
@@ -185,5 +307,5 @@
         NavigationManager.NavigateTo("/login");
     }
 
+    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
 }
-

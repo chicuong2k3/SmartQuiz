@@ -14,150 +14,157 @@
 
         @if (state.FlashcardSet != null)
         {
-            <!-- Breadcrumb Navigation -->
-            <MudBreadcrumbs Items="_breadcrumbs" Class="px-0 mb-4"></MudBreadcrumbs>
-
-            <!-- Header Section with Title and Metadata -->
-            <div class="mb-6">
-                <MudText Typo="Typo.h4" Class="fw-bold mb-2">@state.FlashcardSet.Title</MudText>
-                <div class="d-flex align-center gap-3 mb-4">
-                    <MudAvatar Color="Color.Dark" Size="Size.Small">
-                        <MudText Typo="Typo.body2" Class="text-white fw-bold">AF</MudText>
-                    </MudAvatar>
-                    <MudText Typo="Typo.body1">AstroFan</MudText>
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">• @state.FlashcardSet.FlashcardCount Terms
-                    </MudText>
-                    <MudRating ReadOnly="true" SelectedValue="4" Size="Size.Small" Color="Color.Warning"/>
-                </div>
-
-                <div class="d-flex gap-2">
-                    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Share" Size="Size.Small">
-                        Share
+            <!-- Header Section with Title and Action Buttons -->
+            <div class="d-flex justify-space-between align-center mb-5 flex-wrap gap-3">
+                <MudText Typo="Typo.h4" Class="fw-bold title-text">@state.FlashcardSet.Title</MudText>
+                <div class="d-flex align-center gap-2">
+                    <MudButton Variant="Variant.Filled" Class="header-btn"
+                               StartIcon="@Icons.Material.Outlined.BookmarkBorder">
+                        Lưu
                     </MudButton>
-                    <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small"
-                               OnClick="@EditSet">
-                        Edit
+                    <MudButton Variant="Variant.Filled" Class="header-btn" StartIcon="@Icons.Material.Filled.Groups">
+                        Nhóm
                     </MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary"
-                               StartIcon="@Icons.Material.Filled.PlayArrow">
-                        Study Mode
-                    </MudButton>
+                    <MudIconButton Icon="@Icons.Material.Outlined.IosShare" Class="header-icon-btn"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.MoreHoriz" Class="header-icon-btn"/>
                 </div>
             </div>
 
-            <!-- Study Mode Tabs -->
-            <MudPaper Elevation="1" Class="mb-6" Style="border-radius: 12px;">
-                <MudTabs Elevation="0" Color="Color.Primary" ApplyEffectsToContainer="true" PanelClass="pa-6">
-                    <MudTabPanel Text="TERM">
-                        <!-- Large Flashcard Display -->
-                        <div class="d-flex justify-center align-center" Style="min-height: 400px;">
-                            @if (_currentFlashcard != null)
-                            {
-                                <MudPaper Elevation="2" Class="pa-8 text-center cursor-pointer"
-                                          Style="width: 600px; min-height: 350px; border-radius: 16px; display: flex; align-items: center; justify-content: center;"
-                                          @onclick="FlipCard">
-                                    <div>
-                                        <MudText Typo="Typo.h3" Class="fw-bold mb-4">
-                                            @(_isFlipped ? _currentFlashcard.BackText : _currentFlashcard.FrontText)
-                                        </MudText>
-                                        <MudText Typo="Typo.body1" Color="Color.Secondary">
-                                            Click to flip
-                                        </MudText>
-                                    </div>
-                                </MudPaper>
-                            }
-                            else
-                            {
-                                <MudText Typo="Typo.h6" Color="Color.Secondary">
-                                    No flashcards in this set yet
-                                </MudText>
-                            }
-                        </div>
+            <!-- Study Mode Buttons Grid -->
+            <div class="study-modes-grid mb-5">
+                <MudButton Variant="Variant.Outlined" Class="study-mode-btn" StartIcon="@Icons.Material.Filled.Style">
+                    Thẻ ghi nhớ
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Class="study-mode-btn"
+                           StartIcon="@Icons.Material.Filled.AutoAwesome">
+                    Học
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Class="study-mode-btn study-mode-btn-active"
+                           StartIcon="@Icons.Material.Filled.Quiz">
+                    Kiểm tra
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Class="study-mode-btn"
+                           StartIcon="@Icons.Material.Filled.GridView">
+                    Khối hộp
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Class="study-mode-btn" StartIcon="@Icons.Material.Filled.Bolt">
+                    Blast
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Class="study-mode-btn study-mode-btn-active"
+                           StartIcon="@Icons.Material.Filled.Extension">
+                    Ghép thẻ
+                </MudButton>
+            </div>
 
-                        <!-- Navigation Controls -->
-                        @if (_currentFlashcard != null)
-                        {
-                            <div class="d-flex justify-center align-center gap-4 mt-6">
-                                <MudIconButton Icon="@Icons.Material.Filled.ArrowBack"
-                                               Color="Color.Primary"
-                                               Size="Size.Large"
-                                               Disabled="@(_currentCardIndex == 0)"
-                                               OnClick="PreviousCard"/>
+            <!-- Flashcard Display Area -->
+            <MudPaper Class="flashcard-container mb-4" Elevation="0">
+                <!-- Top Bar -->
+                <div class="d-flex justify-space-between align-center pa-4 flashcard-header">
+                    <div class="d-flex align-center gap-2 hint-wrapper">
+                        <MudIcon Icon="@Icons.Material.Outlined.Lightbulb" Size="Size.Small" Class="hint-icon"/>
+                        <MudText Typo="Typo.body2" Class="hint-text">Hiển thị gợi ý</MudText>
+                    </div>
+                    <div class="d-flex align-center gap-1">
+                        <MudIconButton Icon="@Icons.Material.Outlined.Edit" Size="Size.Small" Class="card-action-btn"
+                                       OnClick="EditSet"/>
+                        <MudIconButton Icon="@Icons.Material.Outlined.VolumeUp" Size="Size.Small"
+                                       Class="card-action-btn"/>
+                        <MudIconButton Icon="@Icons.Material.Outlined.StarBorder" Size="Size.Small"
+                                       Class="card-action-btn"/>
+                    </div>
+                </div>
 
-                                <MudText Typo="Typo.body1" Class="fw-semibold">
-                                    @(_currentCardIndex + 1) / @state.Flashcards.Count
-                                </MudText>
-
-                                <MudIconButton Icon="@Icons.Material.Filled.ArrowForward"
-                                               Color="Color.Primary"
-                                               Size="Size.Large"
-                                               Disabled="@(_currentCardIndex >= state.Flashcards.Count - 1)"
-                                               OnClick="NextCard"/>
-                            </div>
-
-                            <div class="text-center mt-4">
-                                <MudText Typo="Typo.caption" Color="Color.Secondary">
-                                    <MudIcon Icon="@Icons.Material.Filled.FlipToFront" Size="Size.Small"/>
-                                    Don't Recognize
-                                </MudText>
-                                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="mx-8">|</MudText>
-                                <MudText Typo="Typo.caption" Color="Color.Secondary">
-                                    <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small"/>
-                                    Recognize
-                                </MudText>
-                            </div>
-                        }
-                    </MudTabPanel>
-
-                    <MudTabPanel Text="Flip" Icon="@Icons.Material.Filled.Flip">
-                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
-                            Flip mode content
+                <!-- Card Content -->
+                <div class="flashcard-content" @onclick="FlipCard">
+                    @if (_currentFlashcard != null)
+                    {
+                        <MudText Typo="Typo.h3" Class="flashcard-text">
+                            @(_isFlipped ? _currentFlashcard.BackText : _currentFlashcard.FrontText)
                         </MudText>
-                    </MudTabPanel>
-
-                    <MudTabPanel Text="Learn" Icon="@Icons.Material.Filled.Psychology">
-                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
-                            Learn mode content
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h5" Class="flashcard-text empty-text">
+                            Chưa có thẻ nào trong bộ này
                         </MudText>
-                    </MudTabPanel>
-
-                    <MudTabPanel Text="Test" Icon="@Icons.Material.Filled.Quiz">
-                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
-                            Test mode content
-                        </MudText>
-                    </MudTabPanel>
-
-                    <MudTabPanel Text="Match" Icon="@Icons.Material.Filled.Extension">
-                        <MudText Typo="Typo.body1" Color="Color.Secondary" Align="Align.Center" Class="py-8">
-                            Match mode content
-                        </MudText>
-                    </MudTabPanel>
-                </MudTabs>
+                    }
+                </div>
             </MudPaper>
+
+            <!-- Bottom Controls -->
+            <div class="d-flex justify-space-between align-center mb-6 flex-wrap gap-3 bottom-controls">
+                <!-- Left: Progress Toggle -->
+                <div class="d-flex align-center gap-2">
+                    <MudText Typo="Typo.body2" Class="control-text">Theo dõi tiến độ</MudText>
+                    <MudSwitch T="bool" @bind-Value="_trackProgress" Color="Color.Primary" Class="progress-switch"/>
+                </div>
+
+                <!-- Center: Navigation -->
+                <div class="d-flex align-center gap-3 navigation-controls">
+                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBack"
+                                   Class="nav-btn"
+                                   Disabled="@(_currentCardIndex == 0 || state.Flashcards.Count == 0)"
+                                   OnClick="PreviousCard"/>
+                    <MudText Typo="Typo.body1" Class="card-counter">
+                        @if (state.Flashcards.Count > 0)
+                        {
+                            <span>@(_currentCardIndex + 1) / @state.Flashcards.Count</span>
+                        }
+                        else
+                        {
+                            <span>0 / 0</span>
+                        }
+                    </MudText>
+                    <MudIconButton Icon="@Icons.Material.Filled.ArrowForward"
+                                   Class="nav-btn"
+                                   Disabled="@(_currentCardIndex >= state.Flashcards.Count - 1 || state.Flashcards.Count == 0)"
+                                   OnClick="NextCard"/>
+                </div>
+
+                <!-- Right: Playback Controls -->
+                <div class="d-flex align-center gap-1 playback-controls">
+                    <MudIconButton Icon="@Icons.Material.Filled.PlayArrow" Class="control-btn"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Shuffle" Class="control-btn"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Settings" Class="control-btn"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Class="control-btn"/>
+                </div>
+            </div>
+
+            <!-- Creator Info -->
+            <div class="d-flex align-center gap-3 mb-6">
+                <MudAvatar Color="Color.Primary" Size="Size.Medium">
+                    <MudIcon Icon="@Icons.Material.Filled.Person"/>
+                </MudAvatar>
+                <div>
+                    <MudText Typo="Typo.caption" Class="creator-label">Tạo bởi</MudText>
+                    <MudText Typo="Typo.body1" Class="fw-semibold">User</MudText>
+                </div>
+            </div>
 
             <!-- Terms List Section -->
             <div class="mb-6">
-                <div class="d-flex justify-space-between align-center mb-3">
-                    <MudText Typo="Typo.h6" Class="fw-bold">Terms in this set (@state.Flashcards.Count)</MudText>
-                    <MudSelect T="string" Value="@("original")" Variant="Variant.Outlined" Dense="true"
-                               Style="min-width: 150px;">
-                        <MudSelectItem Value="@("original")">Original Order</MudSelectItem>
-                        <MudSelectItem Value="@("alphabetical")">Alphabetical</MudSelectItem>
-                    </MudSelect>
+                <div class="d-flex justify-space-between align-center mb-4">
+                    <MudText Typo="Typo.h6" Class="fw-bold">Thuật ngữ trong học phần này (@state.Flashcards.Count)
+                    </MudText>
+                    <div class="d-flex align-center gap-2">
+                        <MudSelect T="string" Value="@_sortOrder" ValueChanged="@((string v) => _sortOrder = v)"
+                                   Variant="Variant.Outlined" Dense="true" Class="sort-select">
+                            <MudSelectItem Value="@("original")">Thứ tự gốc</MudSelectItem>
+                            <MudSelectItem Value="@("alphabetical")">Theo bảng chữ cái</MudSelectItem>
+                        </MudSelect>
+                    </div>
                 </div>
 
                 @if (state?.Flashcards?.Any() == true)
                 {
                     @foreach (var flashcard in state.Flashcards)
                     {
-                        <MudPaper Elevation="1" Class="pa-4 mb-3" Style="border-radius: 12px;">
+                        <MudPaper Elevation="0" Class="term-card mb-3">
                             <MudGrid>
                                 <MudItem xs="12" md="5">
-                                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-1">TERM</MudText>
                                     <MudText Typo="Typo.body1" Class="fw-semibold">@flashcard.FrontText</MudText>
                                 </MudItem>
                                 <MudItem xs="12" md="7">
-                                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-1">DEFINITION</MudText>
                                     <MudText Typo="Typo.body1">@flashcard.BackText</MudText>
                                 </MudItem>
                             </MudGrid>
@@ -166,38 +173,23 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary" Class="pa-8">
-                        No terms in this set yet
-                    </MudText>
+                    <MudPaper Elevation="0" Class="term-card">
+                        <MudText Typo="Typo.body1" Align="Align.Center" Class="pa-8" Style="opacity: 0.6;">
+                            Chưa có thuật ngữ nào trong bộ này
+                        </MudText>
+                    </MudPaper>
                 }
             </div>
-
-            <!-- Study Mode Recommendation -->
-            <MudPaper Elevation="1" Class="pa-6 text-center"
-                      Style="border-radius: 12px; background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);">
-                <MudText Typo="Typo.h6" Class="fw-bold mb-2 text-white">Ready to master this set?</MudText>
-                <MudText Typo="Typo.body2" Class="mb-4 text-white" Style="opacity: 0.9;">
-                    Try our different study modes to test your knowledge
-                </MudText>
-                <div class="d-flex justify-center gap-3">
-                    <MudButton Variant="Variant.Filled" Color="Color.Surface" Size="Size.Large">
-                        Test
-                    </MudButton>
-                    <MudButton Variant="Variant.Outlined" Style="border-color: white; color: white;" Size="Size.Large">
-                        Match
-                    </MudButton>
-                </div>
-            </MudPaper>
         }
     }
     else if (State.HasError)
     {
-        <MudAlert Severity="Severity.Error">@(State.Error?.Message ?? "An error occurred")</MudAlert>
+        <MudAlert Severity="Severity.Error">@(State.Error?.Message ?? "Đã xảy ra lỗi")</MudAlert>
     }
     else
     {
-        <div class="d-flex justify-center align-center min-h-400">
-            <MudProgressCircular Indeterminate="true" Size="Size.Large"/>
+        <div class="d-flex justify-center align-center" style="min-height: 400px;">
+            <MudProgressCircular Indeterminate="true" Size="Size.Large" Color="Color.Primary"/>
         </div>
     }
 </MudContainer>
@@ -206,9 +198,10 @@
     [Parameter] public Guid Id { get; set; }
 
     private string? _setTitle;
-    private List<BreadcrumbItem> _breadcrumbs = new();
     private int _currentCardIndex;
     private bool _isFlipped;
+    private bool _trackProgress;
+    private string _sortOrder = "original";
     private FlashcardDto? _currentFlashcard;
 
     protected override async Task<FlashcardSetViewState> ComputeState(CancellationToken cancellationToken)
@@ -221,7 +214,6 @@
         if (set != null)
         {
             _setTitle = set.Title;
-            UpdateBreadcrumbs(set);
 
             if (flashcards.Any() && _currentFlashcard == null)
             {
@@ -242,17 +234,6 @@
         _currentCardIndex = 0;
         _isFlipped = false;
         _currentFlashcard = null;
-    }
-
-    private void UpdateBreadcrumbs(FlashcardSetDto set)
-    {
-        _breadcrumbs =
-        [
-                new BreadcrumbItem("Home", href: "/"),
-                new BreadcrumbItem("Sciences", href: "/sciences"),
-                new BreadcrumbItem("Astrophysics", href: "/astrophysics"),
-                new BreadcrumbItem(set.Title, href: null, disabled: true)
-        ];
     }
 
     private void FlipCard()
@@ -284,6 +265,4 @@
     {
         NavigationManager.NavigateTo($"/flashcard-sets/{Id}/edit");
     }
-
 }
-

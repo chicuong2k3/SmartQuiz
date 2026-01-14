@@ -1,21 +1,64 @@
+/* ============================================================
+   PrivacyPolicyPage Styles - Quizlet Dark Theme
+   ============================================================ */
+
+/* Sticky Sidebar */
 .privacy-page .sticky-sidebar {
     position: sticky;
-    top: 80px;
-    max-height: calc(100vh - 100px);
+    top: 5rem;
+    max-height: calc(100vh - 6.25rem);
     overflow-y: auto;
+    background-color: #1e2544 !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid #334155 !important;
+    padding: 1rem !important;
 }
 
+/* Navigation Links */
 .privacy-page .mud-nav-link {
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
+    border-radius: 0.5rem !important;
+    color: #a0aec0 !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
 }
 
 .privacy-page .mud-nav-link:hover {
-    background-color: rgba(33, 150, 243, 0.08);
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f7fafc !important;
 }
 
 .privacy-page .mud-nav-link.active {
-    background-color: rgba(33, 150, 243, 0.12);
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    color: #4255ff !important;
+}
+
+/* Content Paper */
+.privacy-page .content-paper {
+    background-color: #1e2544 !important;
+    border-radius: 1rem !important;
+    border: 1px solid #334155 !important;
+    padding: 2rem !important;
+}
+
+/* Typography */
+.privacy-page ::deep .mud-typography-h4,
+.privacy-page ::deep .mud-typography-h5,
+.privacy-page ::deep .mud-typography-h6 {
+    color: #f7fafc !important;
+}
+
+.privacy-page ::deep .mud-typography-body1,
+.privacy-page ::deep .mud-typography-body2 {
+    color: #a0aec0 !important;
+    line-height: 1.7 !important;
+}
+
+/* Links */
+.privacy-page ::deep .mud-link {
+    color: #4255ff !important;
+}
+
+.privacy-page ::deep .mud-link:hover {
+    color: #6b7fff !important;
 }
 
 /* Smooth scrolling */
@@ -23,8 +66,58 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Section spacing */
+/* Section spacing for scroll anchors */
 .privacy-page h5 {
-    scroll-margin-top: 100px;
+    scroll-margin-top: 6.25rem;
 }
 
+/* Info Boxes */
+.privacy-page .info-box {
+    background-color: rgba(66, 85, 255, 0.1) !important;
+    border-left: 4px solid #4255ff !important;
+    border-radius: 0.5rem !important;
+    padding: 1rem !important;
+}
+
+.privacy-page .info-box ::deep .mud-typography {
+    color: #e2e8f0 !important;
+}
+
+/* Lists */
+.privacy-page ul,
+.privacy-page ol {
+    color: #a0aec0 !important;
+}
+
+.privacy-page li {
+    margin-bottom: 0.5rem;
+}
+
+/* Table of Contents */
+.privacy-page .toc-item {
+    padding: 0.5rem 1rem !important;
+    margin-bottom: 0.25rem;
+    border-radius: 0.5rem !important;
+    color: #a0aec0 !important;
+    cursor: pointer;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.privacy-page .toc-item:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f7fafc !important;
+}
+
+.privacy-page .toc-item.active {
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    color: #4255ff !important;
+}
+
+/* Responsive */
+@media (max-width: 60rem) {
+    .privacy-page .sticky-sidebar {
+        position: static;
+        max-height: none;
+        margin-bottom: 1.5rem;
+    }
+}

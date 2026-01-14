@@ -1,94 +1,146 @@
+/* ============================================================
+   ContactSupportPage Styles - Quizlet Dark Theme
+   ============================================================ */
+
 /* Page Background */
 .contact-support-page {
-    background-color: #F5F7FA;
+    background-color: #0a092d;
     min-height: 100vh;
 }
 
 /* Form Paper */
 .contact-form-paper {
-    border-radius: 16px;
-    background-color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 1rem !important;
+    background-color: #1e2544 !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 0.25rem 2rem rgba(10, 9, 45, 0.4) !important;
 }
 
 /* Input Field Styling */
 .contact-form-paper ::deep .mud-input-outlined {
-    background-color: #FAFAFA;
-    border-radius: 8px;
+    background-color: #151b33 !important;
+    border-radius: 0.5rem !important;
 }
 
 .contact-form-paper ::deep .mud-input-outlined:hover {
-    background-color: white;
+    background-color: #1e2544 !important;
 }
 
 .contact-form-paper ::deep .mud-input-root:focus-within {
-    background-color: white;
+    background-color: #1e2544 !important;
+}
+
+.contact-form-paper ::deep .mud-input-slot input,
+.contact-form-paper ::deep .mud-input-slot textarea {
+    color: #e2e8f0 !important;
+}
+
+.contact-form-paper ::deep .mud-input-slot input::placeholder,
+.contact-form-paper ::deep .mud-input-slot textarea::placeholder {
+    color: #64748b !important;
 }
 
 .contact-form-paper ::deep fieldset {
-    border-color: #E0E0E0;
+    border-color: #334155 !important;
 }
 
 .contact-form-paper ::deep .mud-input-root:hover fieldset {
-    border-color: #BDBDBD;
+    border-color: #475569 !important;
 }
 
 .contact-form-paper ::deep .mud-input-root.mud-input-focused fieldset {
-    border-color: #2196F3;
-    border-width: 2px;
+    border-color: #4255ff !important;
+    border-width: 2px !important;
+}
+
+.contact-form-paper ::deep .mud-input-label {
+    color: #94a3b8 !important;
 }
 
 /* Input Adornment Icons */
 .contact-form-paper ::deep .mud-input-adornment {
-    color: #9E9E9E;
+    color: #64748b !important;
 }
 
 .contact-form-paper ::deep .mud-input-root.mud-input-focused .mud-input-adornment {
-    color: #2196F3;
+    color: #4255ff !important;
 }
 
 /* Text Counter */
 .contact-form-paper ::deep .mud-input-helper-text {
     text-align: right;
-    color: #9E9E9E;
-    font-size: 12px;
+    color: #64748b !important;
+    font-size: 0.75rem !important;
 }
 
 /* Submit Button */
-.contact-form-paper ::deep .mud-button-root {
-    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
-    transition: all 0.3s ease;
+.contact-form-paper ::deep .submit-btn {
+    background-color: #4255ff !important;
+    color: white !important;
+    box-shadow: 0 0.25rem 1rem rgba(66, 85, 255, 0.3) !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
 }
 
-.contact-form-paper ::deep .mud-button-root:hover {
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
-    transform: translateY(-1px);
+.contact-form-paper ::deep .submit-btn:hover {
+    background-color: #5266ff !important;
+    box-shadow: 0 0.5rem 1.5rem rgba(66, 85, 255, 0.4) !important;
+    transform: translateY(-1px) !important;
 }
 
-.contact-form-paper ::deep .mud-button-root:active {
-    transform: translateY(0);
+.contact-form-paper ::deep .submit-btn:active {
+    transform: translateY(0) !important;
 }
 
 /* Privacy Notice Box */
+.privacy-notice {
+    background-color: #151b33 !important;
+    border-radius: 0.5rem !important;
+    padding: 1rem !important;
+    border: 1px solid #334155 !important;
+}
+
+.privacy-notice ::deep .mud-typography {
+    color: #94a3b8 !important;
+}
+
 .contact-form-paper ::deep .mud-link {
+    color: #4255ff !important;
     cursor: pointer;
 }
 
+.contact-form-paper ::deep .mud-link:hover {
+    color: #6b7fff !important;
+}
+
+/* Select Dropdown */
+.contact-form-paper ::deep .mud-select .mud-input-root {
+    background-color: #151b33 !important;
+}
+
+.contact-form-paper ::deep .mud-select-input {
+    color: #e2e8f0 !important;
+}
+
+/* Section Headers */
+.contact-form-paper ::deep .mud-typography-h5,
+.contact-form-paper ::deep .mud-typography-h6 {
+    color: #f7fafc !important;
+}
+
+.contact-form-paper ::deep .mud-typography-body1,
+.contact-form-paper ::deep .mud-typography-body2 {
+    color: #a0aec0 !important;
+}
+
 /* Responsive Design */
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
     .contact-form-paper {
-        padding: 24px !important;
+        padding: 1.5rem !important;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 38.75rem) {
     .contact-form-paper {
-        padding: 20px !important;
-    }
-
-    .contact-support-page ::deep .mud-container {
-        padding-top: 32px;
-        padding-bottom: 32px;
+        padding: 1rem !important;
     }
 }
-

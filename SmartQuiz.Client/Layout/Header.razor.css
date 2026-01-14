@@ -1,20 +1,214 @@
+/* ============================================================
+   Header Styles - Quizlet Dark Theme
+   ============================================================ */
+
+/* Search Field - Quizlet Pill Style - COMPLETE OVERRIDE */
+/* Container layout only - keeping transparency */
+.search-field {
+    width: 100%;
+    max-width: 600px;
+    background-color: transparent !important;
+}
+
+/* Apply Pill Shape and Background to Input Root (Inner Box) */
 .search-field ::deep .mud-input-root {
-    color: white !important;
+    background-color: #2e3856 !important;
+    border-radius: 9999px !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+    overflow: hidden !important;
+    border: none !important;
 }
 
-.search-field ::deep .mud-input-root::placeholder {
-    color: rgba(255, 255, 255, 0.7) !important;
+/* Hover State on Container affects Inner Box */
+.search-field:hover ::deep .mud-input-root {
+    background-color: #3d4259 !important;
 }
 
+/* Fix adornment layout to prevent corner cut-off */
 .search-field ::deep .mud-input-adornment-start {
+    margin-left: 8px !important;
+    margin-right: -4px !important;
+}
+
+/* Focus State Effects on Inner Box */
+.search-field ::deep .mud-input-root.mud-input-focused,
+.search-field:focus-within ::deep .mud-input-root {
+    background-color: #3d4259 !important;
+    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.2) !important;
+}
+
+/* Force Child Elements Transparent */
+.search-field ::deep *,
+.search-field ::deep .mud-input-slot,
+.search-field ::deep .mud-input-slot input,
+.search-field ::deep .mud-input-adornment,
+.search-field ::deep .mud-input-adornment-start,
+.search-field ::deep .mud-input-adornment-end,
+.search-field ::deep fieldset,
+.search-field ::deep .mud-input-outlined-border {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Text and Icon Colors */
+.search-field ::deep .mud-input-slot input {
+    color: #e2e8f0 !important;
+}
+
+.search-field ::deep .mud-input-slot input::placeholder {
+    color: #939bb4 !important;
+}
+
+.search-field ::deep .mud-input-adornment-start,
+.search-field ::deep .mud-input-adornment-start .mud-icon-root {
+    color: #939bb4 !important;
+}
+
+
+/* Logo */
+.app-logo {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #4255ff !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* Header Nav Buttons */
+.header-nav-btn {
+    color: #a0aec0 !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.header-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #4255ff !important;
+}
+
+.header-nav-btn.active {
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    color: #4255ff !important;
+}
+
+/* User Avatar (profile trigger) - softer */
+.user-avatar {
+    border: 1px solid rgba(168, 177, 255, 0.18) !important;
+    background-color: rgba(255, 255, 255, 0.02);
+    transition: background-color 0.12s cubic-bezier(0.47, 0, 0.745, 0.715),
+    border-color 0.12s cubic-bezier(0.47, 0, 0.745, 0.715),
+    box-shadow 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.user-avatar:hover {
+    border-color: rgba(168, 177, 255, 0.32) !important;
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 0 3px rgba(168, 177, 255, 0.10) !important;
+}
+
+/* Create Button - Quizlet Plus Style */
+.create-btn {
+    background-color: #4255ff !important;
     color: white !important;
+    border-radius: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    font-weight: 600 !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
 }
 
-.search-field ::deep fieldset {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+.create-btn:hover {
+    background-color: #5266ff !important;
+    transform: scale(1.02) !important;
 }
 
-.search-field ::deep .mud-input-root:hover fieldset {
-    border-color: rgba(255, 255, 255, 0.5) !important;
+/* Icon buttons in header */
+.header-icon-btn {
+    color: #a0aec0 !important;
 }
 
+.header-icon-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f7fafc !important;
+}
+
+/* Profile dropdown (MudMenu content) - softer, more elegant */
+
+/* Target the menu content surface inside header */
+::deep .mud-menu .mud-popover {
+    border-radius: 1rem !important;
+    border: 1px solid rgba(168, 177, 255, 0.16) !important;
+    box-shadow: 0 0.75rem 3rem rgba(10, 9, 45, 0.55) !important;
+
+    transform-origin: top right;
+    animation: headerMenuIn 120ms cubic-bezier(0.47, 0, 0.745, 0.715);
+}
+
+@keyframes headerMenuIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header profile dropdown: override global .mud-popover styles to avoid stacked borders */
+::deep .mud-menu .mud-popover,
+::deep .mud-menu .mud-popover * {
+    box-sizing: border-box;
+}
+
+/* Ensure only ONE border is visible (popover). Remove any extra border/shadow from inner paper. */
+::deep .mud-menu .mud-popover .mud-paper {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Softer separators: use spacing rather than a hard line where possible */
+::deep .mud-menu .mud-divider {
+    margin: 8px 12px !important;
+    opacity: 0.7;
+}
+
+/* Elegant keyboard focus (no harsh blue rectangle) */
+::deep .mud-menu .mud-menu-item:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(168, 177, 255, 0.10) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Menu items */
+::deep .mud-menu .mud-menu-item {
+    border-radius: 0.75rem !important;
+    margin: 4px 8px !important;
+    padding: 10px 12px !important;
+}
+
+::deep .mud-menu .mud-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Make icons a bit softer & consistent */
+::deep .mud-menu .mud-menu-item .mud-icon-root {
+    color: rgba(226, 232, 240, 0.70) !important;
+}
+
+::deep .mud-menu .mud-menu-item:hover .mud-icon-root {
+    color: rgba(226, 232, 240, 0.90) !important;
+}
+
+/* Menu item text */
+::deep .mud-menu .mud-menu-item .mud-typography {
+    color: rgba(226, 232, 240, 0.92) !important;
+}
+
+/* Dividers inside menu */
+::deep .mud-menu .mud-divider {
+    border-color: rgba(168, 177, 255, 0.12) !important;
+}

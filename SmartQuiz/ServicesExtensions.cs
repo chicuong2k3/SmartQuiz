@@ -15,6 +15,7 @@ using NotificationModule;
 using SmartQuiz.Application;
 using SmartQuiz.Application.Auth;
 using SmartQuiz.Application.Flashcards;
+using SmartQuiz.Application.Notifications;
 using SmartQuiz.Client.Data.Services;
 using SmartQuiz.Templates;
 
@@ -91,10 +92,12 @@ public static class ServicesExtensions
 
             fusion.AddOperationReprocessor();
 
+            fusion.AddServer<IUserContext, UserContext>();
             fusion.AddServer<ICustomAuthService, CustomAuthService>();
             fusion.AddServer<IFlashcardService, FlashcardService>();
             fusion.AddServer<IFlashcardSetService, FlashcardSetService>();
             fusion.AddServer<IQuizResultService, QuizResultService>();
+            fusion.AddServer<INotificationService, NotificationService>();
         });
 
         services.Decorate<IAuthBackend, LinkedAccountAuthBackendDecorator>();

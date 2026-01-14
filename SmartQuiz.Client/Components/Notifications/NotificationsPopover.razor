@@ -1,0 +1,88 @@
+<MudPaper Class="notifications-popover" Elevation="0">
+    <div class="notifications-header">
+        <div class="d-flex align-center justify-space-between">
+            <MudText Typo="Typo.h6" Class="fw-bold">Thông báo</MudText>
+            @if (Items.Count > 0)
+            {
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Class="text-transform-none" Disabled="@IsBusy"
+                           OnClick="@OnMarkAllRead">
+                    Đánh dấu đã đọc
+                </MudButton>
+            }
+        </div>
+    </div>
+
+    @if (Items.Count == 0)
+    {
+        <div class="d-flex flex-column align-center justify-center py-10">
+            <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" Size="Size.Large" Color="Color.Secondary"/>
+            <MudText Typo="Typo.body2" Class="text-secondary-color mt-2">Chưa có thông báo nào</MudText>
+        </div>
+    }
+    else
+    {
+        <MudList T="NotificationDto" Dense="true" Class="notifications-list">
+            @foreach (var n in Items)
+            {
+                <MudListItem T="NotificationDto" Class="notification-item" OnClick="@(() => OnItemClick(n))">
+                    <div class="notification-row">
+                        <MudAvatar Size="Size.Small" Color="@GetAvatarColor(n.Type)">
+                            <MudIcon Icon="@GetIcon(n.Type)" Size="Size.Small"/>
+                        </MudAvatar>
+
+                        <div class="grow">
+                            <div class="d-flex align-center justify-space-between gap-2">
+                                <MudText Typo="Typo.body2" Class="fw-semibold text-primary-color">@n.Title</MudText>
+                                <div class="d-flex align-center gap-2">
+                                    @if (!n.IsRead)
+                                    {
+                                        <span class="unread-dot" aria-label="Unread"></span>
+                                    }
+                                    <MudText Typo="Typo.caption"
+                                             Class="text-muted-color">@n.CreatedAt.ToString("HH:mm")</MudText>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(n.Message))
+                            {
+                                <MudText Typo="Typo.body2"
+                                         Class="text-secondary-color notification-message">@n.Message</MudText>
+                            }
+                        </div>
+                    </div>
+                </MudListItem>
+            }
+        </MudList>
+
+        <div class="notifications-footer">
+            <MudText Typo="Typo.caption" Class="text-muted-color">Hiển thị @Items.Count thông báo gần nhất</MudText>
+        </div>
+    }
+</MudPaper>
+
+@code {
+    [Parameter] public IReadOnlyList<NotificationDto> Items { get; set; } = Array.Empty<NotificationDto>();
+    [Parameter] public bool IsBusy { get; set; }
+
+    [Parameter] public EventCallback OnMarkAllRead { get; set; }
+    [Parameter] public EventCallback<NotificationDto> OnNotificationClick { get; set; }
+
+    private Task OnItemClick(NotificationDto item) => OnNotificationClick.InvokeAsync(item);
+
+    private static string GetIcon(NotificationType type) => type switch
+    {
+        NotificationType.Info => Icons.Material.Filled.Info,
+        NotificationType.Success => Icons.Material.Filled.CheckCircle,
+        NotificationType.Warning => Icons.Material.Filled.Warning,
+        NotificationType.Error => Icons.Material.Filled.Error,
+        _ => Icons.Material.Filled.Notifications,
+    };
+
+    private static Color GetAvatarColor(NotificationType type) => type switch
+    {
+        NotificationType.Success => Color.Success,
+        NotificationType.Warning => Color.Warning,
+        NotificationType.Error => Color.Error,
+        _ => Color.Info,
+    };
+
+}

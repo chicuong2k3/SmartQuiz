@@ -1,0 +1,64 @@
+@* Deprecated: replaced by NotificationsPopover (anchored popup in header). *@
+
+@inherits ComponentBase
+
+<MudDialog>
+    <DialogContent>
+        <div class="d-flex align-center justify-space-between mb-3">
+            <MudText Typo="Typo.h6" Class="fw-bold">Thông báo</MudText>
+            @if (Items.Count > 0)
+            {
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Class="text-transform-none"
+                           OnClick="@MarkAllRead">
+                    Đánh dấu đã đọc
+                </MudButton>
+            }
+        </div>
+
+        @if (Items.Count == 0)
+        {
+            <div class="d-flex flex-column align-center justify-center py-10">
+                <MudIcon Icon="@Icons.Material.Filled.NotificationsNone" Size="Size.Large" Color="Color.Secondary"/>
+                <MudText Typo="Typo.body2" Class="text-secondary-color mt-2">Chưa có thông báo nào</MudText>
+            </div>
+        }
+        else
+        {
+            <MudList T="NotificationItem" Dense="true" Class="notifications-list">
+                @foreach (var n in Items)
+                {
+                    <MudListItem T="NotificationItem" Class="notification-item" OnClick="@(() => OnItemClick(n))">
+                        <div class="d-flex gap-3 align-start w-full">
+                            <MudAvatar Size="Size.Small" Color="@GetAvatarColor(n.Type)">
+                                <MudIcon Icon="@GetIcon(n.Type)" Size="Size.Small"/>
+                            </MudAvatar>
+                            <div class="grow">
+                                <div class="d-flex align-center justify-space-between gap-2">
+                                    <MudText Typo="Typo.body2" Class="fw-semibold text-primary-color">@n.Title</MudText>
+                                    <MudText Typo="Typo.caption"
+                                             Class="text-muted-color">@n.CreatedAt.ToString("HH:mm")</MudText>
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(n.Message))
+                                {
+                                    <MudText Typo="Typo.body2" Class="text-secondary-color">@n.Message</MudText>
+                                }
+                                @if (!n.IsRead)
+                                {
+                                    <MudChip T="string" Size="Size.Small" Color="Color.Primary" Variant="Variant.Filled"
+                                             Class="mt-2">
+                                        Mới
+                                    </MudChip>
+                                }
+                            </div>
+                        </div>
+                    </MudListItem>
+                    <MudDivider/>
+                }
+            </MudList>
+        }
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@Close">Đóng</MudButton>
+    </DialogActions>
+</MudDialog>

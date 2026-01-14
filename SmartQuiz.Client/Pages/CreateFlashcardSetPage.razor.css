@@ -1,0 +1,250 @@
+/* Scoped styles for MudBlazor child components - must use ::deep */
+
+/* ============================================================
+   CreateFlashcardSetPage Styles - Quizlet Dark Theme
+   ============================================================ */
+
+/* Fix multiline MudTextField placeholder being cut off */
+::deep .mud-input-control.mud-input-input-control .mud-input.mud-input-text textarea {
+    padding-top: 12px !important;
+    line-height: 1.5 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Ensure textarea placeholder is visible */
+::deep .mud-input-control textarea::placeholder {
+    transform: translateY(0) !important;
+    line-height: 1.5 !important;
+    color: #64748b !important;
+}
+
+/* Add Card Button */
+.add-card-btn {
+    background-color: #151b33 !important; /* twilight-800 */
+    border: 2px dashed rgba(168, 177, 255, 0.22) !important; /* subtle twilight-300 tint */
+    border-radius: 0.75rem !important;
+    padding: 2rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+    cursor: pointer;
+}
+
+.add-card-btn:hover {
+    background-color: #1e2544 !important; /* twilight-700 */
+    border-color: rgba(168, 177, 255, 0.36) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 2px rgba(168, 177, 255, 0.12);
+}
+
+.add-card-btn:active {
+    transform: translateY(0);
+}
+
+/* Add Card icon container */
+.add-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #2e3856;
+    border: 2px solid rgba(168, 177, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715);
+}
+
+.add-card-btn:hover .add-card-icon {
+    background-color: #2e3856; /* keep neutral, avoid strong blue */
+    border-color: rgba(168, 177, 255, 0.30);
+}
+
+.add-card-icon ::deep .mud-icon-root {
+    color: #a0aec0;
+    transition: color 0.12s cubic-bezier(0.47, 0, 0.745, 0.715);
+}
+
+.add-card-btn:hover .add-card-icon ::deep .mud-icon-root {
+    color: #e2e8f0;
+}
+
+/* Flashcard Editor Card */
+.flashcard-editor-card {
+    background-color: #1e2544 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 0.75rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.flashcard-editor-card:hover {
+    border-color: #4255ff !important;
+}
+
+/* Card Number Badge */
+.card-number-badge {
+    background-color: #2e3856 !important;
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    padding: 0.25rem 0.75rem !important;
+    border-radius: 0.25rem !important;
+}
+
+/* Card Input Fields */
+::deep .card-input .mud-input-root {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid #334155 !important;
+    border-radius: 0 !important;
+}
+
+::deep .card-input .mud-input-root:hover {
+    border-bottom-color: #475569 !important;
+}
+
+::deep .card-input .mud-input-root:focus-within {
+    border-bottom-color: #4255ff !important;
+}
+
+::deep .card-input .mud-input-slot input,
+::deep .card-input .mud-input-slot textarea {
+    color: #e2e8f0 !important;
+    font-size: 1rem !important;
+}
+
+::deep .card-input .mud-input-label {
+    color: #64748b !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+}
+
+/* Delete Card Button */
+.delete-card-btn {
+    color: #64748b !important;
+    opacity: 0;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.flashcard-editor-card:hover .delete-card-btn {
+    opacity: 1;
+}
+
+.delete-card-btn:hover {
+    color: #ff6b6b !important;
+    background-color: rgba(255, 107, 107, 0.1) !important;
+}
+
+/* Page Header */
+.page-header {
+    background-color: #151b33 !important;
+    border-bottom: 1px solid #334155 !important;
+    padding: 1rem 1.5rem !important;
+}
+
+/* Create Button */
+.create-set-btn {
+    background-color: #4255ff !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.create-set-btn:hover {
+    background-color: #5266ff !important;
+    transform: scale(1.02) !important;
+}
+
+.create-set-btn:disabled {
+    background-color: #334155 !important;
+    color: #64748b !important;
+}
+
+/* Visibility toggle buttons ("Mọi người" / "Chỉ mình tôi") */
+/* Jitter happens because Variant.Filled vs Variant.Outlined change border/box model.
+   Normalize sizing so switching doesn't reflow. */
+::deep .visibility-toggle .mud-button-root {
+    min-width: 140px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 9999px !important;
+    box-sizing: border-box;
+}
+
+/* Ensure outlined uses same border width as filled (filled has none by default) */
+::deep .visibility-toggle .mud-button-outlined {
+    border-width: 2px !important;
+}
+
+/* Give filled buttons an invisible border to match outlined thickness */
+::deep .visibility-toggle .mud-button-filled {
+    border: 2px solid transparent !important;
+}
+
+/* Prevent hover effects from causing perceived jump */
+::deep .visibility-toggle .mud-button-root:hover {
+    transform: none !important;
+}
+
+/* Inputs used on this page */
+/* The issue: on focus MudBlazor changes background on `.mud-input-root`, but child slot/textarea can have padding/line-height that reveals the parent background only partially.
+   Fix by:
+   - Setting background on the correct container elements (.mud-input-root + .mud-input-control)
+   - Making input/textarea backgrounds transparent
+   - Ensuring slot/control stretch full height and padding doesn't create a "gap" at top
+*/
+
+::deep .mud-input-outlined-white .mud-input-control,
+::deep .mud-input-outlined-white .mud-input-root {
+    background-color: #151b33 !important; /* twilight-800 */
+    border-radius: 0.5rem !important;
+}
+
+::deep .mud-input-outlined-white:hover .mud-input-control,
+::deep .mud-input-outlined-white:hover .mud-input-root {
+    background-color: #151b33 !important;
+}
+
+::deep .mud-input-outlined-white.mud-input-outlined-focused .mud-input-control,
+::deep .mud-input-outlined-white.mud-input-outlined-focused .mud-input-root,
+::deep .mud-input-outlined-white .mud-input-root:focus-within {
+    background-color: #1e2544 !important; /* twilight-700 */
+}
+
+/* Ensure inner slot stretches and stays transparent */
+::deep .mud-input-outlined-white .mud-input-slot,
+::deep .mud-input-outlined-white .mud-input-slot * {
+    background: transparent !important;
+}
+
+::deep .mud-input-outlined-white .mud-input-slot input,
+::deep .mud-input-outlined-white .mud-input-slot textarea {
+    background: transparent !important;
+}
+
+/* Make sure multiline doesn't expose top gap */
+::deep .mud-input-outlined-white .mud-input-control.mud-input-input-control {
+    align-items: stretch !important;
+}
+
+::deep .mud-input-outlined-white .mud-input-control.mud-input-input-control .mud-input.mud-input-text textarea {
+    padding-top: 12px !important; /* keep your existing tweak */
+    padding-bottom: 12px !important;
+    min-height: 140px;
+    box-sizing: border-box;
+}
+
+/* Keep outlined border consistent */
+::deep .mud-input-outlined-white fieldset.mud-input-outlined-border {
+    border-color: #334155 !important;
+}
+
+::deep .mud-input-outlined-white:hover fieldset.mud-input-outlined-border {
+    border-color: #475569 !important;
+}
+
+::deep .mud-input-outlined-white.mud-input-outlined-focused fieldset.mud-input-outlined-border,
+::deep .mud-input-outlined-white .mud-input-root:focus-within fieldset.mud-input-outlined-border {
+    border-color: rgba(168, 177, 255, 0.55) !important;
+}
