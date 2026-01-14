@@ -27,6 +27,7 @@ builder.Services.AddFusion(fusion =>
     fusion.AddClient<IFlashcardService>();
     fusion.AddClient<IFlashcardSetService>();
     fusion.AddClient<IQuizResultService>();
+    fusion.AddClient<INotificationService>();
 });
 
 // builder.Services.AddSingleton<RpcPeerOptions>(_ => RpcPeerOptions.Default with {

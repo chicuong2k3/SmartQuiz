@@ -1,0 +1,18 @@
+::deep .mud-dialog {
+    border-radius: 1rem;
+}
+
+.notifications-list {
+    max-height: 420px;
+    overflow: auto;
+}
+
+.notification-item {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.notification-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+

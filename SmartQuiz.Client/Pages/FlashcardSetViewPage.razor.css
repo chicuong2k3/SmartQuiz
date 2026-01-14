@@ -1,0 +1,348 @@
+/* ============================================================
+   FlashcardSetViewPage Styles - Quizlet Dark Theme
+   ============================================================ */
+
+/* Title */
+.title-text {
+    color: #f7fafc !important;
+    font-weight: 700 !important;
+}
+
+/* Header Buttons - Quizlet Pill Style */
+.header-btn {
+    background-color: #2e3856 !important;
+    color: #e2e8f0 !important;
+    border-radius: 12.5rem !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.25rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.header-btn:hover {
+    background-color: #3d4259 !important;
+}
+
+::deep .header-btn .mud-button-icon-start {
+    color: #a0aec0 !important;
+}
+
+.header-icon-btn {
+    background-color: #2e3856 !important;
+    color: #e2e8f0 !important;
+    border-radius: 50% !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.header-icon-btn:hover {
+    background-color: #3d4259 !important;
+}
+
+/* Study Mode Grid - Quizlet 3x2 Layout */
+.study-modes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+@media (max-width: 48rem) {
+    .study-modes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 30rem) {
+    .study-modes-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Study Mode Buttons - Quizlet Style */
+.study-mode-btn {
+    border-radius: 0.75rem !important;
+    padding: 1rem 1.25rem !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    justify-content: center !important;
+    background-color: #1e2544 !important;
+    border: 1px solid #334155 !important;
+    color: #94a3b8 !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.study-mode-btn:hover {
+    border-color: #4255ff !important;
+    background-color: rgba(66, 85, 255, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+
+::deep .study-mode-btn .mud-button-icon-start {
+    color: #4255ff !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Active Study Mode Button - Quizlet Gradient */
+.study-mode-btn-active {
+    background: linear-gradient(135deg, #4255ff 0%, #6b7fff 100%) !important;
+    border: none !important;
+    color: white !important;
+}
+
+.study-mode-btn-active:hover {
+    background: linear-gradient(135deg, #5266ff 0%, #7c8fff 100%) !important;
+    color: white !important;
+}
+
+::deep .study-mode-btn-active .mud-button-icon-start {
+    color: white !important;
+}
+
+/* Flashcard Container - Quizlet Dark Card */
+.flashcard-container {
+    background-color: #1e2544 !important;
+    border-radius: 1rem !important;
+    overflow: hidden;
+    min-height: 26rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #334155 !important;
+}
+
+.flashcard-header {
+    border-bottom: 1px solid #334155;
+}
+
+.hint-wrapper {
+    opacity: 0.7;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715);
+}
+
+.hint-wrapper:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.hint-icon {
+    color: #94a3b8 !important;
+}
+
+.hint-text {
+    color: #94a3b8 !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+}
+
+.card-action-btn {
+    color: #94a3b8 !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.card-action-btn:hover {
+    color: #e2e8f0 !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Flashcard Content - Quizlet Centered Text */
+.flashcard-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    cursor: pointer;
+    transition: background-color 0.12s cubic-bezier(0.47, 0, 0.745, 0.715);
+    min-height: 18rem;
+}
+
+.flashcard-content:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.flashcard-text {
+    color: #f1f5f9 !important;
+    text-align: center;
+    font-weight: 400 !important;
+    font-size: 2rem !important;
+    line-height: 1.4 !important;
+}
+
+.empty-text {
+    opacity: 0.5;
+    font-size: 1.25rem !important;
+}
+
+/* Bottom Controls - Quizlet Layout */
+.bottom-controls {
+    padding: 0 0.25rem;
+}
+
+.control-text {
+    color: #94a3b8 !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+}
+
+::deep .progress-switch .mud-switch-track {
+    background-color: #475569 !important;
+}
+
+::deep .progress-switch.mud-checked .mud-switch-track {
+    background-color: #4255ff !important;
+}
+
+/* Navigation Controls - Quizlet Blue Buttons */
+.navigation-controls {
+    display: flex;
+    align-items: center;
+}
+
+.nav-btn {
+    background-color: #4255ff !important;
+    color: white !important;
+    border-radius: 50% !important;
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.nav-btn:hover {
+    background-color: #5266ff !important;
+    transform: scale(1.05);
+}
+
+::deep .nav-btn:disabled {
+    background-color: #334155 !important;
+    color: #64748b !important;
+}
+
+.card-counter {
+    color: #f1f5f9 !important;
+    font-weight: 600 !important;
+    min-width: 3.75rem;
+    text-align: center;
+    font-size: 1rem !important;
+}
+
+/* Playback Controls */
+.playback-controls {
+    gap: 0.25rem;
+}
+
+.control-btn {
+    color: #94a3b8 !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.control-btn:hover {
+    color: #f1f5f9 !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Creator Info */
+.creator-label {
+    color: #64748b !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+}
+
+/* Sort Select - Quizlet Style */
+::deep .sort-select {
+    min-width: 10rem;
+}
+
+::deep .sort-select .mud-input-root {
+    border-radius: 0.5rem !important;
+    background-color: #1e2544 !important;
+    border-color: #334155 !important;
+}
+
+::deep .sort-select .mud-input {
+    color: #e2e8f0 !important;
+}
+
+/* Term Cards - Quizlet Style with Left Border Accent */
+.term-card {
+    background-color: #1e2544 !important;
+    border-radius: 0.75rem !important;
+    padding: 1.25rem 1.5rem !important;
+    border: 1px solid #334155 !important;
+    border-left: 4px solid #4255ff !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715);
+}
+
+.term-card:hover {
+    background-color: #2e3856 !important;
+    border-color: #4255ff !important;
+}
+
+::deep .term-card .mud-typography {
+    color: #e2e8f0 !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 38.75rem) {
+    .flashcard-content {
+        padding: 2rem 1rem;
+        min-height: 14rem;
+    }
+
+    .flashcard-text {
+        font-size: 1.5rem !important;
+    }
+
+    .nav-btn {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+
+    .bottom-controls {
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+
+    .navigation-controls {
+        order: -1;
+    }
+}
+
+/* Animation for Flashcard Flip */
+@keyframes flipIn {
+    0% {
+        transform: rotateY(-90deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+}
+
+.flashcard-content.flipping {
+    animation: flipIn 0.3s ease-out;
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+    .study-mode-btn,
+    .header-btn,
+    .header-icon-btn,
+    .card-action-btn,
+    .nav-btn,
+    .control-btn,
+    .term-card,
+    .hint-wrapper {
+        transition-duration: 1ms !important;
+    }
+
+    .flashcard-content.flipping {
+        animation-duration: 1ms !important;
+    }
+}

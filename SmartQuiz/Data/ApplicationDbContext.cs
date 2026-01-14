@@ -24,6 +24,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<Flashcard> Flashcards { get; protected set; } = null!;
     public DbSet<FlashcardSet> FlashcardSets { get; protected set; } = null!;
+    public DbSet<Notification> Notifications { get; protected set; } = null!;
     public DbSet<QuizResult> QuizResults { get; protected set; } = null!;
     public DbSet<TopicPerformance> TopicPerformances { get; protected set; } = null!;
     public DbSet<QuestionAnswer> QuestionAnswers { get; protected set; } = null!;

@@ -1,0 +1,240 @@
+/* ============================================================
+   SignUpPage Styles - Quizlet Dark Theme
+   Fix icon button hover and focus background issues
+   ============================================================ */
+
+/* Remove all backgrounds from password visibility icons - AGGRESSIVE */
+::deep .mud-input-adornment .mud-icon-button,
+::deep .mud-input-adornment .mud-icon-button *,
+::deep .mud-input-adornment .mud-icon-button::before,
+::deep .mud-input-adornment .mud-icon-button::after,
+::deep .mud-input-adornment .mud-icon-button .mud-focus-helper,
+::deep .mud-input-adornment .mud-icon-button .mud-button-focus-helper {
+    background: transparent !important;
+}
+
+::deep .mud-input-adornment .mud-icon-button {
+    color: #94a3b8 !important;
+    transition: color 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+    border-radius: 0.25rem !important;
+}
+
+::deep .mud-input-adornment .mud-icon-button:hover {
+    color: #4255ff !important;
+}
+
+::deep .mud-input-adornment .mud-icon-button:focus,
+::deep .mud-input-adornment .mud-icon-button:focus-visible,
+::deep .mud-input-adornment .mud-icon-button:active,
+::deep .mud-input-adornment .mud-icon-button:focus-within,
+::deep .mud-input-adornment .mud-icon-button.mud-button-focus,
+::deep .mud-input-adornment .mud-icon-button.mud-button-active {
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+::deep .mud-input-adornment .mud-icon-button .mud-focus-helper,
+::deep .mud-input-adornment .mud-icon-button .mud-button-focus-helper {
+    display: none !important;
+}
+
+/* Remove ripple effect */
+::deep .mud-input-adornment .mud-icon-button .mud-ripple {
+    display: none !important;
+}
+
+/* Ensure adornment background syncs with input */
+::deep .mud-input-outlined .mud-input-adornment {
+    background-color: #151b33 !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+::deep .mud-input-outlined:hover .mud-input-adornment {
+    background-color: #151b33 !important;
+}
+
+::deep .mud-input-outlined.mud-input-outlined-focused .mud-input-adornment,
+::deep .mud-input-outlined .mud-input-root:focus-within .mud-input-adornment {
+    background-color: #1e2544 !important;
+}
+
+/* Input root background */
+::deep .mud-input-outlined .mud-input-root {
+    background-color: #151b33 !important;
+}
+
+::deep .mud-input-outlined.mud-input-outlined-focused .mud-input-root,
+::deep .mud-input-outlined .mud-input-root:focus-within {
+    background-color: #1e2544 !important;
+}
+
+/* Page background */
+.signup-page {
+    background-color: #0a092d;
+    min-height: 100vh;
+}
+
+/* Signup card */
+.signup-card {
+    background-color: #1e2544 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 1rem !important;
+}
+
+::deep .signup-card .mud-typography {
+    color: #e2e8f0 !important;
+}
+
+/* Social signup buttons */
+::deep .mud-button-outlined {
+    border-color: #334155 !important;
+    color: #a0aec0 !important;
+}
+
+::deep .mud-button-outlined:hover {
+    border-color: #4255ff !important;
+    background-color: rgba(66, 85, 255, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+
+/* Primary button */
+::deep .mud-button-filled-primary {
+    background-color: #4255ff !important;
+}
+
+::deep .mud-button-filled-primary:hover {
+    background-color: #5266ff !important;
+}
+
+/* Terms checkbox */
+::deep .mud-checkbox {
+    color: #4255ff !important;
+}
+
+/* Links */
+::deep .mud-link {
+    color: #4255ff !important;
+}
+
+::deep .mud-link:hover {
+    color: #6b7fff !important;
+}
+
+/* OTP input fields - MudCodeInput - COMPLETE FIX */
+/* Wrapper container to cover spacing gaps */
+.otp-container {
+    background-color: #151b33 !important;
+    padding: 0.5rem !important;
+    border-radius: 0.5rem !important;
+    display: inline-block !important;
+    width: 100% !important;
+}
+
+.otp-container:has(.mud-code-input .mud-input-root:hover) {
+    background-color: #1e2544 !important;
+}
+
+.otp-container:has(.mud-code-input .mud-input-root:focus-within),
+.otp-container:has(.mud-code-input .mud-input-root.mud-input-focused) {
+    background-color: #1e2544 !important;
+}
+
+/* Container - covers the spacing/gap between boxes */
+::deep .mud-code-input {
+    background-color: transparent !important;
+    width: 100% !important;
+}
+
+/* FIX: Force ALL possible selectors to 100% width - AGGRESSIVE */
+::deep .mud-code-input .mud-input.mud-input-outlined,
+::deep .mud-code-input .mud-input.mud-input-outlined.mud-shrink,
+::deep .mud-code-input .mud-input-outlined.mud-shrink.mud-typography-subtitle1 {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* FIX: Force flex container to 100% width - MULTIPLE SELECTORS */
+::deep .mud-code-input .d-flex,
+::deep .mud-code-input .d-flex.flex-wrap,
+::deep .mud-code-input .d-flex.flex-wrap.align-center,
+::deep .mud-code-input .d-flex.flex-wrap.align-center.mud-width-full,
+::deep .mud-code-input div.d-flex.flex-wrap.align-center.mud-width-full {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Default state - cover ALL elements */
+::deep .mud-code-input .mud-input-root,
+::deep .mud-code-input .mud-input-root *,
+::deep .mud-code-input .mud-input-slot,
+::deep .mud-code-input .mud-input-slot *,
+::deep .mud-code-input .mud-input-control,
+::deep .mud-code-input .mud-input {
+    background-color: #151b33 !important;
+}
+
+/* Input element should be transparent */
+::deep .mud-code-input .mud-input-slot input {
+    text-align: center !important;
+    background-color: transparent !important;
+    color: #e2e8f0 !important;
+    padding: 0 !important;
+}
+
+/* Hover state - sync backgrounds */
+::deep .mud-code-input .mud-input-root:hover,
+::deep .mud-code-input .mud-input-root:hover *,
+::deep .mud-code-input .mud-input-root:hover .mud-input-slot,
+::deep .mud-code-input .mud-input-root:hover .mud-input-slot * {
+    background-color: #1e2544 !important;
+}
+
+::deep .mud-code-input .mud-input-root:hover .mud-input-slot input {
+    background-color: transparent !important;
+}
+
+/* Focus state - sync ALL backgrounds */
+::deep .mud-code-input .mud-input-root:focus-within,
+::deep .mud-code-input .mud-input-root:focus-within *,
+::deep .mud-code-input .mud-input-root.mud-input-focused,
+::deep .mud-code-input .mud-input-root.mud-input-focused * {
+    background-color: #1e2544 !important;
+}
+
+::deep .mud-code-input .mud-input-root:focus-within .mud-input-slot input,
+::deep .mud-code-input .mud-input-root.mud-input-focused .mud-input-slot input {
+    background-color: transparent !important;
+}
+
+/* Border colors */
+::deep .mud-code-input fieldset,
+::deep .mud-code-input fieldset.mud-input-outlined-border {
+    border-color: #334155 !important;
+    width: 100% !important;
+}
+
+/* FIX: Input adornment should not take space */
+::deep .mud-code-input .mud-input-adornment,
+::deep .mud-code-input .mud-input-adornment-end,
+::deep .mud-code-input .mud-input-adornment-end-extended,
+::deep .mud-code-input .mud-input-outlined-extended {
+    width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+::deep .mud-code-input .mud-input-root:hover fieldset {
+    border-color: #475569 !important;
+}
+
+::deep .mud-code-input .mud-input-root:focus-within fieldset,
+::deep .mud-code-input .mud-input-root.mud-input-focused fieldset {
+    border-color: #4255ff !important;
+}
+
+/* Remove any default padding that might cause gaps */
+::deep .mud-code-input .mud-input-control,
+::deep .mud-code-input .mud-input-outlined {
+    padding: 0 !important;
+}

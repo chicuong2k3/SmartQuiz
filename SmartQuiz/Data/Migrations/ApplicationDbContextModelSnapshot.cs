@@ -257,6 +257,41 @@ namespace SmartQuiz.Data.Migrations
                     b.ToTable("FlashcardSets");
                 });
 
+            modelBuilder.Entity("SmartQuiz.Data.Models.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "IsRead", "CreatedAt");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("SmartQuiz.Data.Models.QuestionAnswer", b =>
                 {
                     b.Property<Guid>("Id")

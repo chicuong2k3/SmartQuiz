@@ -7,17 +7,17 @@
 
 <PageTitle>Tạo bộ thẻ flashcard mới</PageTitle>
 
-<div class="min-h-screen bg-gray-100 py-8">
+<div class="min-h-screen bg-app-background py-8">
     <MudContainer MaxWidth="MaxWidth.Medium">
         <!-- Header -->
-        <MudText Typo="Typo.h4" Class="fw-bold mb-1">Tạo bộ thẻ flashcard mới</MudText>
+        <MudText Typo="Typo.h4" Class="fw-bold mb-1 text-primary-color">Tạo bộ thẻ flashcard mới</MudText>
         <MudText Typo="Typo.body2" Class="text-secondary-color mb-6">
             Tạo bộ thẻ flashcard để giúp bạn học tập hiệu quả hơn!
         </MudText>
 
         <MudForm @ref="_form" ValidationDelay="0" @bind-IsValid="_isFormValid">
             <!-- Title and Description -->
-            <MudPaper Elevation="0" Class="pa-5 mb-6 rounded-lg bg-white">
+            <MudPaper Elevation="0" Class="pa-5 mb-6 rounded-lg bg-app-surface">
                 <MudGrid Spacing="4">
                     <MudItem xs="12">
                         <MudText Typo="Typo.body2" Class="mb-2">Tên bộ thẻ</MudText>
@@ -49,7 +49,7 @@
                 <!-- Visibility Options -->
                 <div class="mt-5">
                     <MudText Typo="Typo.body2" Class="mb-3">Ai có thể xem bộ thẻ này?</MudText>
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-3 visibility-toggle">
                         <MudButton
                             Variant="@(Visibility == "everyone" ? Variant.Filled : Variant.Outlined)"
                             Color="@(Visibility == "everyone" ? Color.Primary : Color.Default)"
@@ -73,7 +73,7 @@
             <!-- Flashcards Section -->
             <div class="mb-4">
                 <div class="d-flex justify-space-between align-center mb-4">
-                    <MudText Typo="Typo.h6" Class="fw-bold">Flashcards</MudText>
+                    <MudText Typo="Typo.h6" Class="fw-bold text-primary-color">Flashcards</MudText>
                     <MudButton Variant="Variant.Text" Color="Color.Primary"
                                StartIcon="@Icons.Material.Filled.ImportExport"
                                Class="text-transform-none">
@@ -84,10 +84,10 @@
                 @for (int i = 0; i < _flashcards.Count; i++)
                 {
                     var index = i;
-                    <MudPaper Elevation="0" Class="mb-4 rounded-lg overflow-hidden bg-white border border-gray-200">
+                    <MudPaper Elevation="0" Class="mb-4 rounded-lg overflow-hidden bg-app-surface border-twilight">
                         <!-- Card Header -->
-                        <div class="d-flex justify-space-between align-center px-5 py-3 border-b border-gray-100">
-                            <MudText Typo="Typo.body1" Class="fw-semibold">@(index + 1)</MudText>
+                        <div class="d-flex justify-space-between align-center px-5 py-3 border-b border-twilight">
+                            <MudText Typo="Typo.body1" Class="fw-semibold text-primary-color">@(index + 1)</MudText>
                             @if (_flashcards.Count > 1)
                             {
                                 <MudIconButton Icon="@Icons.Material.Filled.Delete"
@@ -129,14 +129,12 @@
                 }
 
                 <!-- Add Card Button -->
-                <div
-                    class="bg-gray-100 rounded-xl py-8 border-2 border-dashed border-gray-300 cursor-pointer hover:border-gray-400 transition-colors"
-                    @onclick="AddFlashcard">
+                <div class="add-card-btn" @onclick="AddFlashcard">
                     <div class="d-flex flex-column align-center justify-center">
                         <div class="add-card-icon">
                             <MudIcon Icon="@Icons.Material.Outlined.Add"/>
                         </div>
-                        <MudText Typo="Typo.body2" Class="text-gray-600 font-medium">Thêm thẻ</MudText>
+                        <MudText Typo="Typo.body2" Class="text-secondary-color fw-semibold">Thêm thẻ</MudText>
                     </div>
                 </div>
             </div>

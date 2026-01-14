@@ -1,0 +1,90 @@
+.notifications-popover {
+    width: 380px;
+    max-width: 92vw;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+/* Keep header/footer surfaces */
+.notifications-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 16px;
+    background-color: rgba(21, 27, 51, 0.9); /* twilight-800 w/ glass */
+    backdrop-filter: blur(12px) saturate(160%);
+    border-bottom: 1px solid rgba(168, 177, 255, 0.14);
+}
+
+.notifications-list {
+    max-height: 420px;
+    overflow: auto;
+    padding: 8px;
+}
+
+.notification-item {
+    border-radius: 0.75rem;
+    margin-bottom: 6px;
+    transition: background-color 0.12s cubic-bezier(0.47, 0, 0.745, 0.715);
+    border: 1px solid transparent;
+}
+
+.notification-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(168, 177, 255, 0.10);
+}
+
+.notification-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    align-items: flex-start;
+    padding: 12px;
+}
+
+.notification-message {
+    margin-top: 2px;
+    opacity: 0.95;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.unread-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--quizlet-blue);
+    box-shadow: 0 0 0 3px rgba(66, 85, 255, 0.14);
+    flex: 0 0 8px;
+}
+
+.notifications-footer {
+    padding: 10px 16px 14px 16px;
+    border-top: 1px solid rgba(168, 177, 255, 0.10);
+    background-color: rgba(21, 27, 51, 0.90);
+}
+
+/* Ensure list padding doesn't fight MudList defaults */
+::deep .notifications-list .mud-list-item {
+    padding: 0 !important;
+}
+
+/* Remove list dividers/borders that can visually stack */
+::deep .notifications-list .mud-divider,
+::deep .notifications-list .mud-list-item-divider {
+    display: none !important;
+}
+
+/* Remove default focus/active outline */
+::deep .notifications-list .mud-list-item,
+::deep .notifications-list .mud-list-item:focus,
+::deep .notifications-list .mud-list-item:focus-visible,
+::deep .notifications-list .mud-list-item:active {
+    outline: none !important;
+    box-shadow: none !important;
+}

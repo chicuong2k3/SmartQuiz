@@ -1,22 +1,45 @@
+/* ============================================================
+   HelpCenterPage Styles - Quizlet Dark Theme
+   ============================================================ */
+
 /* Header Section with Gradient Background */
 .help-header {
-    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-    border-radius: 16px;
-    padding: 48px 32px;
-    box-shadow: 0 4px 20px rgba(33, 150, 243, 0.3);
+    background: linear-gradient(135deg, #4255ff 0%, #6b7fff 100%);
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+    box-shadow: 0 0.25rem 2rem rgba(66, 85, 255, 0.3);
 }
 
 /* Search Input Styling */
+.search-input {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12.5rem !important;
+    backdrop-filter: blur(10px);
+}
+
 .search-input ::deep .mud-input-root {
-    background-color: white;
+    background-color: transparent !important;
+    color: white !important;
+}
+
+.search-input ::deep .mud-input-slot input {
+    color: white !important;
+}
+
+.search-input ::deep .mud-input-slot input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.search-input ::deep .mud-input-adornment-start {
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .search-input ::deep fieldset {
-    border-color: transparent;
+    border-color: transparent !important;
 }
 
-.search-input ::deep .mud-input-root:hover fieldset {
-    border-color: rgba(33, 150, 243, 0.3);
+.search-input:hover ::deep fieldset {
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* FAQ Section */
@@ -35,62 +58,135 @@
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .faq-section {
+        animation: none;
+    }
+}
+
 /* FAQ Panel Styling */
 .faq-panel {
-    border-radius: 12px !important;
-    border: 1px solid #E0E0E0;
+    background-color: #1e2544 !important;
+    border-radius: 0.75rem !important;
+    border: 1px solid #334155 !important;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
 }
 
 .faq-panel:hover {
-    border-color: #2196F3;
-    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.15);
+    border-color: #4255ff !important;
+    box-shadow: 0 0.125rem 0.5rem rgba(66, 85, 255, 0.15) !important;
 }
 
 .faq-panel ::deep .mud-expand-panel-header {
-    padding: 20px 24px;
-    background-color: white;
+    padding: 1.25rem 1.5rem;
+    background-color: #1e2544 !important;
+    color: #e2e8f0 !important;
+}
+
+.faq-panel ::deep .mud-expand-panel-header:hover {
+    background-color: #2e3856 !important;
+}
+
+.faq-panel ::deep .mud-expand-panel-text {
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
 }
 
 .faq-panel ::deep .mud-expand-panel-content {
-    padding: 0 24px 24px 24px;
-    background-color: #FAFAFA;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    background-color: #151b33 !important;
+    color: #a0aec0 !important;
+}
+
+.faq-panel ::deep .mud-icon-root {
+    color: #94a3b8 !important;
 }
 
 /* Selected Category in Sidebar */
 .selected-category {
-    background-color: #E3F2FD !important;
-    border-left: 4px solid #2196F3;
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    border-left: 4px solid #4255ff !important;
 }
 
 .selected-category:hover {
-    background-color: #E3F2FD !important;
+    background-color: rgba(66, 85, 255, 0.2) !important;
 }
 
 /* Sidebar List Items */
-.selected-category ::deep .mud-list-item {
-    background-color: transparent !important;
+::deep .mud-list-item {
+    color: #a0aec0 !important;
+    border-radius: 0.5rem !important;
+    margin: 0.25rem 0.5rem !important;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+::deep .mud-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #f7fafc !important;
+}
+
+::deep .mud-list-item.mud-selected {
+    background-color: rgba(66, 85, 255, 0.15) !important;
+    color: #4255ff !important;
+}
+
+/* Category Card */
+.category-card {
+    background-color: #1e2544 !important;
+    border: 1px solid #334155 !important;
+    border-radius: 0.75rem !important;
+    padding: 1.5rem !important;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.12s cubic-bezier(0.47, 0, 0.745, 0.715) !important;
+}
+
+.category-card:hover {
+    border-color: #4255ff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 0.25rem 1rem rgba(66, 85, 255, 0.2) !important;
+}
+
+.category-card ::deep .mud-icon-root {
+    color: #4255ff !important;
+    font-size: 2rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.category-card ::deep .mud-typography {
+    color: #e2e8f0 !important;
+}
+
+/* Contact Support Card */
+.contact-card {
+    background: linear-gradient(135deg, #2e3856 0%, #1e2544 100%) !important;
+    border: 1px solid #334155 !important;
+    border-radius: 1rem !important;
+    padding: 2rem !important;
+}
+
+.contact-card ::deep .mud-typography {
+    color: #e2e8f0 !important;
 }
 
 /* Responsive Design */
-@media (max-width: 1280px) {
+@media (max-width: 80rem) {
     .help-header {
-        padding: 36px 24px;
+        padding: 2.25rem 1.5rem;
     }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
     .help-header {
-        padding: 32px 20px;
+        padding: 2rem 1.25rem;
     }
 
     .faq-panel ::deep .mud-expand-panel-header {
-        padding: 16px 20px;
+        padding: 1rem 1.25rem;
     }
 
     .faq-panel ::deep .mud-expand-panel-content {
-        padding: 0 20px 20px 20px;
+        padding: 0 1.25rem 1.25rem 1.25rem;
     }
 }
-
